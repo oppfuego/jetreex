@@ -184,8 +184,10 @@ export type HighlightStripBlock = {
     type: "custom";
     component: "HighlightStrip";
     items: {
-        icon: string;
-        text: string;
+        image?: string;
+        icon?: string;
+        text?: string;
+        subtext?: string;
         color?: string;
     }[];
 };
@@ -231,7 +233,27 @@ export type HeroSectionBlock = {
     image?: string;
     mediaType?: "image" | "video";
     align?: "left" | "right";
+    showTrustBadge?: boolean;
 };
+
+export type TextWithButtonBlock = {
+    type: "custom";
+    component: "TextWithButton";
+    title?: string;
+    description?: string;
+    buttonText?: string;
+    buttonLink?: string;
+    align?: "left" | "center" | "right";
+};
+
+
+export type LogoStripBlock = {
+    type: "custom";
+    component: "LogoStrip";
+    title?: string;
+    logos: { src: string; alt?: string; width?: number; height?: number }[];
+};
+
 
 export type TestimonialsSliderBlock = {
     type: "custom";
@@ -263,6 +285,7 @@ export type CustomBlock =
     | HeroSectionBlock
     | TestimonialsSliderBlock
     | VideoDemoBlock
+    | TextWithButtonBlock
     | InfoBlock;
 
 export type PageBlock =

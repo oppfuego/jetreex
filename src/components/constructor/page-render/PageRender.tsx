@@ -40,6 +40,7 @@ import TestimonialsSlider from "@/components/constructor/testimonials-slider/Tes
 import VideoDemo from "@/components/constructor/video-demo/VideoDemo";
 import StoryTimeline from "@/components/constructor/story-timeline/StoryTimeline";
 import InfoBlock from "@/components/constructor/Info-block/InfoBlock";
+import TextWithButton from "@/components/constructor/text-with-button/TextWithButton";
 
 // ------------------- helpers -------------------
 
@@ -133,6 +134,17 @@ function RenderCustom(b: CustomBlock) {
                 />
             );
 
+        case "TextWithButton":
+            return (
+                <TextWithButton
+                    title={b.title}
+                    description={b.description}
+                    buttonText={b.buttonText}
+                    buttonLink={b.buttonLink}
+                    align={b.align}
+                />
+            );
+
 
         case "HeroSection":
             return (
@@ -143,7 +155,8 @@ function RenderCustom(b: CustomBlock) {
                     primaryCta={b.primaryCta}
                     secondaryCta={b.secondaryCta}
                     image={b.image}
-                    align={b.align} // ➕ передаємо напрям
+                    align={b.align}
+                    showTrustBadge={b.showTrustBadge}
                 />
             );
 

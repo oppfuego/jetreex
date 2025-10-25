@@ -9,7 +9,6 @@
   justify-content: center;
   align-items: center;
   gap: 3rem;
-  padding: var(--main-padding);
 
   @media (max-width: 768px) {
     flex-direction: column !important;
@@ -24,8 +23,11 @@
   flex-direction: column;
   align-items: center;
   width: 100%;
+  max-width: 1400px;
   gap: 30px;
   box-sizing: border-box;
+  padding: 0 30px;
+
 }
 
 .header {
@@ -38,7 +40,7 @@
 
 .title {
   font-size: 2.5rem;
-  font-weight: 800;
+  font-weight: 500;
   color: var(--secondary-color);
   text-transform: capitalize;
   letter-spacing: -0.02em;

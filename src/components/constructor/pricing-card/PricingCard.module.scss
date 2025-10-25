@@ -1,220 +1,187 @@
 .card {
-  --border: rgba(255, 255, 255, 0.15);
-  --glow: rgba(80, 255, 196, 0.25);
-
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
-  align-items: center;
-  text-align: center;
-  border: 1px solid var(--border);
-  border-radius: 1.5rem;
-  padding: 2.5rem 2rem 2rem;
-  overflow: visible; /* ✅ дозволяє натискати на Input */
-  isolation: isolate; /* ✅ створює новий стек */
+  align-items: stretch;
+  text-align: left;
+  background: var(--surface-color);
+  border: 1px solid var(--border-color);
+  border-radius: 1rem;
+  padding: 2.2rem 1.8rem;
+  box-shadow: 0 4px 16px var(--shadow-color);
+  transition: all 0.3s ease;
   height: 100%;
-  transition: all 0.4s ease;
-  box-shadow:
-          0 0 0 1px rgba(255, 255, 255, 0.06),
-          0 10px 25px rgba(0, 0, 0, 0.12),
-          inset 0 0 30px rgba(255, 255, 255, 0.02);
 
   &:hover {
-    transform: translateY(-8px) scale(1.02);
-    box-shadow: 0 0 25px var(--glow), 0 12px 28px rgba(0, 0, 0, 0.25);
-    border-color: var(--secondary-color);
-  }
-
-  /* світлове коло при hover */
-  &::after {
-    content: "";
-    position: absolute;
-    inset: 0;
-    background: radial-gradient(circle at top right, var(--secondary-color) 0%, transparent 70%);
-    opacity: 0;
-    transition: opacity 0.5s ease;
-    z-index: 0;
-    pointer-events: none; /* ✅ не блокує кліки */
-  }
-
-  &:hover::after {
-    opacity: 0.25;
-  }
-
-  .inputWrapper {
-    display: flex;
-    justify-content: center;
-    width: 100%;
-    z-index: 3;
-    margin-bottom: 0.6rem;
-
-    input,
-    .MuiInput-root {
-      position: relative;
-      z-index: 3; /* ✅ над псевдоелементом */
-    }
+    border-color: var(--tertiary-color);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.15);
+    transform: translateY(-4px);
   }
 
   .badgeTop {
     position: absolute;
     top: 1rem;
     right: 1rem;
-    padding: 0.3rem 1rem;
-    border-radius: 12px;
-    font-size: 0.75rem;
-    font-weight: 700;
+    background: var(--primary-color);
+    color: var(--text-inverse);
+    font-size: 0.7rem;
+    font-weight: 600;
     text-transform: uppercase;
-    background: linear-gradient(90deg, var(--primary-color), var(--secondary-color));
-    color: #fff;
     letter-spacing: 0.05em;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.2);
-    z-index: 1;
+    padding: 0.3rem 0.8rem;
+    border-radius: 0.4rem;
   }
 
   .title {
-    font-size: 1.6rem;
-    font-weight: 800;
-    margin-top: 1rem;
+    font-size: 1.45rem;
+    font-weight: 700;
     color: var(--text-primary);
-    position: relative;
-    z-index: 2;
+    margin-bottom: 0.8rem;
   }
 
   .price {
-    font-size: 2.3rem;
-    font-weight: 900;
+    font-size: 2rem;
+    font-weight: 800;
     color: var(--primary-color);
-    margin: 1rem 0 0.5rem;
-    letter-spacing: -0.03em;
-    position: relative;
-    z-index: 2;
+    margin-bottom: 0.4rem;
+    letter-spacing: -0.02em;
 
     .tokens {
       display: block;
       font-size: 0.9rem;
       color: var(--text-muted);
-      margin-top: 0.25rem;
-      font-weight: 600;
+      font-weight: 500;
+      margin-top: 0.3rem;
     }
   }
 
   .dynamicPrice {
-    font-size: 1rem;
+    font-size: 0.95rem;
     color: var(--text-secondary);
-    font-weight: 600;
-    margin-top: 0.6rem;
-    z-index: 3;
-    position: relative;
+    font-weight: 500;
+    margin-top: 0.5rem;
   }
 
   .description {
     color: var(--text-secondary);
     font-size: 0.95rem;
-    line-height: 1.6;
-    margin: 1rem 0 1.5rem;
-    z-index: 2;
+    line-height: 1.5;
+    margin: 1rem 0 1.4rem;
   }
 
   .features {
     list-style: none;
     padding: 0;
-    margin: 0 0 2rem;
-    width: 100%;
-    text-align: left;
-    position: relative;
-    z-index: 2;
+    margin: 0 0 1.8rem;
+    display: flex;
+    flex-direction: column;
+    gap: 0.45rem;
 
     li {
-      position: relative;
-      padding-left: 1.6rem;
-      margin: 0.45rem 0;
-      font-size: 0.93rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
+      font-size: 0.9rem;
       color: var(--text-secondary);
       transition: color 0.3s ease;
 
       &::before {
-        content: "✓";
-        position: absolute;
-        left: 0;
-        color: var(--secondary-color);
-        font-weight: bold;
-        font-size: 1rem;
-        top: 0;
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--primary-color);
+        flex-shrink: 0;
+      }
+
+      &:hover {
+        color: var(--text-primary);
       }
     }
+  }
 
-    li:hover {
+  .inputWrapper {
+    width: 100%;
+    margin-bottom: 0.8rem;
+
+    input {
+      background: var(--surface-muted);
+      border: 1px solid var(--border-color);
+      border-radius: 0.5rem;
+      padding: 0.6rem 0.8rem;
       color: var(--text-primary);
+      font-weight: 500;
+      transition: border-color 0.3s ease, box-shadow 0.3s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--primary-color);
+        box-shadow: 0 0 0 2px rgba(37, 99, 235, 0.15);
+      }
     }
   }
 
   .badgeBottom {
-    margin-top: 1.2rem;
-    padding: 0.35rem 1.1rem;
-    border-radius: 12px;
-    font-size: 0.8rem;
+    align-self: flex-start;
+    margin-top: 1rem;
+    padding: 0.4rem 1rem;
+    border-radius: 0.4rem;
+    font-size: 0.75rem;
     font-weight: 600;
-    background: rgba(50, 214, 154, 0.1);
-    color: var(--secondary-color);
-    border: 1px solid rgba(50, 214, 154, 0.25);
+    color: var(--primary-color);
+    background: var(--quaternary-color);
+    border: 1px solid rgba(37, 99, 235, 0.15);
   }
 
   button {
     margin-top: auto;
-    z-index: 3;
-    background: linear-gradient(90deg, var(--secondary-color), var(--primary-color));
-    color: #fff !important;
-    font-weight: 700;
     border: none;
-    border-radius: 10px;
-    padding: 0.8rem 1.4rem;
-    box-shadow: 0 6px 16px rgba(50, 214, 154, 0.3);
+    border-radius: 0.6rem;
+    background: var(--primary-color);
+    font-weight: 600;
+    color: var(--text-inverse) !important;
+    padding: 0.9rem 1.4rem;
     transition: all 0.3s ease;
     cursor: pointer;
+    box-shadow: 0 4px 12px rgba(37, 99, 235, 0.15);
 
     &:hover {
+      background: var(--button-hover);
       transform: translateY(-2px);
-      box-shadow: 0 10px 22px rgba(50, 214, 154, 0.4);
+      box-shadow: 0 6px 16px rgba(30, 58, 138, 0.25);
     }
   }
-}
 
-/* 🎨 Варианти тем */
-.starter {
-  background: linear-gradient(180deg, #fefefe 0%, #f9fafc 100%);
-}
-
-.pro {
-  background: linear-gradient(180deg, #f3fcf7 0%, #ebfdf4 100%);
-  border-color: rgba(50, 214, 154, 0.4);
-}
-
-.premium {
-  background: linear-gradient(180deg, #fff9ec 0%, #fff3d8 100%);
-  border-color: rgba(251, 191, 36, 0.35);
-}
-
-.custom {
-  background: linear-gradient(180deg, #f2f7ff 0%, #e7f1ff 100%);
-  border-color: rgba(59, 130, 246, 0.35);
-}
-
-/* 📱 Адаптив */
-@media (max-width: 768px) {
-  .card {
-    padding: 1.75rem;
+  &.starter {
+    background: var(--surface-color);
   }
 
-  .title {
-    font-size: 1.3rem;
+  &.pro {
+    border-color: rgba(37, 99, 235, 0.25);
   }
 
-  .price {
-    font-size: 1.8rem;
+  &.premium {
+    border-color: rgba(250, 204, 21, 0.25);
   }
 
-  .features li {
-    font-size: 0.88rem;
+  &.custom {
+    border-color: rgba(30, 58, 138, 0.25);
+  }
+
+  @media (max-width: 768px) {
+    padding: 1.5rem;
+
+    .title {
+      font-size: 1.25rem;
+    }
+
+    .price {
+      font-size: 1.6rem;
+    }
+
+    .features li {
+      font-size: 0.85rem;
+    }
   }
 }

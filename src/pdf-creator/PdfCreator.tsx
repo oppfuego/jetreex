@@ -2,75 +2,268 @@
 import React from "react";
 import { Document, Page, Text, View, pdf } from "@react-pdf/renderer";
 import { UniversalOrderType } from "@/backend/types/universal.types";
-import { pdfStylesAI, pdfStylesCoach } from "./pdfTheme";
+import { pdfStylesBusiness } from "./pdfTheme";
 
-// локальний тип для об'єкта стилів (спрощений)
 type PDFStyles = any;
+const styles: PDFStyles = pdfStylesBusiness;
 
-// 🧼 Очистка текста от невидимых символов, эмодзи и markdown
+type Block =
+    | { type: "h1"; text: string }
+    | { type: "h2"; text: string }
+    | { type: "h3"; text: string }
+    | { type: "p"; text: string }
+    | { type: "ul"; items: string[] }
+    | { type: "ol"; items: string[] };
+
+// 🧹 Мінімальне очищення тексту
 function cleanText(raw: string) {
     if (!raw) return "";
+    return String(raw).normalize("NFKC");
+}
 
+function cleanTitle(raw: string) {
+    if (!raw) return "";
     return String(raw)
         .normalize("NFKC")
-        // убрать суррогатные пары (в т.ч. эмодзи и символы вне BMP)
-        .replace(/[\uD800-\uDFFF]/g, "")
-        // variation selectors (часто остаются от эмодзи)
-        .replace(/[\uFE00-\uFE0F]/g, "")
-        // управляющие символы + Latin-1 C1
-        .replace(/[\u0000-\u001F\u007F-\u009F]/g, "")
-        // soft hyphen
-        .replace(/\u00AD/g, "")
-        // невидимые zero-width и подобные
-        .replace(/[\u200B-\u200D\u2060]/g, "")
-        // неразрывный пробел -> обычный пробел
-        .replace(/\u00A0/g, " ")
-        // лишние символы разметки/разделители
-        .replace(/[•·¨|=<>_#]/g, "")
-        // жирный markdown **text** -> text
-        .replace(/\*\*(.*?)\*\*/g, "$1")
-        // нормализация тире
-        .replace(/---+/g, "—")
-        // перевод строк к \n
-        .replace(/(\r\n|\r|\n)/g, "\n")
-        // убрать повторяющиеся пробелы и пустые строки
+        .replace(/\uFEFF/g, "")
+        // удалить явные артефакты и кавычки
+        .replace(/[=¡!~_*•·«»"“”'`>]/g, "")
+        // удалить ведущие hash-символы и любые прочие небуквенно-цифровые символы в начале
+        .replace(/^#{1,3}\s*/u, "")
+        .replace(/^[^\p{L}\p{N}]+/u, "")
+        // нормализовать пробелы и обрезать
         .replace(/\s{2,}/g, " ")
-        .replace(/\n{2,}/g, "\n")
         .trim();
 }
 
-// допоміжний рендер для екстрас: логічні заголовки і абзаци
-function renderExtrasContent(text: string, styles: PDFStyles) {
-    const cleaned = cleanText(text);
-    const lines = cleaned.split(/\n+/).map((l) => cleanText(l)).filter((l) => l.trim());
+// 🔤 Інлайн форматування Markdown (**bold**)
+function renderInlineMarkdown(text: string, styles: PDFStyles) {
+    if (!/\*\*/.test(text)) return [text];
+    const parts: Array<string | React.ReactElement> = [];
+    const regex = /\*\*(.+?)\*\*/g;
+    let lastIndex = 0;
+    let idx = 0;
+    let match: RegExpExecArray | null;
 
-    return (
-        <>
-            {lines.map((line, idx) => {
-                const isHeading = /[:：]\s*$/.test(line) || /^[A-ZА-ЯІЇЄ0-9][^:]{2,20}:$/.test(line);
-                if (isHeading) {
-                    return (
-                        <Text key={`h-${idx}`} style={styles.extrasHeading}>
-                            {line.replace(/[:：]\s*$/, "").trim()}
-                        </Text>
-                    );
-                }
-                return (
-                    <Text key={`p-${idx}`} style={styles.extrasParagraph}>
-                        {line.trim()}
-                    </Text>
-                );
-            })}
-        </>
-    );
+    while ((match = regex.exec(text)) !== null) {
+        if (match.index > lastIndex) parts.push(text.slice(lastIndex, match.index));
+        parts.push(
+            <Text key={`b-${idx++}`} style={styles.boldInline}>
+                {match[1]}
+            </Text>
+        );
+        lastIndex = regex.lastIndex;
+    }
+    if (lastIndex < text.length) parts.push(text.slice(lastIndex));
+    return parts.length ? parts : [text];
 }
 
-// 🧩 Таблиця (універсальна)
-const Table = ({ headers, rows, styles }: { headers: string[]; rows: string[][]; styles: PDFStyles }) => (
+// 📦 Парсинг у блоки (заголовки, абзаци, списки)
+function parseBlocks(raw: string): Block[] {
+    let cleaned = cleanText(raw)
+        .replace(/^[-_*]{3,}$/gm, "") // прибрати роздільники --- ___ ***
+        .replace(/^#{1,3}([^#\s])/gm, (_, c) => `# ${c}`) // прибрати заголовки без пробілу
+        .replace(/\uFEFF/g, "")
+        .trim();
+
+    const lines = cleaned.split(/\r?\n/).map((l) => l.trimEnd());
+    const blocks: Block[] = [];
+
+    let i = 0;
+    while (i < lines.length) {
+        let line = lines[i];
+        if (!line || !line.trim()) {
+            i++;
+            continue;
+        }
+        const t = line.trim();
+
+        // Заголовки ###, ##, #
+        const h3 = t.match(/^#{3}\s*(.+)$/);
+        if (h3) {
+            blocks.push({ type: "h3", text: cleanTitle(h3[1]) });
+            i++;
+            continue;
+        }
+        const h2 = t.match(/^#{2}\s*(.+)$/);
+        if (h2) {
+            blocks.push({ type: "h2", text: cleanTitle(h2[1]) });
+            i++;
+            continue;
+        }
+        const h1 = t.match(/^#\s*(.+)$/);
+        if (h1) {
+            blocks.push({ type: "h1", text: cleanTitle(h1[1]) });
+            i++;
+            continue;
+        }
+
+        // Списки UL
+        if (/^[-–—•*]\s+/.test(t)) {
+            const items: string[] = [];
+            while (i < lines.length) {
+                const ln = lines[i]?.trim();
+                if (!ln || !/^[-–—•*]\s+/.test(ln)) break;
+                items.push(ln.replace(/^[-–—•*]\s+/, "").trim());
+                i++;
+            }
+            blocks.push({ type: "ul", items });
+            continue;
+        }
+
+        // Списки OL
+        if (/^\d+\.\s+/.test(t)) {
+            const items: string[] = [];
+            while (i < lines.length) {
+                const ln = lines[i]?.trim();
+                if (!ln || !/^\d+\.\s+/.test(ln)) break;
+                items.push(ln.replace(/^\d+\.\s+/, "").trim());
+                i++;
+            }
+            blocks.push({ type: "ol", items });
+            continue;
+        }
+
+        // Абзаци
+        const pLines: string[] = [t];
+        i++;
+        while (i < lines.length) {
+            const ln = lines[i];
+            const trimmed = ln.trim();
+            if (!trimmed) break;
+            if (/^#{1,3}\s*/.test(trimmed)) break;
+            if (/^[-–—•*]\s+/.test(trimmed)) break;
+            if (/^\d+\.\s+/.test(trimmed)) break;
+            if (/^[-_*]{3,}$/.test(trimmed)) break;
+            pLines.push(trimmed);
+            i++;
+        }
+        blocks.push({ type: "p", text: pLines.join(" ") });
+    }
+    return blocks;
+}
+
+// 🪄 Рендер блоків
+function renderExtrasContent(text: string, styles: PDFStyles): React.ReactNode {
+    if (!text) return null;
+    const blocks = parseBlocks(text);
+    const out: React.ReactNode[] = [];
+    let globalCounter = 1;
+
+    for (let i = 0; i < blocks.length; i++) {
+        const b = blocks[i];
+        const next = blocks[i + 1];
+
+        const renderBlock = (blk: Block, key: string | number): React.ReactNode => {
+            switch (blk.type) {
+                case "h1":
+                    return (
+                        <Text key={key} style={styles.mainHeading}>
+                            {blk.text}
+                        </Text>
+                    );
+                case "h2":
+                    return (
+                        <Text key={key} style={styles.sectionTitle}>
+                            {blk.text}
+                        </Text>
+                    );
+                case "h3":
+                    return (
+                        <Text key={key} style={styles.infoTitle}>
+                            {blk.text}
+                        </Text>
+                    );
+                case "p":
+                    return (
+                        <Text key={key} style={styles.paragraph}>
+                            {renderInlineMarkdown(blk.text, styles)}
+                        </Text>
+                    );
+                case "ul":
+                    return (
+                        <View key={key}>
+                            {blk.items.map((it, idx) => (
+                                <Text key={idx} style={styles.bulletItem}>
+                                    {"• "}
+                                    {renderInlineMarkdown(it, styles)}
+                                </Text>
+                            ))}
+                        </View>
+                    );
+                case "ol":
+                    return (
+                        <View key={key}>
+                            {blk.items.map((it, idx) => (
+                                <Text key={idx} style={styles.bulletItem}>
+                                    {`${globalCounter++}. `}
+                                    {renderInlineMarkdown(it, styles)}
+                                </Text>
+                            ))}
+                        </View>
+                    );
+                default:
+                    return null;
+            }
+        };
+
+        // Захист від висячих заголовків
+        if (
+            (b.type === "h1" || b.type === "h2" || b.type === "h3") &&
+            next &&
+            next.type !== "h1" &&
+            next.type !== "h2" &&
+            next.type !== "h3"
+        ) {
+            if (next.type === "p" && next.text.length <= 400) {
+                out.push(
+                    <View key={`grp-${i}`} wrap={false}>
+                        {renderBlock(b, `h-${i}`)}
+                        {renderBlock(next, `n-${i + 1}`)}
+                    </View>
+                );
+                i++;
+                continue;
+            }
+            if ((next.type === "ul" || next.type === "ol") && (next as any).items?.length) {
+                out.push(
+                    <View key={`grp-${i}`} wrap={false}>
+                        {renderBlock(b, `h-${i}`)}
+                        {renderBlock(next, `n-${i + 1}`)}
+                    </View>
+                );
+                i++;
+                continue;
+            }
+            out.push(
+                <View key={`grp-${i}`} wrap={false}>
+                    {renderBlock(b, `h-${i}`)}
+                    <View style={styles.headingSpacer} />
+                </View>
+            );
+            continue;
+        }
+
+        out.push(renderBlock(b, i));
+    }
+
+    return <>{out}</>;
+}
+
+// 🔸 Таблиця
+const Table = ({
+                   headers,
+                   rows,
+                   styles,
+               }: {
+    headers: string[];
+    rows: string[][];
+    styles: PDFStyles;
+}) => (
     <View style={styles.table}>
         <View style={styles.tableRow}>
             {headers.map((h, i) => (
-                <Text key={i} style={styles.tableCellHeader}>
+                <Text key={i} style={styles.tableHeader}>
                     {cleanText(h)}
                 </Text>
             ))}
@@ -87,317 +280,133 @@ const Table = ({ headers, rows, styles }: { headers: string[]; rows: string[][];
     </View>
 );
 
-// ===== РЕНДЕР ДНІВ: AI =====
-function renderTrainingDaysAI(text: string, styles: PDFStyles) {
-    const cleaned = cleanText(text);
-    const sections = cleaned.split(/Day\s*\d+:/i);
-    const days = cleaned.match(/Day\s*\d+:/gi) || [];
-
-    if (!days.length) return <Text style={styles.paragraph}>{cleaned}</Text>;
-
-    return sections.map((content, i) => {
-        if (i === 0) return null;
-        const title = cleanText(days[i - 1].trim());
-        return (
-            <View key={i} style={styles.dayBlock}>
-                <Text style={styles.dayTitle}>{title}</Text>
-                {content
-                    .split(/\n+/)
-                    .filter((line) => line.trim())
-                    .map((line, idx) => {
-                        const l = cleanText(line);
-                        if (l.startsWith("- Focus:"))
-                            return (
-                                <Text key={idx} style={styles.focus}>
-                                    {l.replace("- Focus:", "Focus:").trim()}
-                                </Text>
-                            );
-                        if (l.startsWith("- Tip:"))
-                            return (
-                                <Text key={idx} style={styles.tip}>
-                                    {l.replace("- Tip:", "Tip:").trim()}
-                                </Text>
-                            );
-                        return (
-                            <Text key={idx} style={styles.paragraph}>
-                                {l.trim()}
-                            </Text>
-                        );
-                    })}
-            </View>
-        );
-    });
-}
-
-// ===== РЕНДЕР ДНІВ: COACH (нова структура) =====
-function renderTrainingDaysCoach(text: string, styles: PDFStyles) {
-    const cleaned = cleanText(text);
-    const sections = cleaned.split(/Day\s*\d+:/i);
-    const dayTokens = cleaned.match(/Day\s*\d+:/gi) || [];
-
-    if (!dayTokens.length) return <Text style={styles.paragraph}>{cleaned}</Text>;
-
-    return sections.map((content, i) => {
-        if (i === 0) return null;
-        const token = dayTokens[i - 1];
-        const dayIndex = (token.match(/\d+/)?.[0] || String(i));
-        const lines = content.split(/\n+/).map((l) => cleanText(l)).filter((l) => l.trim());
-
-        const focusLines = lines.filter((l) => l.toLowerCase().startsWith("- focus:"));
-        const tipLines = lines.filter((l) => l.toLowerCase().startsWith("- tip:"));
-        const bulletLines = lines.filter((l) => !l.toLowerCase().startsWith("- focus:") && !l.toLowerCase().startsWith("- tip:"));
-
-        // розкладемо пункти у 2 колонки
-        const mid = Math.ceil(bulletLines.length / 2);
-        const colLeft = bulletLines.slice(0, mid);
-        const colRight = bulletLines.slice(mid);
-
-        return (
-            <View key={i} style={styles.dayCard}>
-                <View style={styles.dayHeader}>
-                    <Text style={styles.dayIndex}>Day {dayIndex}</Text>
-                    <Text style={styles.dayTitle}>Training</Text>
-                </View>
-                <View style={styles.dayBody}>
-                    {focusLines.map((f, idx) => (
-                        <Text key={`f-${idx}`} style={styles.bullet}>{f.replace(/^-\s*focus:/i, "Focus:").trim()}</Text>
-                    ))}
-
-                    <View style={styles.dayRow}>
-                        <View style={styles.dayCol}>
-                            {colLeft.map((b, idx) => (
-                                <Text key={`l-${idx}`} style={styles.bullet}>{b.replace(/^-/, '•').trim()}</Text>
-                            ))}
-                        </View>
-                        <View style={styles.dayCol}>
-                            {colRight.map((b, idx) => (
-                                <Text key={`r-${idx}`} style={styles.bullet}>{b.replace(/^-/, '•').trim()}</Text>
-                            ))}
-                        </View>
-                    </View>
-
-                    {tipLines.length > 0 && (
-                        <View style={styles.noteBox}>
-                            {tipLines.map((t, idx) => (
-                                <Text key={`t-${idx}`} style={styles.paragraph}>{t.replace(/^-\s*tip:/i, "Tip:").trim()}</Text>
-                            ))}
-                        </View>
-                    )}
-                </View>
-            </View>
-        );
-    });
-}
-
-// ===== EXTRAS: AI =====
-function renderExtrasAI(extras: Record<string, string>, styles: PDFStyles, opts: { fullName: string; goal: string }) {
-    const entries = Object.entries(extras);
-    if (entries.length === 0) return null;
+// === AI (автоматичний план)
+function renderBusinessPlanAI(order: UniversalOrderType, styles: PDFStyles) {
+    const { response, extrasData = {}, fields } = order;
+    const businessName = cleanText(fields.businessName || "");
+    const niche = cleanText(fields.niche || "");
+    const budget = cleanText(fields.budget || "");
 
     return (
-        <>
-            {entries.map(([key, val]) => {
-                const preparedTitle =
-                    key.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase()) ||
-                    "Extra Section";
-                const title = cleanText(preparedTitle);
-                const cleaned = cleanText(val);
-
-                if (key === "tracking") {
-                    return (
-                        <Page key={key} style={styles.extrasPage}>
-                            <Text style={styles.extrasTitle}>{`${title} — for ${opts.fullName}`}</Text>
-                            <Text style={styles.extrasMeta}>{`Goal: ${opts.goal}`}</Text>
-                            <View style={styles.extrasContent}>
-                                <Text style={styles.extrasParagraph}>
-                                    {cleanText("Keep track of your workouts, nutrition, and progress daily.")}
-                                </Text>
-                                <Table
-                                    styles={styles}
-                                    headers={["Day", "Workout Type", "Duration", "Notes"]}
-                                    rows={Array.from({ length: 7 }).map((_, i) => [
-                                        `${i + 1}`,
-                                        "",
-                                        "",
-                                        "",
-                                    ])}
-                                />
-                            </View>
-                        </Page>
-                    );
-                }
-
-                if (key === "disciplineTracker") {
-                    return (
-                        <Page key={key} style={styles.extrasPage}>
-                            <Text style={styles.extrasTitle}>{`${title} — for ${opts.fullName}`}</Text>
-                            <Text style={styles.extrasMeta}>{`Goal: ${opts.goal}`}</Text>
-                            <View style={styles.extrasContent}>
-                                <Table
-                                    styles={styles}
-                                    headers={["Day", "Activity", "Duration", "Comment"]}
-                                    rows={Array.from({ length: 14 }).map((_, i) => [
-                                        `${i + 1}`,
-                                        "",
-                                        "",
-                                        "",
-                                    ])}
-                                />
-                                <Text style={styles.extrasParagraph}>
-                                    {cleanText("Stay consistent — mark every completed workout here.")}
-                                </Text>
-                            </View>
-                        </Page>
-                    );
-                }
-
-                return (
-                    <Page key={key} style={styles.extrasPage}>
-                        <Text style={styles.extrasTitle}>{`${title} — for ${opts.fullName}`}</Text>
-                        <Text style={styles.extrasMeta}>{`Goal: ${opts.goal}`}</Text>
-                        <View style={styles.extrasContent}>
-                            {renderExtrasContent(cleaned, styles)}
-                        </View>
-                    </Page>
-                );
-            })}
-        </>
-    );
-}
-
-// ===== EXTRAS: COACH (нова структура, без пустих правих колонок) =====
-function renderExtrasCoach(extras: Record<string, string>, styles: PDFStyles, opts: { fullName: string; goal: string }) {
-    const entries = Object.entries(extras);
-    if (entries.length === 0) return null;
-
-    return (
-        <>
-            {entries.map(([key, val]) => {
-                const preparedTitle =
-                    key.replace(/([A-Z])/g, " $1").replace(/^./, (s) => s.toUpperCase()) ||
-                    "Extra Section";
-                const title = cleanText(preparedTitle);
-                const cleaned = cleanText(val);
-
-                if (key === "tracking") {
-                    return (
-                        <Page key={key} style={styles.extrasPage}>
-                            <Text style={styles.extrasTitle}>{`${title} — for ${opts.fullName}`}</Text>
-                            <Text style={styles.extrasMeta}>{`Goal: ${opts.goal}`}</Text>
-                            <View style={styles.extrasContent}>
-                                <Table
-                                    styles={styles}
-                                    headers={["Day", "Workout Type", "Duration", "Notes"]}
-                                    rows={Array.from({ length: 7 }).map((_, i) => [
-                                        `${i + 1}`,
-                                        "",
-                                        "",
-                                        "",
-                                    ])}
-                                />
-                            </View>
-                        </Page>
-                    );
-                }
-
-                if (key === "disciplineTracker") {
-                    return (
-                        <Page key={key} style={styles.extrasPage}>
-                            <Text style={styles.extrasTitle}>{`${title} — for ${opts.fullName}`}</Text>
-                            <Text style={styles.extrasMeta}>{`Goal: ${opts.goal}`}</Text>
-                            <View style={styles.extrasContent}>
-                                <Table
-                                    styles={styles}
-                                    headers={["Day", "Activity", "Duration", "Comment"]}
-                                    rows={Array.from({ length: 14 }).map((_, i) => [
-                                        `${i + 1}`,
-                                        "",
-                                        "",
-                                        "",
-                                    ])}
-                                />
-                            </View>
-                        </Page>
-                    );
-                }
-
-                // Коуч: верстаємо у один стовпчик з логічними заголовками
-                return (
-                    <Page key={key} style={styles.extrasPage}>
-                        <Text style={styles.extrasTitle}>{`${title} — for ${opts.fullName}`}</Text>
-                        <Text style={styles.extrasMeta}>{`Goal: ${opts.goal}`}</Text>
-                        <View style={styles.extrasContent}>
-                            {renderExtrasContent(cleaned, styles)}
-                        </View>
-                    </Page>
-                );
-            })}
-        </>
-    );
-}
-
-// 🧾 Головна функція
-export async function downloadTrainingPDF(order: UniversalOrderType) {
-    const main = order.response || "";
-    const extras = order.extrasData || {};
-
-    const isCoach = order.planType === "reviewed";
-    const styles: PDFStyles = isCoach ? pdfStylesCoach : pdfStylesAI;
-
-    const fullName = cleanText(order.fields.fullName || "");
-    const goal = cleanText(order.fields.goal || "");
-    const fitnessLevel = cleanText(order.fields.fitnessLevel || "");
-    const days = String(order.fields.days ?? "");
-
-    const doc = (
         <Document>
-            {/* MAIN PLAN */}
-            <Page style={styles.page}>
-                {/* Header: різний для AI/Coach */}
-                {isCoach ? (
-                    <View style={styles.header}>
-                        <View style={styles.headerRow}>
-                            <Text style={styles.title}>Training Plan — {fullName}</Text>
-                        </View>
-                        <Text style={styles.meta}>
-                            Goal: {goal} | Level: {fitnessLevel} | Duration: {days} days
-                        </Text>
-                    </View>
-                ) : (
-                    <View style={styles.header}>
-                        <Text style={styles.title}>Training Plan — {fullName}</Text>
-                        <Text style={styles.meta}>
-                            Goal: {goal} | Level: {fitnessLevel} | Duration: {days} days
-                        </Text>
-                    </View>
-                )}
-
-                <Text style={styles.sectionTitle}>Main Plan</Text>
-                {isCoach ? renderTrainingDaysCoach(main, styles) : renderTrainingDaysAI(main, styles)}
-            </Page>
-
-            {/* EXTRAS */}
-            {isCoach ? renderExtrasCoach(extras, styles, { fullName, goal }) : renderExtrasAI(extras, styles, { fullName, goal })}
-
-            {/* FINAL MOTIVATION */}
-            <Page style={styles.page}>
-                <View style={styles.motivationBlock}>
-                    <Text style={styles.motivationText}>{cleanText("You’ve Got This")}</Text>
-                    <Text style={styles.motivationQuote}>
-                        {cleanText("Progress is built through consistency. One day, one workout, one win at a time.")}
+            <Page style={styles.pageAI}>
+                <View style={styles.headerAI}>
+                    <Text style={styles.titleAI}>🤖 AI-Generated Business Plan</Text>
+                    <Text style={styles.subtitleAI}>{businessName}</Text>
+                    <Text style={styles.metaAI}>
+                        Niche: {niche} • Budget: {budget}
                     </Text>
+                </View>
+
+                <View style={styles.dividerAI} />
+
+                <View style={styles.infoCardAI}>
+                    <Text style={styles.infoCardTitle}>AI Executive Summary</Text>
+                    {renderExtrasContent(response, styles)}
+                </View>
+
+                {Object.entries(extrasData).map(([key, val], idx) => {
+                    const title = cleanTitle(key.replace(/([A-Z])/g, " $1")).replace(/^./, s => s.toUpperCase());
+                    return (
+                        <View key={key} style={styles.sectionAI}>
+                            <Text style={styles.sectionHeaderAI}>
+                                💡 {title}
+                            </Text>
+                            <View style={styles.aiInsightBox}>
+                                <Text style={styles.aiInsightLabel}>Generated Insight:</Text>
+                                {renderExtrasContent(val as string, styles)}
+                            </View>
+                            {idx % 2 === 0 && (
+                                <View style={styles.aiHintBox}>
+                                    <Text style={styles.aiHintText}>
+                                        🔍 Recommendation: review this section for market opportunities or process
+                                        optimization based on AI metrics.
+                                    </Text>
+                                </View>
+                            )}
+                        </View>
+                    );
+                })}
+
+                <View style={styles.footerAI}>
+                    <Text style={styles.footerTextAI}>
+                        Generated automatically by OpenShip AI © {new Date().getFullYear()}
+                    </Text>
+                    <Text style={styles.footerSubAI}>⚙️ Confidence Level: 92%</Text>
                 </View>
             </Page>
         </Document>
     );
+}
+
+// === Reviewed (людський план)
+function renderBusinessPlanReviewed(order: UniversalOrderType, styles: PDFStyles) {
+    const { response, extrasData = {}, fields } = order;
+    const businessName = cleanText(fields.businessName || "");
+    const niche = cleanText(fields.niche || "");
+    const budget = cleanText(fields.budget || "");
+    const owner = cleanText(fields.owner || "");
+
+    return (
+        <Document>
+            <Page style={styles.page}>
+                <View style={styles.header}>
+                    <Text style={styles.title}>Business Plan — {businessName}</Text>
+                    <Text style={styles.meta}>
+                        Niche: {niche} | Budget: {budget}
+                    </Text>
+                </View>
+
+                <Text style={styles.sectionTitle}>Executive Summary</Text>
+                {renderExtrasContent(response, styles)}
+
+                <Text style={styles.sectionTitle}>Financial Projection</Text>
+                <Table
+                    styles={styles}
+                    headers={["Year", "Revenue", "Expenses", "Profit"]}
+                    rows={[
+                        ["2025", "$120,000", "$70,000", "$50,000"],
+                        ["2026", "$180,000", "$95,000", "$85,000"],
+                        ["2027", "$250,000", "$130,000", "$120,000"],
+                    ]}
+                />
+
+                {Object.entries(extrasData).map(([key, val]) => {
+                    const title = cleanTitle(key.replace(/([A-Z])/g, " $1")).replace(/^./, s => s.toUpperCase());
+                    return (
+                        <View key={key}>
+                            <Text style={styles.sectionTitle}>
+                                {title}
+                            </Text>
+                            {renderExtrasContent(val as string, styles)}
+                        </View>
+                    );
+                })}
+
+                <View style={styles.footer}>
+                    <Text style={styles.footerText}>Reviewed by: {owner || "Business Specialist"}</Text>
+                </View>
+            </Page>
+        </Document>
+    );
+}
+
+// === Основна функція генерації PDF
+export async function downloadBusinessPDF(order: UniversalOrderType) {
+    const isReviewed = order.planType === "reviewed";
+    const businessName = cleanText(order.fields.businessName || "Business");
+
+    const doc = isReviewed
+        ? renderBusinessPlanReviewed(order, styles)
+        : renderBusinessPlanAI(order, styles);
 
     const blob = await pdf(doc).toBlob();
     const url = URL.createObjectURL(blob);
     const a = document.createElement("a");
     a.href = url;
-    a.download = `training-plan-${fullName}.pdf`;
+    a.download = `business-plan-${businessName}.pdf`;
     a.click();
     URL.revokeObjectURL(url);
 }
 
-export { downloadTrainingPDF as downloadUniversalPDF };
+export { downloadBusinessPDF as downloadUniversalPDF };

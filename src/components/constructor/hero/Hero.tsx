@@ -8,6 +8,7 @@ import Image from "next/image";
 import { media } from "@/resources/media";
 import type { StaticImageData } from "next/image";
 import Link from "next/link";
+import TrustBadge from "@/components/features/trust-badge/TrustBadge";
 
 interface HeroSectionProps {
     title: string;
@@ -17,6 +18,7 @@ interface HeroSectionProps {
     secondaryCta?: { text: string; link: string };
     image?: string;
     align?: "left" | "right";
+    showTrustBadge?: boolean; // ➕ нове поле
 }
 
 const HeroSection: React.FC<HeroSectionProps> = ({
@@ -27,6 +29,7 @@ const HeroSection: React.FC<HeroSectionProps> = ({
                                                      secondaryCta,
                                                      image,
                                                      align = "right",
+                                                     showTrustBadge = false, // ➕ значення за замовчуванням
                                                  }) => {
     const bgImage = image
         ? (media as Record<string, string | StaticImageData>)[image]
@@ -58,34 +61,39 @@ const HeroSection: React.FC<HeroSectionProps> = ({
 
                     <p className={styles.hero__desc}>{description}</p>
 
-                    <div className={styles.hero__actions}>
-                        {primaryCta && (
-                            <Link href={primaryCta.link} className={styles.hero__link}>
-                                <ButtonUI
-                                    variant="solid"
-                                    color="secondary"
-                                    size="lg"
-                                    hoverEffect="none"
-                                    hoverColor="primary"
-                                >
-                                    {primaryCta.text}
-                                </ButtonUI>
-                            </Link>
-                        )}
+                    <div className={styles.hero__spacer}>
+                        <div className={styles.hero__actions}>
+                            {primaryCta && (
+                                <Link href={primaryCta.link} className={styles.hero__link}>
+                                    <ButtonUI
+                                        variant="solid"
+                                        color="secondary"
+                                        size="lg"
+                                        hoverEffect="none"
+                                        hoverColor="primary"
+                                    >
+                                        {primaryCta.text}
+                                    </ButtonUI>
+                                </Link>
+                            )}
 
-                        {secondaryCta && (
-                            <Link href={secondaryCta.link} className={styles.hero__link}>
-                                <ButtonUI
-                                    variant="outlined"
-                                    color="primary"
-                                    size="lg"
-                                    hoverEffect="none"
-                                    hoverTextColor="secondary"
-                                >
-                                    {secondaryCta.text}
-                                </ButtonUI>
-                            </Link>
-                        )}
+                            {secondaryCta && (
+                                <Link href={secondaryCta.link} className={styles.hero__link}>
+                                    <ButtonUI
+                                        variant="outlined"
+                                        color="primary"
+                                        size="lg"
+                                        hoverEffect="none"
+                                        hoverTextColor="secondary"
+                                    >
+                                        {secondaryCta.text}
+                                    </ButtonUI>
+                                </Link>
+                            )}
+                        </div>
+
+                        {/* ➕ показуємо бейдж тільки якщо вказано showTrustBadge */}
+                        {showTrustBadge && <TrustBadge />}
                     </div>
                 </motion.div>
 

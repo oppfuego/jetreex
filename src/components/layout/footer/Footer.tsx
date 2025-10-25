@@ -289,7 +289,7 @@ const Footer: React.FC = () => {
                                 <Image
                                     src={logo.src}
                                     alt={logo.alt}
-                                    width={0}
+                                    width={200}
                                     height={0}
                                     sizes="120px"
                                     style={{ width: "var(--footer-logo-w)", height: "var(--footer-logo-h)" }}
@@ -312,16 +312,7 @@ const Footer: React.FC = () => {
                         </div>
 
                         {/* Payments */}
-                        <div className={styles["footer__corporate-col"]}>
-                            <div className={styles["footer__column-title"]}>Accepted Payments</div>
-                            <div className={styles.paymentsContent}>
-                                <FaCcVisa className={styles.paymentIcon} />
-                                <FaCcMastercard className={styles.paymentIcon} />
-                                <FaCcAmex className={styles.paymentIcon} />
-                                <FaGooglePay className={styles.paymentIcon} />
-                                <FaApplePay className={styles.paymentIcon} />
-                            </div>
-                        </div>
+                        <PaymentMethods/>
                     </div>
 
                     {/* Нижня частина */}

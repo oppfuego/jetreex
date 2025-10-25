@@ -1,11 +1,13 @@
 "use client";
 import React from "react";
 import styles from "./HighlightStrip.module.scss";
+import { media as mediaMap } from "@/resources/media";
 
 interface HighlightItem {
-    icon: string;     // шлях до іконки або emoji
-    text: string;     // текст
-    color?: string;   // фон іконки
+    image?: string;  // ключ з media.ts
+    icon?: string;   // emoji або svg
+    text?: string;
+    subtext?: string;
 }
 
 interface HighlightStripProps {
@@ -13,31 +15,66 @@ interface HighlightStripProps {
 }
 
 const HighlightStrip: React.FC<HighlightStripProps> = ({ items }) => {
-    // дублюємо масив для безкінечного скролу
-    const repeatedItems = [...items, ...items];
+    const doubled = [...items, ...items];
+
+    const resolveMedia = (key?: string): string | undefined => {
+        if (!key) return undefined;
+        const v = (mediaMap as Record<string, any>)[key];
+        if (!v && process.env.NODE_ENV !== "production") {
+            console.warn(`media asset not found: ${key}`);
+        }
+
+        if (typeof v === "object" && v?.src) return v.src;
+
+        if (typeof v === "string") return v;
+
+        return undefined;
+    };
+
 
     return (
-        <div className={styles.strip}>
-            <div className={styles.track}>
-                {repeatedItems.map((item, index) => (
-                    <div key={index} className={styles.card}>
-                        <div
-                            className={styles.iconBox}
-                            style={{
-                                background: item.color || "linear-gradient(135deg, #e0f7e9, #c0f2d1)",
-                            }}
-                        >
-                            {item.icon.startsWith("/") ? (
-                                <img src={item.icon} alt={item.text} className={styles.iconImg} />
-                            ) : (
-                                <span className={styles.iconEmoji}>{item.icon}</span>
-                            )}
-                        </div>
-                        <p className={styles.text}>{item.text}</p>
-                    </div>
-                ))}
+        <section className={styles.strip}>
+            <div className={styles.marquee}>
+                <div className={styles.track}>
+                    {doubled.map((item, i) => {
+                        const resolvedImage = resolveMedia(item.image);
+                        return (
+                            <div key={i} className={styles.item}>
+                                {/* 🖼️ Зображення або іконка */}
+                                {(resolvedImage || item.icon) && (
+                                    <div className={styles.iconBox}>
+                                        {resolvedImage ? (
+                                            <img
+                                                src={resolvedImage}
+                                                alt={item.text || "logo"}
+                                                className={styles.logo}
+                                                loading="lazy"
+                                            />
+                                        ) : (
+                                            <span className={styles.emoji}>{item.icon}</span>
+                                        )}
+                                    </div>
+                                )}
+
+                                {/* 🧾 Текст */}
+                                {(item.text || item.subtext) && (
+                                    <div className={styles.textBlock}>
+                                        {item.text && <p className={styles.text}>{item.text}</p>}
+                                        {item.subtext && (
+                                            <p className={styles.subtext}>{item.subtext}</p>
+                                        )}
+                                    </div>
+                                )}
+                            </div>
+                        );
+                    })}
+                </div>
             </div>
-        </div>
+
+            {/* Градієнтні тіні */}
+            <div className={styles.fadeLeft}></div>
+            <div className={styles.fadeRight}></div>
+        </section>
     );
 };
 

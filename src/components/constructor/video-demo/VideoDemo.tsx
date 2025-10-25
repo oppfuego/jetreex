@@ -45,6 +45,9 @@ const VideoDemo: React.FC<Props> = ({ title, description, video }) => {
                 <Text
                     title={title}
                     description={description}
+                    centerTitle={true}
+                    centerDescription={true}
+
                 />
                 <Media
                     type="video"

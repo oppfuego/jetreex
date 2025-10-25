@@ -1,396 +1,236 @@
 import { StyleSheet } from "@react-pdf/renderer";
 
-export const theme = {
-    primary: "#2563EB",
-    secondary: "#EFF6FF",
-    accent: "#1E3A8A",
+const biz = {
+    primary: "#1F2937",
+    accent: "#2563EB",
+    secondary: "#F3F4F6",
+    border: "#D1D5DB",
     text: "#111827",
     gray: "#6B7280",
-    light: "#F9FAFB",
-    white: "#FFFFFF",
+    light: "#FFFFFF",
 };
 
-// AI стиль (поточний)
-export const pdfStylesAI = StyleSheet.create({
+export const pdfStylesBusiness = StyleSheet.create({
     page: {
-        padding: 40,
-        fontSize: 12,
+        padding: 50,
+        backgroundColor: biz.light,
         fontFamily: "Helvetica",
-        backgroundColor: theme.white,
+        fontSize: 11.5,
         lineHeight: 1.6,
     },
     header: {
-        borderBottom: `2pt solid ${theme.primary}`,
+        borderBottomWidth: 2,
+        borderBottomColor: biz.accent,
+        paddingBottom: 10,
         marginBottom: 25,
-        paddingBottom: 6,
     },
     title: {
         fontSize: 22,
+        color: biz.primary,
         fontWeight: "bold",
-        color: theme.primary,
-        marginBottom: 4,
+        textTransform: "uppercase",
     },
     meta: {
-        fontSize: 11,
-        color: theme.gray,
+        fontSize: 10,
+        color: biz.gray,
+        marginTop: 5,
     },
-    sectionTitle: {
+    mainHeading: {
         fontSize: 16,
+        color: biz.primary,
         fontWeight: "bold",
-        color: theme.primary,
         textTransform: "uppercase",
         marginTop: 18,
-        marginBottom: 10,
-        borderBottom: `1pt solid ${theme.primary}33`,
+        marginBottom: 6,
+    },
+    sectionTitle: {
+        fontSize: 14,
+        color: biz.accent,
+        fontWeight: "bold",
+        textTransform: "uppercase",
+        borderBottomWidth: 1,
+        borderBottomColor: biz.border,
         paddingBottom: 4,
+        marginTop: 18,
+        marginBottom: 8,
     },
     paragraph: {
-        fontSize: 12,
-        color: theme.text,
+        fontSize: 11.3,
+        color: biz.text,
         marginBottom: 6,
+        textAlign: "justify",
+        lineHeight: 1.65,
+    },
+    boldParagraph: {
+        fontSize: 11.3,
+        color: biz.primary,
+        fontWeight: "bold",
+        marginBottom: 6,
+    },
+    // Инлайн-жирный для вложенного <Text>
+    boldInline: {
+        fontWeight: "bold",
+        color: biz.primary,
+    },
+    // Небольшой вертикальный отступ после заголовков
+    headingSpacer: {
+        height: 6,
+    },
+    bulletItem: {
+        fontSize: 11.3,
+        color: biz.text,
+        marginBottom: 4,
+        paddingLeft: 10,
+        lineHeight: 1.5,
         textAlign: "left",
     },
-    dayBlock: {
-        backgroundColor: theme.secondary,
-        borderLeft: `4pt solid ${theme.primary}`,
-        borderRadius: 6,
-        padding: 10,
-        marginBottom: 12,
-    },
-    dayTitle: {
-        fontSize: 14,
+    infoTitle: {
+        fontSize: 12,
+        color: biz.primary,
         fontWeight: "bold",
-        color: theme.accent,
+        marginTop: 10,
         marginBottom: 4,
-    },
-    focus: {
-        fontWeight: "bold",
-        color: theme.primary,
-        marginTop: 3,
-        marginBottom: 2,
-    },
-    tip: {
-        fontStyle: "italic",
-        color: theme.gray,
-        fontSize: 11,
-        marginTop: 4,
-    },
-    divider: {
-        height: 1,
-        backgroundColor: `${theme.primary}22`,
-        marginVertical: 10,
     },
     table: {
         width: "100%",
         flexDirection: "column",
-        borderStyle: "solid",
         borderWidth: 1,
-        borderColor: theme.primary,
+        borderColor: biz.border,
+        borderRadius: 4,
+        overflow: "hidden",
         marginVertical: 8,
     },
     tableRow: {
         flexDirection: "row",
     },
-    tableCellHeader: {
+    tableHeader: {
         flex: 1,
-        backgroundColor: theme.primary,
-        color: theme.white,
-        fontSize: 11,
+        backgroundColor: biz.primary,
+        color: biz.light,
         fontWeight: "bold",
-        padding: 4,
-        borderRight: `1pt solid ${theme.white}`,
+        fontSize: 10.5,
+        padding: 6,
+        textAlign: "center",
     },
     tableCell: {
         flex: 1,
-        padding: 4,
-        borderRight: `1pt solid ${theme.primary}33`,
-        fontSize: 11,
-        color: theme.text,
+        padding: 6,
+        fontSize: 10.5,
+        color: biz.text,
+        borderRightWidth: 1,
+        borderRightColor: biz.border,
     },
-    extrasPage: {
-        padding: 40,
-        backgroundColor: theme.light,
-    },
-    extrasTitle: {
-        fontSize: 18,
-        fontWeight: "bold",
-        color: theme.primary,
-        textTransform: "uppercase",
-        marginBottom: 6,
-    },
-    extrasMeta: {
-        fontSize: 10,
-        color: theme.gray,
-        marginBottom: 10,
-    },
-    extrasContent: {
-        backgroundColor: theme.white,
-        borderRadius: 8,
-        borderWidth: 1,
-        borderColor: `${theme.primary}22`,
-        padding: 16,
-        marginTop: 4,
-    },
-    extrasHeading: {
-        fontSize: 13,
-        fontWeight: "bold",
-        color: theme.accent,
-        marginTop: 8,
-        marginBottom: 4,
-    },
-    extrasParagraph: {
-        fontSize: 12,
-        color: theme.text,
-        marginBottom: 10,
-        textAlign: "left",
-        lineHeight: 1.8,
-        paddingLeft: 8,
-    },
-    motivationBlock: {
+    footer: {
         marginTop: 30,
-        padding: 20,
-        backgroundColor: theme.primary,
-        borderRadius: 8,
-        textAlign: "center",
-    },
-    motivationText: {
-        color: theme.white,
-        fontSize: 14,
-        fontWeight: "bold",
-        marginBottom: 4,
-    },
-    motivationQuote: {
-        color: theme.white,
-        fontSize: 12,
-        fontStyle: "italic",
-    },
-});
-
-// Coach стиль (новий візуал і структура)
-const coach = {
-    primary: "#0F766E", // teal
-    secondary: "#ECFDF5",
-    accent: "#115E59",
-    text: "#0B0F0E",
-    gray: "#5B6361",
-    light: "#F2FBF8",
-    white: "#FFFFFF",
-};
-
-export const pdfStylesCoach = StyleSheet.create({
-    page: {
-        padding: 48,
-        fontSize: 12,
-        fontFamily: "Helvetica",
-        backgroundColor: coach.light,
-        lineHeight: 1.6,
-    },
-    header: {
-        backgroundColor: coach.white,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: `${coach.primary}26`,
-        padding: 14,
-        marginBottom: 22,
-    },
-    headerRow: {
-        flexDirection: "row",
-        justifyContent: "space-between",
-        alignItems: "center",
-    },
-    title: {
-        fontSize: 20,
-        fontWeight: "bold",
-        color: coach.primary,
-    },
-    meta: {
-        fontSize: 10,
-        color: coach.gray,
-        marginTop: 4,
-    },
-    // секції
-    sectionTitle: {
-        fontSize: 14,
-        fontWeight: "bold",
-        color: coach.accent,
-        textTransform: "uppercase",
-        marginTop: 12,
-        marginBottom: 8,
-    },
-    paragraph: {
-        fontSize: 12,
-        color: coach.text,
-        marginBottom: 6,
-        textAlign: "left",
-    },
-
-    // День як карточка з шапкою
-    dayCard: {
-        backgroundColor: coach.white,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: `${coach.primary}26`,
-        marginBottom: 12,
-        overflow: "hidden",
-    },
-    dayHeader: {
-        backgroundColor: coach.primary,
-        paddingVertical: 6,
-        paddingHorizontal: 10,
-        flexDirection: "row",
-        alignItems: "center",
-    },
-    dayIndex: {
-        color: coach.white,
-        fontSize: 12,
-        fontWeight: "bold",
-        marginRight: 8,
-    },
-    dayTitle: {
-        color: coach.white,
-        fontSize: 12,
-        fontWeight: "bold",
-    },
-    dayBody: {
-        padding: 10,
-    },
-    dayRow: {
-        flexDirection: "row",
-        gap: 8,
-    },
-    dayCol: {
-        flex: 1,
-    },
-    bullet: {
-        fontSize: 11,
-        color: coach.text,
-        marginBottom: 4,
-        paddingLeft: 6,
-        borderLeftWidth: 2,
-        borderLeftColor: `${coach.primary}33`,
-    },
-    noteBox: {
-        borderWidth: 1,
-        borderColor: `${coach.primary}26`,
-        borderRadius: 6,
-        padding: 8,
-        minHeight: 60,
-        backgroundColor: `${coach.primary}08`,
-    },
-
-    // таблиці
-    table: {
-        width: "100%",
-        flexDirection: "column",
-        borderStyle: "solid",
-        borderWidth: 1,
-        borderColor: coach.primary,
-        marginVertical: 8,
-        borderRadius: 6,
-        overflow: "hidden",
-    },
-    tableRow: { flexDirection: "row" },
-    tableCellHeader: {
-        flex: 1,
-        backgroundColor: coach.primary,
-        color: coach.white,
-        fontSize: 11,
-        fontWeight: "bold",
-        padding: 6,
-        borderRight: `1pt solid ${coach.white}`,
-    },
-    tableCell: {
-        flex: 1,
-        padding: 6,
-        borderRight: `1pt solid ${coach.primary}33`,
-        fontSize: 11,
-        color: coach.text,
-    },
-
-    // EXTRAS для коуча
-    extrasPage: {
-        padding: 48,
-        backgroundColor: coach.light,
-    },
-    extrasTitle: {
-        fontSize: 16,
-        fontWeight: "bold",
-        color: coach.accent,
-        textTransform: "uppercase",
-        marginBottom: 6,
-    },
-    extrasMeta: {
-        fontSize: 10,
-        color: coach.gray,
-        marginBottom: 10,
-    },
-    extrasContent: {
-        backgroundColor: coach.white,
-        borderRadius: 10,
-        borderWidth: 1,
-        borderColor: `${coach.primary}26`,
-        padding: 16,
-    },
-    extrasHeading: {
-        fontSize: 12,
-        fontWeight: "bold",
-        color: coach.accent,
-        marginTop: 8,
-        marginBottom: 4,
-        borderLeftWidth: 2,
-        borderLeftColor: `${coach.primary}66`,
-        paddingLeft: 6,
-    },
-    extrasParagraph: {
-        fontSize: 12,
-        color: coach.text,
-        marginBottom: 10,
-        textAlign: "left",
-        lineHeight: 1.8,
-        paddingLeft: 8,
-        borderLeftWidth: 2,
-        borderLeftColor: `${coach.primary}1A`,
-    },
-    extrasGridRow: {
-        flexDirection: "row",
-        gap: 8,
-        marginBottom: 8,
-    },
-    extrasGridCell: {
-        flex: 1,
-        borderWidth: 1,
-        borderColor: `${coach.primary}26`,
-        borderRadius: 6,
-        padding: 8,
-        minHeight: 52,
-        backgroundColor: `${coach.primary}08`,
-    },
-    signatureBlock: {
-        marginTop: 12,
         borderTopWidth: 1,
-        borderTopColor: `${coach.primary}26`,
-        paddingTop: 8,
-        color: coach.gray,
-        fontSize: 10,
+        borderTopColor: biz.border,
+        paddingTop: 10,
     },
-
-    // фінал
-    motivationBlock: {
-        marginTop: 24,
-        padding: 16,
-        backgroundColor: coach.primary,
-        borderRadius: 10,
+    footerText: {
+        fontSize: 10,
+        color: biz.gray,
         textAlign: "center",
     },
-    motivationText: {
-        color: coach.white,
-        fontSize: 14,
-        fontWeight: "bold",
-        marginBottom: 4,
-    },
-    motivationQuote: {
-        color: coach.white,
-        fontSize: 12,
-        fontStyle: "italic",
-    },
+        // ...існуючі стилі Reviewed
+
+        /* === AI Version Styling === */
+        pageAI: {
+            padding: 50,
+            backgroundColor: "#F9FAFB",
+            fontFamily: "Helvetica",
+        },
+        headerAI: {
+            backgroundColor: "#111827",
+            color: "#F9FAFB",
+            borderRadius: 6,
+            padding: 20,
+            marginBottom: 20,
+        },
+        titleAI: {
+            fontSize: 20,
+            fontWeight: "bold",
+            color: "#60A5FA",
+            textTransform: "uppercase",
+        },
+        subtitleAI: {
+            fontSize: 16,
+            color: "#E5E7EB",
+            marginTop: 4,
+        },
+        metaAI: {
+            fontSize: 10,
+            color: "#9CA3AF",
+            marginTop: 2,
+        },
+        dividerAI: {
+            borderBottomWidth: 1.5,
+            borderBottomColor: "#60A5FA",
+            marginVertical: 12,
+        },
+        infoCardAI: {
+            backgroundColor: "#E0F2FE",
+            borderLeftWidth: 4,
+            borderLeftColor: "#2563EB",
+            padding: 10,
+            borderRadius: 6,
+            marginBottom: 20,
+        },
+        infoCardTitle: {
+            fontSize: 14,
+            fontWeight: "bold",
+            color: "#1E3A8A",
+            marginBottom: 6,
+        },
+        sectionAI: {
+            marginBottom: 20,
+        },
+        sectionHeaderAI: {
+            fontSize: 13,
+            color: "#1E40AF",
+            fontWeight: "bold",
+            textTransform: "uppercase",
+            borderBottomWidth: 1,
+            borderBottomColor: "#93C5FD",
+            paddingBottom: 4,
+            marginBottom: 6,
+        },
+        aiInsightBox: {
+            backgroundColor: "#F0F9FF",
+            borderColor: "#BFDBFE",
+            borderWidth: 1,
+            borderRadius: 5,
+            padding: 8,
+        },
+        aiInsightLabel: {
+            color: "#3B82F6",
+            fontSize: 10,
+            marginBottom: 3,
+        },
+        aiHintBox: {
+            marginTop: 6,
+            backgroundColor: "#DBEAFE",
+            padding: 6,
+            borderRadius: 4,
+        },
+        aiHintText: {
+            fontSize: 9.5,
+            color: "#1E3A8A",
+            fontStyle: "italic",
+        },
+        footerAI: {
+            marginTop: 20,
+            borderTopWidth: 1,
+            borderTopColor: "#93C5FD",
+            paddingTop: 8,
+            textAlign: "center",
+        },
+        footerTextAI: {
+            fontSize: 10,
+            color: "#2563EB",
+        },
+        footerSubAI: {
+            fontSize: 8,
+            color: "#9CA3AF",
+        },
+
 });

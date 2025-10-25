@@ -1,9 +1,9 @@
-import logo from "@/assets/logo/logo.svg";
+import logo from "@/assets/logo/logo.png";
 import logo_black from "@/assets/logo/logo-black.svg";
 import image1 from "@/assets/images/image1.jpg";
 import image2 from "@/assets/images/image2.jpg";
-import image3 from "@/assets/images/image3.jpg";
-import image4 from "@/assets/images/image4.jpg";
+import image3 from "@/assets/images/image3.png";
+import image4 from "@/assets/images/image4.png";
 import image5 from "@/assets/images/image5.jpg";
 import image6 from "@/assets/images/image6.jpg";
 import image7 from "@/assets/images/image7.jpg";
@@ -32,9 +32,22 @@ import coach2 from "@/assets/images/coach2.jpg";
 import coach3 from "@/assets/images/coach3.jpg";
 import coach4 from "@/assets/images/coach4.jpg";
 
+import logo1 from "@/assets/images/logo1.png";
+import logo2 from "@/assets/images/logo5.svg";
+import logo3 from "@/assets/images/logo3.png";
+import logo4 from "@/assets/images/logo4.png";
+import logo5 from "@/assets/images/logo5.svg";
+
 export const media = {
     logo: logo,
     logo_black: logo_black,
+
+    logo1: logo1,
+    logo2: logo2,
+    logo3: logo3,
+    logo4: logo4,
+    logo5: logo5,
+
     image1: image1,
     image2: image2,
     image3: image3,
@@ -70,6 +83,7 @@ export const media = {
     CVMakerDemo: '/videos/cv-maker-demo.mp4',
     coachWork: '/videos/coach-work.mp4',
     fitPlannerDemo: '/videos/fit-planner-demo.mp4',
+    planDemo: '/videos/plan-demo.mp4',
 
 }
 

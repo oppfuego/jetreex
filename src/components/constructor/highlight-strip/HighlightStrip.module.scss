@@ -1,64 +1,106 @@
 .strip {
-  width: 100%;
-  overflow: hidden;
-  background: #ffffff;
-  padding: 1rem 0;
   position: relative;
-  border-radius: 16px;
-  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.05);
+  overflow: hidden;
+  width: 100%;
+  background-color: var(--background-dark);
+  color: var(--text-inverse);
+  padding: 1.25rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.08);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.marquee {
+  display: flex;
+  overflow: hidden;
+  width: 100%;
 }
 
 .track {
   display: flex;
   align-items: center;
-  gap: 1.5rem;
+  gap: 3rem;
   width: max-content;
-  animation: scroll 40s linear infinite;
+  animation: scroll 45s linear infinite;
 }
 
-.card {
+.item {
   display: flex;
   align-items: center;
-  gap: 1rem;
-  background: #fff;
-  border-radius: 14px;
-  padding: 1rem 1.5rem;
-  min-width: 320px;
-  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.05);
+  gap: 1.25rem;
   flex-shrink: 0;
-  transition: transform 0.25s ease, box-shadow 0.25s ease;
+  opacity: 0.9;
+  min-width: 200px;
+  transition: opacity 0.3s ease, transform 0.3s ease;
 
   &:hover {
-    transform: translateY(-3px);
-    box-shadow: 0 6px 18px rgba(0, 0, 0, 0.08);
+    opacity: 1;
+    transform: translateY(-2px);
   }
 }
 
 .iconBox {
-  width: 64px;
-  height: 64px;
-  border-radius: 12px;
   display: flex;
   align-items: center;
   justify-content: center;
+  width: 54px;
+  height: 54px;
+  border-radius: 14px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.12);
   flex-shrink: 0;
+
+  .emoji {
+    font-size: 1.8rem;
+  }
+
+  .logo {
+    width: 40px;
+    height: 40px;
+    object-fit: contain;
+    opacity: 0.9;
+    filter: brightness(0) invert(1);
+  }
 }
 
-.iconImg {
-  width: 42px;
-  height: 42px;
-  object-fit: contain;
-}
-
-.iconEmoji {
-  font-size: 1.8rem;
+.textBlock {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  gap: 0.2rem;
 }
 
 .text {
-  font-size: 1.05rem;
+  font-size: 1rem;
   font-weight: 600;
-  color: #0f172a;
+  color: var(--quaternary-color);
+  letter-spacing: -0.01em;
   line-height: 1.3;
+}
+
+.subtext {
+  font-size: 0.85rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-weight: 400;
+}
+
+.fadeLeft,
+.fadeRight {
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  width: 10%;
+  pointer-events: none;
+  z-index: 2;
+}
+
+.fadeLeft {
+  left: 0;
+  background: linear-gradient(90deg, var(--background-dark) 0%, transparent 100%);
+}
+
+.fadeRight {
+  right: 0;
+  background: linear-gradient(270deg, var(--background-dark) 0%, transparent 100%);
 }
 
 @keyframes scroll {

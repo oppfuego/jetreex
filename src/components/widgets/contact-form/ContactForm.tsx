@@ -1,12 +1,12 @@
 "use client";
+
 import React, { useState } from "react";
-import { Formik, Form, Field, FormikHelpers, FieldProps } from "formik";
-import { Input, Textarea } from "@mui/joy";
+import { Formik, Form, Field, FormikHelpers } from "formik";
 import { motion } from "framer-motion";
 import ButtonUI from "@/components/ui/button/ButtonUI";
 import { validationSchema, initialValues, sendContactRequest } from "./schema";
 import { useAlert } from "@/context/AlertContext";
-import { FaMapMarkerAlt, FaEnvelope, FaPhone } from "react-icons/fa";
+import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
 import { COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_PHONE } from "@/resources/constants";
 import styles from "./ContactForm.module.scss";
 
@@ -18,7 +18,7 @@ interface ContactFormValues {
     message?: string;
 }
 
-const ContactUsForm: React.FC = () => {
+const ContactForm: React.FC = () => {
     const { showAlert } = useAlert();
     const [successMsg, setSuccessMsg] = useState("");
 
@@ -29,7 +29,7 @@ const ContactUsForm: React.FC = () => {
         try {
             await sendContactRequest(values);
             resetForm();
-            setSuccessMsg("🎉 Message sent successfully!");
+            setSuccessMsg("✅ Message sent successfully!");
             showAlert("Success", "Your message has been sent!", "success");
         } catch {
             showAlert("Error", "Something went wrong. Try again.", "error");
@@ -39,102 +39,91 @@ const ContactUsForm: React.FC = () => {
     };
 
     return (
-        <section className={styles.contactSection}>
+        <section className={styles.section}>
             <motion.div
                 className={styles.header}
                 initial={{ opacity: 0, y: 30 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
             >
-                <h2>Let’s Connect ✉️</h2>
+                <h2>Contact Our Team</h2>
                 <p>
-                    We’d love to hear from you. Reach out with any questions, collaborations, or ideas —
-                    we’ll get back to you within 24 hours.
+                    Have a question about our plans or need tailored advice?
+                    Our experts typically respond within 24 hours.
                 </p>
             </motion.div>
 
-            <div className={styles.infoGrid}>
-                <motion.div className={styles.infoCard} whileHover={{ y: -5 }}>
-                    <FaMapMarkerAlt className={styles.icon} />
-                    <h4>Address</h4>
-                    <p>{COMPANY_ADDRESS}</p>
+            <div className={styles.grid}>
+                {/* === LEFT SIDE === */}
+                <motion.div
+                    className={styles.infoBlock}
+                    initial={{ opacity: 0, x: -40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    <h3>Get in touch</h3>
+                    <p className={styles.subtext}>
+                        We’re here to answer your questions and help you find the right solution for your needs.
+                    </p>
+
+                    <div className={styles.infoItem}>
+                        <FaMapMarkerAlt />
+                        <span>{COMPANY_ADDRESS}</span>
+                    </div>
+                    <div className={styles.infoItem}>
+                        <FaEnvelope />
+                        <a href={`mailto:${COMPANY_EMAIL}`}>{COMPANY_EMAIL}</a>
+                    </div>
+                    <div className={styles.infoItem}>
+                        <FaPhoneAlt />
+                        <a href={`tel:${COMPANY_PHONE}`}>{COMPANY_PHONE}</a>
+                    </div>
                 </motion.div>
 
-                <motion.div className={styles.infoCard} whileHover={{ y: -5 }}>
-                    <FaEnvelope className={styles.icon} />
-                    <h4>Email</h4>
-                    <p>{COMPANY_EMAIL}</p>
-                </motion.div>
+                {/* === RIGHT SIDE === */}
+                <motion.div
+                    className={styles.formBlock}
+                    initial={{ opacity: 0, x: 40 }}
+                    whileInView={{ opacity: 1, x: 0 }}
+                    transition={{ duration: 0.6 }}
+                >
+                    {successMsg ? (
+                        <div className={styles.successMsg}>{successMsg}</div>
+                    ) : (
+                        <Formik<ContactFormValues>
+                            initialValues={initialValues}
+                            validationSchema={validationSchema}
+                            onSubmit={handleSubmit}
+                        >
+                            {({ isSubmitting }) => (
+                                <Form className={styles.form}>
+                                    <div className={styles.row}>
+                                        <Field as="input" name="name" placeholder="First name" />
+                                        <Field as="input" name="secondName" placeholder="Last name" />
+                                    </div>
 
-                <motion.div className={styles.infoCard} whileHover={{ y: -5 }}>
-                    <FaPhone className={styles.icon} />
-                    <h4>Phone</h4>
-                    <p>{COMPANY_PHONE}</p>
+                                    <Field as="input" name="email" type="email" placeholder="Email address" />
+
+                                    <Field as="input" name="phone" type="tel" placeholder="Phone number" />
+
+                                    <Field as="textarea" name="message" placeholder="Your message" rows={5} />
+
+                                    <ButtonUI
+                                        type="submit"
+                                        fullWidth
+                                        loading={isSubmitting}
+                                        text="Send Message"
+                                        color="secondary"
+                                        textColor="backgroundLight"
+                                    />
+                                </Form>
+                            )}
+                        </Formik>
+                    )}
                 </motion.div>
             </div>
-
-            <motion.div
-                className={styles.formWrapper}
-                initial={{ opacity: 0, y: 50 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                transition={{ duration: 0.6, ease: "easeOut" }}
-            >
-                {successMsg ? (
-                    <div className={styles.successMsg}>{successMsg}</div>
-                ) : (
-                    <Formik<ContactFormValues>
-                        initialValues={initialValues}
-                        validationSchema={validationSchema}
-                        onSubmit={handleSubmit}
-                    >
-                        {({ errors, touched, isSubmitting }) => (
-                            <Form className={styles.form}>
-                                <div className={styles.row}>
-                                    <Field name="name">
-                                        {({ field }: FieldProps) => (
-                                            <Input {...field} placeholder="First Name" fullWidth error={!!errors.name && touched.name} />
-                                        )}
-                                    </Field>
-                                    <Field name="secondName">
-                                        {({ field }: FieldProps) => (
-                                            <Input {...field} placeholder="Last Name" fullWidth error={!!errors.secondName && touched.secondName} />
-                                        )}
-                                    </Field>
-                                </div>
-
-                                <Field name="email">
-                                    {({ field }: FieldProps) => (
-                                        <Input {...field} type="email" placeholder="Email" fullWidth error={!!errors.email && touched.email} />
-                                    )}
-                                </Field>
-
-                                <Field name="phone">
-                                    {({ field }: FieldProps) => (
-                                        <Input {...field} type="tel" placeholder="Phone" fullWidth error={!!errors.phone && touched.phone} />
-                                    )}
-                                </Field>
-
-                                <Field name="message">
-                                    {({ field }: FieldProps) => (
-                                        <Textarea {...field} placeholder="Your message" minRows={5} />
-                                    )}
-                                </Field>
-
-                                <ButtonUI
-                                    type="submit"
-                                    fullWidth
-                                    loading={isSubmitting}
-                                    text="Send Message"
-                                    color="secondary"
-                                    textColor="backgroundLight"
-                                />
-                            </Form>
-                        )}
-                    </Formik>
-                )}
-            </motion.div>
         </section>
     );
 };
 
-export default ContactUsForm;
+export default ContactForm;

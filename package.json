@@ -24,6 +24,7 @@
     "html-react-parser": "^5.2.6",
     "jose": "^6.1.0",
     "jsonwebtoken": "^9.0.2",
+    "lucide-react": "^0.546.0",
     "mongoose": "^8.18.1",
     "next": "15.5.2",
     "node-fetch": "^3.3.2",

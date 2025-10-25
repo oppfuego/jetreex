@@ -16,23 +16,27 @@ interface TimelineProps {
 const Timeline: React.FC<TimelineProps> = ({ title, steps }) => {
     return (
         <section className={styles.timelineSection}>
-            {title && <h2 className={styles.title}>{title}</h2>}
+            <div className={styles.container}>
+                {title && <h2 className={styles.title}>{title}</h2>}
 
-            <div className={styles.cardsGrid}>
-                {steps.map((step, index) => (
-                    <motion.div
-                        key={index}
-                        className={styles.card}
-                        initial={{ opacity: 0, y: 50 }}
-                        whileInView={{ opacity: 1, y: 0 }}
-                        transition={{ delay: index * 0.2, duration: 0.6, ease: "easeOut" }}
-                        viewport={{ once: true, amount: 0.3 }}
-                    >
-                        <div className={styles.number}>{index + 1}</div>
-                        <h4 className={styles.cardTitle}>{step.title}</h4>
-                        <p className={styles.cardDescription}>{step.description}</p>
-                    </motion.div>
-                ))}
+                <div className={styles.cardsGrid}>
+                    {steps.map((step, index) => (
+                        <motion.div
+                            key={index}
+                            className={styles.card}
+                            initial={{ opacity: 0, y: 40 }}
+                            whileInView={{ opacity: 1, y: 0 }}
+                            transition={{ delay: index * 0.15, duration: 0.5, ease: "easeOut" }}
+                            viewport={{ once: true, amount: 0.3 }}
+                        >
+                            <div className={styles.number}>{index + 1}</div>
+                            <div className={styles.cardBody}>
+                                <h4 className={styles.cardTitle}>{step.title}</h4>
+                                <p className={styles.cardDescription}>{step.description}</p>
+                            </div>
+                        </motion.div>
+                    ))}
+                </div>
             </div>
         </section>
     );

@@ -20,7 +20,7 @@ export const googleFonts: GoogleFont[] = [
     { name: "Open Sans", css: "'Open Sans', sans-serif", url: "https://fonts.googleapis.com/css2?family=Open+Sans:wght@400;500;700&display=swap" },
 ];
 
-export const currentFontIndex = 1;
+export const currentFontIndex = 3;
 export const currentFont = googleFonts[currentFontIndex];
 
 // Кольори для кнопок
@@ -54,7 +54,7 @@ export const headerStyles = {
     sideBarDirection: "top" as SideBarDirection,
     linkColor: "var(--text-primary)",
     linkHoverColor: "var(--link-hover)",
-    scrollMode: "blur" as HeaderScrollMode,
+    scrollMode: "solid" as HeaderScrollMode,
     scrollBackground: "var(--quaternary-color)",
     scrollBlur: "50px",
 };
@@ -73,21 +73,21 @@ export const drawerConfig = {
 
 // Footer
 export const footerStyles = {
-    type: "columns" as FooterType,
+    type: "corporate" as FooterType,
     showTopBorder: true,
     showBottomBorder: true,
     maxWidth: 1400,
     paddings: { x: 40, y: 10 },
     gap: 30,
     columnsGap: 50,
-    logo: { width: 200, height: 100, align: "center" as FooterLogoAlign },
+    logo: { width: 180, height: 50, align: "center" as FooterLogoAlign },
     colors: {
         bg: "var(--primary-color)",
-        title: "var(--text-secondary)",
+        title: "var(--background-light)",
         text: "var(--secondary-color)",
         muted: "var(--text-inverse)",
         border: "var(--border-color)",
-        link: "var(--text-inverse)",
+        link: "var(--surface-muted)",
         linkHover: "var(--text-gray)",
         contactLabel: "var(--background-dark)",
         contactHover: "var(--background-dark)",

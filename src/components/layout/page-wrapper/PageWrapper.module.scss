@@ -10,22 +10,22 @@
   position: relative;
   overflow: hidden;
 
-  // 🟢 Фон з легким градієнтом як у hero
+  // 🔵 Світлий синій градієнт зверху вниз
   background: linear-gradient(
-                  180deg,
-                  rgba(255, 255, 255, 1) 0%,
-                  rgba(245, 255, 248, 1) 40%,
-                  rgba(230, 255, 240, 1) 100%
+                  to bottom,
+                  rgba(230, 240, 255, 1) 0%,    // світлий блакитний зверху
+                  rgba(245, 250, 255, 1) 50%,   // майже білий у центрі
+                  rgba(255, 255, 255, 1) 100%   // чисто білий знизу
   );
 
-  // 🪄 Декоративні світлі плями
+  // 💫 Декоративні світлі плями в холодних синіх тонах
   &::before,
   &::after {
     content: "";
     position: absolute;
     border-radius: 50%;
     filter: blur(120px);
-    opacity: 0.45;
+    opacity: 0.35;
     z-index: 0;
     transition: all 0.8s ease;
   }
@@ -33,23 +33,23 @@
   &::before {
     width: 400px;
     height: 400px;
-    top: -150px;
+    top: -160px;
     left: -120px;
     background: radial-gradient(
                     circle at center,
-                    rgba(66, 208, 129, 0.4),
+                    rgba(120, 170, 255, 0.4),
                     transparent 70%
     );
   }
 
   &::after {
-    width: 500px;
-    height: 500px;
-    bottom: -180px;
+    width: 480px;
+    height: 480px;
+    bottom: -200px;
     right: -160px;
     background: radial-gradient(
                     circle at center,
-                    rgba(0, 200, 100, 0.35),
+                    rgba(150, 190, 255, 0.35),
                     transparent 70%
     );
   }

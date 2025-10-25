@@ -31,7 +31,7 @@ const InfoBlock: React.FC<InfoBlockProps> = ({
                         src={image}
                         type="image"
                         width="100%"
-                        height="200px"
+                        height="220px"
                         alt={title || "Info"}
                         objectFit="cover"
                     />

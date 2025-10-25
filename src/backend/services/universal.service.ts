@@ -8,7 +8,6 @@ import mongoose from "mongoose";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
-/** 🧩 Universal main prompt builder */
 function buildPrompt(body: any): string {
     const { category, fields, planType } = body;
     const jsonData = JSON.stringify(fields, null, 2);
@@ -41,6 +40,44 @@ ${jsonData}
 
 Focus on: Day, Focus, Exercises, Tip.
 Tone: energetic and friendly.
+${languageNote}
+`;
+
+        case "business":
+            return planType === "reviewed"
+                ? `
+You are a senior business strategist and VC advisor.
+Create a **comprehensive, investor-ready business plan** based on the data below.
+
+## Company Data
+${jsonData}
+
+## Deliverables
+- Executive Summary
+- Problem & Solution
+- Product/Service
+- Market Overview (TAM/SAM/SOM), ICP
+- Competitive Landscape & Differentiation
+- Go-To-Market & Sales
+- Business Model & Unit Economics
+- Operations & Team
+- 12–36 month Roadmap & Milestones
+- Risks & Mitigations
+- Financial Overview (high level P&L + key metrics)
+- Clear next steps / asks
+
+Style: crisp, structured, with headings, tables where helpful.
+${languageNote}
+`
+                : `
+You are a business planning assistant.
+Generate a **concise business plan outline** using the inputs below.
+
+Inputs:
+${jsonData}
+
+Include: Summary, Problem/Solution, Market, Product, GTM, Business Model, Team, Milestones.
+Keep it skimmable with bullet points.
 ${languageNote}
 `;
 
@@ -87,26 +124,51 @@ ${languageNote}
 function buildExtraPrompt(extra: string, category: string, fields: any, language?: string): string {
     const context = JSON.stringify(fields, null, 2);
     const langNote = language ? `Write in ${language}.` : "";
+
+    // training defaults preserved; add business extras
     switch (extra) {
+        // generic keys kept for backward-compatibility
         case "progressTracking":
             return `Create a weekly progress tracking table for ${category}.\n${langNote}\n${context}`;
         case "motivationTips":
             return `Write 10 motivational phrases related to this ${category} context.\n${langNote}\n${context}`;
         case "summaryReport":
             return `Write a short summary report showing how the plan achieves goals.\n${langNote}\n${context}`;
+
+        // business-specific extras
+        case "marketingStrategy":
+            return `Create a structured Marketing Strategy (ICP, positioning, channels, messaging, KPIs) for this business.\n${langNote}\n${context}`;
+        case "financialProjection":
+            return `Produce a 3-year financial projection (revenue, COGS, gross margin, OpEx buckets, EBITDA) with key assumptions and unit economics. Use markdown tables.\n${langNote}\n${context}`;
+        case "riskAnalysis":
+            return `List top risks across Market, Product, Team, Finance, Legal and propose mitigations. Prioritize by impact x probability. Use a table.\n${langNote}\n${context}`;
+        case "growthRoadmap":
+            return `Draft a 12–24 month growth roadmap with milestones by quarter, owners, and success metrics.\n${langNote}\n${context}`;
+        case "competitorReview":
+            return `Create a competitor analysis matrix (competitors, features/pricing, strengths/weaknesses, our edge). Use a comparison table.\n${langNote}\n${context}`;
+        case "pitchDeck":
+            return `Outline a 12–15 slide investor pitch deck with slide titles and bullet points tailored to this business.\n${langNote}\n${context}`;
+        case "brandingGuide":
+            return `Write a lightweight branding & visual identity brief (voice & tone, value pillars, color/typography suggestions, logo usage ideas) suited to the target audience.\n${langNote}\n${context}`;
+        case "teamStructure":
+            return `Propose an organizational structure with key roles, responsibilities (RACI hints), and near-term hires with priorities.\n${langNote}\n${context}`;
+        case "customerJourney":
+            return `Map a customer journey (Awareness → Consideration → Purchase → Onboarding → Retention → Advocacy) with key touchpoints and metrics.\n${langNote}\n${context}`;
+        case "salesForecast":
+            return `Build a simple sales forecast table (quarters, leads, conversion rates, ACV/ARPU, bookings/revenue) with assumptions.\n${langNote}\n${context}`;
+        case "fundingPlan":
+            return `Draft a funding strategy (target round size, use of proceeds, milestones to next round, suggested investor profile) tailored to this business.\n${langNote}\n${context}`;
+
         default:
-            return `Generate a useful ${extra} section.\n${langNote}\n${context}`;
+            return `Generate a useful "${extra}" section for the ${category} context.\n${langNote}\n${context}`;
     }
 }
 
 export const universalService = {
-    /** 🧩 Створення нового універсального замовлення */
+    /** create order */
     async createOrder(userId: string, email: string, body: any) {
         await connectDB();
 
-        console.log("📦 [createOrder] incoming body:", JSON.stringify(body, null, 2));
-
-        // ✅ Валідація
         if (!body || typeof body !== "object") throw new Error("Invalid request body");
         if (!body.category) throw new Error("Missing category");
         if (!body.fields || typeof body.fields !== "object") throw new Error("Missing fields");
@@ -121,21 +183,17 @@ export const universalService = {
 
         const languageCost = body.language && body.language !== "English" ? 5 : 0;
         const totalCost = Number(body.totalTokens) + languageCost;
-        console.log(`💰 [Token check] user has ${user.tokens}, required ${totalCost}`);
 
         if (user.tokens < totalCost)
             throw new Error(`Insufficient tokens (have ${user.tokens}, need ${totalCost})`);
 
-        // 💳 Знімаємо токени
+        // charge
         user.tokens -= totalCost;
         await user.save();
         await transactionService.record(user._id, email, totalCost, "spend", user.tokens);
-        console.log("🧾 Transaction recorded successfully");
 
-        // 🧠 Генерація основного контенту
+        // main generation
         const mainPrompt = buildPrompt(body);
-        console.log("🧠 Main prompt ready");
-
         let mainText = "";
         try {
             const mainRes = await openai.chat.completions.create({
@@ -143,23 +201,19 @@ export const universalService = {
                 messages: [
                     {
                         role: "system",
-                        content:
-                            "You are a structured professional generator. Always output final readable content.",
+                        content: "You are a structured professional generator. Always output final readable content.",
                     },
                     { role: "user", content: mainPrompt },
                 ],
             });
-
             mainText = mainRes.choices?.[0]?.message?.content?.trim() || "";
         } catch (err: any) {
-            console.error("❌ OpenAI generation failed:", err.message);
             throw new Error("AI generation failed, please retry later");
         }
 
-        // 🎯 Генерація додаткових секцій
+        // extras generation
         const extrasData: Record<string, string> = {};
         if (Array.isArray(body.extras) && body.extras.length > 0) {
-            console.log("✨ Generating extras:", body.extras);
             for (const extra of body.extras) {
                 try {
                     const extraPrompt = buildExtraPrompt(extra, body.category, body.fields, body.language);
@@ -168,18 +222,13 @@ export const universalService = {
                         messages: [{ role: "user", content: extraPrompt }],
                     });
                     extrasData[extra] = extraRes.choices?.[0]?.message?.content?.trim() || "";
-                } catch (err: any) {
-                    console.error("❌ Error generating extra:", extra, err.message);
-                }
+                } catch {}
             }
         }
 
         const readyAt =
-            body.planType === "reviewed"
-                ? new Date(Date.now() + 24 * 60 * 60 * 1000)
-                : new Date();
+            body.planType === "reviewed" ? new Date(Date.now() + 24 * 60 * 60 * 1000) : new Date();
 
-        // 🗂️ Збереження замовлення
         const orderDoc = {
             userId: new mongoose.Types.ObjectId(userId),
             email,
@@ -187,7 +236,7 @@ export const universalService = {
             fields: body.fields,
             planType: body.planType,
             extras: body.extras || [],
-            totalTokens: totalCost,
+            totalTokens: Number(body.totalTokens) + (languageCost || 0),
             language: body.language || "English",
             response: mainText,
             extrasData,
@@ -196,39 +245,26 @@ export const universalService = {
         };
 
         const order = await UniversalOrder.create(orderDoc);
-        console.log("✅ Order saved successfully:", order._id);
-
         return order.toObject({ flattenMaps: true });
     },
 
-    /** 🧩 Отримання всіх замовлень користувача */
     async getOrders(userId: string) {
         await connectDB();
-
         const docs = await UniversalOrder.find({ userId })
             .sort({ createdAt: -1 })
             .lean<UniversalOrderDocument[]>({ virtuals: true });
 
-        // 🧩 Конвертація Map → Object
         return docs.map((d: any) => {
-            if (d.extrasData instanceof Map)
-                d.extrasData = Object.fromEntries(d.extrasData);
+            if (d.extrasData instanceof Map) d.extrasData = Object.fromEntries(d.extrasData);
             return d;
         });
     },
 
-    /** 🧩 Отримання одного замовлення */
     async getOrderById(userId: string, orderId: string) {
         await connectDB();
-
-        const doc = await UniversalOrder.findOne({ _id: orderId, userId })
-            .lean<UniversalOrderDocument>({ virtuals: true });
-
+        const doc = await UniversalOrder.findOne({ _id: orderId, userId }).lean<UniversalOrderDocument>({ virtuals: true });
         if (!doc) return null;
-
-        if (doc.extrasData instanceof Map)
-            doc.extrasData = Object.fromEntries(doc.extrasData);
-
+        if (doc.extrasData instanceof Map) (doc as any).extrasData = Object.fromEntries(doc.extrasData);
         return doc;
     },
 };

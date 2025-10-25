@@ -7,89 +7,108 @@ import Select from "@mui/joy/Select";
 import Option from "@mui/joy/Option";
 import Input from "@mui/joy/Input";
 import ButtonUI from "@/components/ui/button/ButtonUI";
+import { motion, AnimatePresence } from "framer-motion";
 import styles from "./ManualGenerator.module.scss";
 import { useAlert } from "@/context/AlertContext";
 import { useUser } from "@/context/UserContext";
 
-const BASE_COST = 30;
+const BASE_COST = 40;
 
 const LANGUAGES = [
     { value: "English", label: "English (default)", cost: 0 },
-    { value: "Ukrainian", label: "Ukrainian", cost: 5 },
-    { value: "German", label: "German", cost: 5 },
-    { value: "French", label: "French", cost: 5 },
+    { value: "Ukrainian", label: "Українська", cost: 5 },
+    { value: "German", label: "Deutsch", cost: 5 },
+    { value: "French", label: "Français", cost: 5 },
+    { value: "Spanish", label: "Español", cost: 5 },
 ];
 
-const EXTRA_CATEGORIES = {
-    training: [
-        { name: "adaptation", label: "Home / Gym Adaptation", cost: 10 },
-        { name: "tracking", label: "Progress Tracking", cost: 10 },
-        { name: "recovery", label: "Recovery Guide", cost: 8 },
-        { name: "warmupPlan", label: "Warm-up Routine", cost: 5 },
-        { name: "cooldownPlan", label: "Cool-down & Stretching", cost: 5 },
-        { name: "injuryPrevention", label: "Injury Prevention Guide", cost: 7 },
-        { name: "equipmentAlternatives", label: "No-Equipment Alternatives", cost: 6 },
-        { name: "weeklyAdjustments", label: "Weekly Adjustment Tips", cost: 10 },
-        { name: "progressReport", label: "Progress Report Template", cost: 10 },
-    ],
-    nutrition: [
-        { name: "nutrition", label: "Nutrition Plan", cost: 15 },
-        { name: "mealSchedule", label: "Meal Timing Schedule", cost: 12 },
-        { name: "hydrationPlan", label: "Hydration Plan", cost: 6 },
-        { name: "supplementGuide", label: "Supplement Recommendations", cost: 10 },
-    ],
-    mindset: [
-        { name: "motivation", label: "Motivation Plan", cost: 5 },
-        { name: "goalBreakdown", label: "Goal Breakdown Strategy", cost: 8 },
-        { name: "disciplineTracker", label: "Discipline & Habit Tracker", cost: 8 },
-        { name: "mindsetTips", label: "Mindset Tips Collection", cost: 5 },
-    ],
-};
+const EXTRAS = [
+    { name: "marketingStrategy", label: "Marketing Strategy", cost: 10 },
+    { name: "financialProjection", label: "3-Year Financial Forecast", cost: 15 },
+    { name: "riskAnalysis", label: "Risk & Mitigation Plan", cost: 8 },
+    { name: "growthRoadmap", label: "Growth Roadmap", cost: 10 },
+    { name: "competitorReview", label: "Competitor Analysis", cost: 7 },
+    { name: "pitchDeck", label: "Investor Pitch Deck", cost: 15 },
+    { name: "brandingGuide", label: "Branding & Visual Identity", cost: 12 },
+    { name: "teamStructure", label: "Organizational Structure", cost: 8 },
+    { name: "customerJourney", label: "Customer Journey Map", cost: 10 },
+    { name: "salesForecast", label: "Sales Forecast", cost: 12 },
+    { name: "fundingPlan", label: "Funding Strategy", cost: 9 },
+];
 
 const schema = Yup.object().shape({
-    fullName: Yup.string().required("Required"),
+    businessName: Yup.string().required("Required"),
+    niche: Yup.string().required("Required"),
+    businessType: Yup.string().required("Required"),
     goal: Yup.string().required("Required"),
-    fitnessLevel: Yup.string().required("Required"),
-    days: Yup.number().min(1).required("Required"),
-    planType: Yup.string().oneOf(["coach", "ai"]).required("Required"),
-    language: Yup.string().oneOf(LANGUAGES.map((l) => l.value)),
 });
 
 interface FormValues {
-    fullName: string;
+    businessName: string;
+    niche: string;
+    businessType: string;
+    teamSize: string;
+    budget: string;
+    marketDescription: string;
+    productDescription: string;
+    uniqueValue: string;
+    customerPain: string;
     goal: string;
-    fitnessLevel: string;
-    days: number;
-    planType: "coach" | "ai";
+    planType: "ai" | "reviewed";
     language: string;
     extras: string[];
 }
 
-const ManualWorkoutForm = () => {
+const stepVariants = {
+    hidden: { opacity: 0, x: 60 },
+    visible: { opacity: 1, x: 0, transition: { duration: 0.4 } },
+    exit: { opacity: 0, x: -60, transition: { duration: 0.3 } },
+};
+
+const BusinessGeneratorForm = () => {
     const { showAlert } = useAlert();
     const user = useUser();
+    const [step, setStep] = useState(1);
     const [loading, setLoading] = useState(false);
 
     const initialValues: FormValues = {
-        fullName: "",
+        businessName: "",
+        niche: "",
+        businessType: "",
+        teamSize: "",
+        budget: "",
+        marketDescription: "",
+        productDescription: "",
+        uniqueValue: "",
+        customerPain: "",
         goal: "",
-        fitnessLevel: "Beginner",
-        days: 7,
-        planType: "coach",
+        planType: "ai",
         language: "English",
         extras: [],
     };
 
-    // 🧩 Mock data for testing
     const mockData: FormValues = {
-        fullName: "John Doe",
-        goal: "Build lean muscle and improve endurance",
-        fitnessLevel: "Intermediate",
-        days: 21,
+        businessName: "EcoGrow Solutions",
+        niche: "Sustainable Agriculture",
+        businessType: "AgroTech SaaS",
+        teamSize: "12",
+        budget: "$100,000",
+        marketDescription:
+            "Farmers and agribusinesses in EU markets seeking eco-efficient yield optimization.",
+        productDescription:
+            "AI platform for soil & crop monitoring with satellite and IoT data fusion.",
+        uniqueValue:
+            "Automated sustainability insights and actionable tasks to cut waste by 15–25%.",
+        customerPain:
+            "Lack of affordable, easy-to-use tools to predict yield and reduce resource waste.",
+        goal: "Attract investors and secure pilots with 5 enterprise clients.",
         planType: "ai",
         language: "English",
-        extras: ["tracking", "nutrition", "motivation"],
+        extras: ["marketingStrategy", "financialProjection", "pitchDeck", "growthRoadmap"],
     };
+
+    const handleNext = () => setStep((s) => Math.min(5, s + 1));
+    const handlePrev = () => setStep((s) => Math.max(1, s - 1));
 
     return (
         <Formik<FormValues>
@@ -98,30 +117,21 @@ const ManualWorkoutForm = () => {
             onSubmit={async (values) => {
                 setLoading(true);
                 try {
-                    const allExtras = Object.values(EXTRA_CATEGORIES).flat();
-                    const extraCost = values.extras.reduce((sum, name) => {
-                        const opt = allExtras.find((o) => o.name === name);
-                        return sum + (opt?.cost || 0);
+                    const extraCost = values.extras.reduce((s, n) => {
+                        const e = EXTRAS.find((o) => o.name === n);
+                        return s + (e?.cost || 0);
                     }, 0);
-
-                    const durationCost = Math.floor(values.days / 7) * 10;
-                    const languageCost = values.language && values.language !== "English" ? 5 : 0;
-                    const totalTokens = BASE_COST + extraCost + durationCost + languageCost;
+                    const languageCost = values.language !== "English" ? 5 : 0;
+                    const totalTokens = BASE_COST + extraCost + languageCost;
 
                     const payload = {
-                        category: "training",
-                        planType: values.planType === "coach" ? "reviewed" : "instant",
-                        language: values.language || "English",
+                        category: "business",
+                        planType: values.planType === "reviewed" ? "reviewed" : "default",
+                        language: values.language,
                         extras: values.extras,
                         totalTokens,
                         email: user?.email,
-                        fields: {
-                            fullName: values.fullName,
-                            goal: values.goal,
-                            fitnessLevel: values.fitnessLevel,
-                            days: values.days,
-                            language: values.language || "English",
-                        },
+                        fields: { ...values }, // все в одне поле
                     };
 
                     const res = await fetch("/api/universal/create-order", {
@@ -130,19 +140,11 @@ const ManualWorkoutForm = () => {
                         credentials: "include",
                         body: JSON.stringify(payload),
                     });
-
                     const data = await res.json();
-                    if (res.ok) {
-                        showAlert(
-                            "Success",
-                            values.planType === "coach"
-                                ? "Your plan will be reviewed by a coach and delivered in PDF within 24 hours."
-                                : "Your instant training plan is ready in PDF format.",
-                            "success"
-                        );
-                    } else {
-                        showAlert("Error", data.message || "Failed to create plan", "error");
-                    }
+
+                    if (res.ok)
+                        showAlert("Success", "Business plan generated successfully!", "success");
+                    else showAlert("Error", data.message || "Failed to generate", "error");
                 } catch {
                     showAlert("Error", "Network or server issue", "error");
                 } finally {
@@ -151,26 +153,29 @@ const ManualWorkoutForm = () => {
             }}
         >
             {({ values, setFieldValue, setValues }) => {
-                const allExtras = Object.values(EXTRA_CATEGORIES).flat();
-                const extraCost = values.extras.reduce((sum, name) => {
-                    const opt = allExtras.find((o) => o.name === name);
-                    return sum + (opt?.cost || 0);
+                const extraCost = values.extras.reduce((s, n) => {
+                    const e = EXTRAS.find((o) => o.name === n);
+                    return s + (e?.cost || 0);
                 }, 0);
-
-                const durationCost = Math.floor(values.days / 7) * 10;
-                const languageCost = values.language && values.language !== "English" ? 5 : 0;
-                const totalTokens = BASE_COST + extraCost + durationCost + languageCost;
+                const languageCost = values.language !== "English" ? 5 : 0;
+                const totalTokens = BASE_COST + extraCost + languageCost;
 
                 return (
                     <Form className={styles.form}>
                         <header className={styles.header}>
-                            <h2>Training Plan Configuration</h2>
-                            <p>
-                                Choose your training type, define fitness parameters, and customize modules.
-                            </p>
+                            <motion.h2
+                                key={step}
+                                initial={{ opacity: 0, y: -10 }}
+                                animate={{ opacity: 1, y: 0 }}
+                                transition={{ duration: 0.4 }}
+                            >
+                                Business Plan Generator
+                            </motion.h2>
+                            <p>Step {step} of 5</p>
                         </header>
 
-                        {/*<div className={styles.actionsInline}>
+                        {/* 🧪 Mock Data */}
+                        <div style={{ display: "flex", justifyContent: "flex-end" }}>
                             <ButtonUI
                                 type="button"
                                 variant="outline"
@@ -179,120 +184,144 @@ const ManualWorkoutForm = () => {
                             >
                                 🧪 Fill with Mock Data
                             </ButtonUI>
-                        </div>*/}
+                        </div>
 
-                        {/* === GRID SECTION === */}
-                        <div className={styles.grid}>
-                            <div className={styles.block}>
-                                <h3>Personal Information</h3>
-                                <div className={styles.inputGroup}>
-                                    <label>Full Name</label>
-                                    <Field name="fullName" as={Input} placeholder="Enter your name" />
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label>Goal</label>
+                        <AnimatePresence mode="wait">
+                            {step === 1 && (
+                                <motion.div
+                                    key="step1"
+                                    variants={stepVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="exit"
+                                    className={styles.step}
+                                >
+                                    <h3>Basic Information</h3>
+                                    <div className={styles.row}>
+                                        <Field name="businessName" as={Input} placeholder="Business Name" />
+                                        <Field name="niche" as={Input} placeholder="Niche / Industry" />
+                                    </div>
+                                    <Field
+                                        name="businessType"
+                                        as={Input}
+                                        placeholder="Business Type (e.g. SaaS, Retail, Services)"
+                                    />
+                                </motion.div>
+                            )}
+
+                            {step === 2 && (
+                                <motion.div
+                                    key="step2"
+                                    variants={stepVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="exit"
+                                    className={styles.step}
+                                >
+                                    <h3>Team & Market</h3>
+                                    <div className={styles.row}>
+                                        <Field name="teamSize" as={Input} placeholder="Team Size (e.g. 5)" />
+                                        <Field name="budget" as={Input} placeholder="Budget (e.g. $50,000)" />
+                                    </div>
+                                    <Field
+                                        name="marketDescription"
+                                        as={Input}
+                                        placeholder="Target Market Description"
+                                    />
+                                </motion.div>
+                            )}
+
+                            {step === 3 && (
+                                <motion.div
+                                    key="step3"
+                                    variants={stepVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="exit"
+                                    className={styles.step}
+                                >
+                                    <h3>Product Details</h3>
+                                    <Field
+                                        name="productDescription"
+                                        as={Input}
+                                        placeholder="Product / Service Description"
+                                    />
+                                    <Field
+                                        name="uniqueValue"
+                                        as={Input}
+                                        placeholder="Unique Value Proposition"
+                                    />
+                                    <Field
+                                        name="customerPain"
+                                        as={Input}
+                                        placeholder="Customer Pain / Problem"
+                                    />
+                                </motion.div>
+                            )}
+
+                            {step === 4 && (
+                                <motion.div
+                                    key="step4"
+                                    variants={stepVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="exit"
+                                    className={styles.step}
+                                >
+                                    <h3>Goal & Settings</h3>
                                     <Field
                                         name="goal"
                                         as={Input}
-                                        placeholder="e.g. Muscle gain, weight loss, endurance"
+                                        placeholder="Main Goal (e.g. attract investors)"
                                     />
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label>Fitness Level</label>
-                                    <Select
-                                        value={values.fitnessLevel}
-                                        onChange={(_, v) => setFieldValue("fitnessLevel", v)}
-                                    >
-                                        <Option value="Beginner">Beginner</Option>
-                                        <Option value="Intermediate">Intermediate</Option>
-                                        <Option value="Advanced">Advanced</Option>
-                                    </Select>
-                                </div>
-                                <div className={styles.inputGroup}>
-                                    <label>Language</label>
-                                    <Select
-                                        value={values.language}
-                                        onChange={(_, v) => setFieldValue("language", v || "English")}
-                                    >
-                                        {LANGUAGES.map((lang) => (
-                                            <Option key={lang.value} value={lang.value}>
-                                                {lang.label}
-                                            </Option>
-                                        ))}
-                                    </Select>
-                                    <span className={styles.note}>
-                    English is free, other languages cost +5 tokens
-                  </span>
-                                </div>
-                            </div>
-
-                            <div className={styles.block}>
-                                <h3>Plan Details</h3>
-                                <div className={styles.radioGroup}>
-                                    <label
-                                        className={`${styles.radioCard} ${
-                                            values.planType === "coach" ? styles.active : ""
-                                        }`}
-                                    >
-                                        <input
-                                            type="radio"
-                                            name="planType"
-                                            value="coach"
-                                            checked={values.planType === "coach"}
-                                            onChange={() => setFieldValue("planType", "coach")}
-                                        />
-                                        <div>
-                                            <strong>Coach Plan</strong>
-                                            <p>Delivered in 24h with expert verification</p>
+                                    <div className={styles.row}>
+                                        <div className={styles.inputGroup}>
+                                            <label>Language</label>
+                                            <Select
+                                                value={values.language}
+                                                onChange={(_, v) => setFieldValue("language", v || "English")}
+                                            >
+                                                {LANGUAGES.map((lang) => (
+                                                    <Option key={lang.value} value={lang.value}>
+                                                        {lang.label}
+                                                    </Option>
+                                                ))}
+                                            </Select>
                                         </div>
-                                    </label>
-
-                                    <label
-                                        className={`${styles.radioCard} ${
-                                            values.planType === "ai" ? styles.active : ""
-                                        }`}
-                                    >
-                                        <input
-                                            type="radio"
-                                            name="planType"
-                                            value="ai"
-                                            checked={values.planType === "ai"}
-                                            onChange={() => setFieldValue("planType", "ai")}
-                                        />
-                                        <div>
-                                            <strong>AI Instant Plan</strong>
-                                            <p>Auto-generated instantly in PDF format</p>
+                                        <div className={styles.inputGroup}>
+                                            <label>Plan Type</label>
+                                            <Select
+                                                value={values.planType}
+                                                onChange={(_, v) => setFieldValue("planType", v || "ai")}
+                                            >
+                                                <Option value="ai">AI Instant</Option>
+                                                <Option value="reviewed">Reviewed (24h)</Option>
+                                            </Select>
                                         </div>
-                                    </label>
-                                </div>
+                                    </div>
+                                </motion.div>
+                            )}
 
-                                <div className={styles.inputGroup}>
-                                    <label>Duration</label>
-                                    <Select
-                                        value={values.days}
-                                        onChange={(_, v) => setFieldValue("days", v)}
-                                    >
-                                        <Option value={1}>1 day</Option>
-                                        <Option value={7}>1 week</Option>
-                                        <Option value={14}>2 weeks</Option>
-                                        <Option value={21}>3 weeks</Option>
-                                        <Option value={28}>4 weeks</Option>
-                                    </Select>
-                                    <span className={styles.note}>Each week adds +10 tokens</span>
-                                </div>
-                            </div>
-                        </div>
-
-                        {/* === EXTRAS === */}
-                        <div className={styles.sectionGroup}>
-                            {Object.entries(EXTRA_CATEGORIES).map(([category, options]) => (
-                                <div key={category} className={styles.section}>
-                                    <h3>
-                                        {category.charAt(0).toUpperCase() + category.slice(1)} Modules
-                                    </h3>
+                            {step === 5 && (
+                                <motion.div
+                                    key="step5"
+                                    variants={stepVariants}
+                                    initial="hidden"
+                                    animate="visible"
+                                    exit="exit"
+                                    className={styles.step}
+                                >
+                                    <h3>Additional Modules</h3>
                                     <div className={styles.optionsGrid}>
-                                        {options.map((opt) => (
-                                            <label key={opt.name} className={styles.option}>
+                                        {EXTRAS.map((opt) => (
+                                            <motion.label
+                                                key={opt.name}
+                                                className={`${styles.option} ${
+                                                    values.extras.includes(opt.name) ? styles.active : ""
+                                                }`}
+                                                whileHover={{ scale: 1.03 }}
+                                                whileTap={{ scale: 0.98 }}
+                                            >
                                                 <input
                                                     type="checkbox"
                                                     checked={values.extras.includes(opt.name)}
@@ -306,41 +335,56 @@ const ManualWorkoutForm = () => {
                                                             );
                                                     }}
                                                 />
-                                                <span className={styles.optionLabel}>{opt.label}</span>
-                                                <span className={styles.optionCost}>+{opt.cost}</span>
-                                            </label>
+                                                <span>{opt.label}</span>
+                                                <strong>+{opt.cost}</strong>
+                                            </motion.label>
                                         ))}
                                     </div>
-                                </div>
-                            ))}
+                                </motion.div>
+                            )}
+                        </AnimatePresence>
+
+                        <div className={styles.nav}>
+                            {step > 1 && (
+                                <ButtonUI
+                                    type="button"
+                                    variant="outline"
+                                    color="secondary"
+                                    onClick={handlePrev}
+                                >
+                                    ← Back
+                                </ButtonUI>
+                            )}
+                            {step < 5 && (
+                                <ButtonUI
+                                    type="button"
+                                    color="primary"
+                                    variant="solid"
+                                    onClick={handleNext}
+                                >
+                                    Next →
+                                </ButtonUI>
+                            )}
+                            {step === 5 && (
+                                <ButtonUI type="submit" color="primary" variant="solid" loading={loading}>
+                                    Generate Business Plan
+                                </ButtonUI>
+                            )}
                         </div>
 
-                        <div className={styles.summary}>
-                            <div className={styles.summaryContent}>
-                                <div>
-                                    <p>Base: 30 tokens</p>
-                                    <p>Extras: +{extraCost}</p>
-                                    <p>Duration: +{durationCost}</p>
-                                    <p>Language: +{languageCost}</p>
-                                </div>
-                                <h4>
-                                    Total: <span>{totalTokens}</span> tokens
-                                </h4>
-                            </div>
-                        </div>
-
-                        <div className={styles.actions}>
-                            <ButtonUI
-                                type="submit"
-                                color="primary"
-                                variant="solid"
-                                textColor="backgroundLight"
-                                hoverEffect="glow"
-                                loading={loading}
-                            >
-                                Generate Training Plan
-                            </ButtonUI>
-                        </div>
+                        <motion.div
+                            className={styles.tokenBar}
+                            initial={{ opacity: 0, y: 40 }}
+                            animate={{ opacity: 1, y: 0 }}
+                            transition={{ duration: 0.4 }}
+                        >
+                            <p>
+                                Base: {BASE_COST} | Extras: +{extraCost} | Language: +{languageCost}
+                            </p>
+                            <h4>
+                                Total: <span>{totalTokens}</span> tokens
+                            </h4>
+                        </motion.div>
                     </Form>
                 );
             }}
@@ -348,4 +392,4 @@ const ManualWorkoutForm = () => {
     );
 };
 
-export default ManualWorkoutForm;
+export default BusinessGeneratorForm;

@@ -79,7 +79,7 @@ const Header: React.FC = () => {
                     </nav>
 
                     {/* Права частина — кнопки */}
-                    <div className={styles.actionsNav}>
+                    {/*<div className={styles.actionsNav}>
                         <AuthButtons/>
                         <div className={styles.currencySwitch}>
                             <div
@@ -91,7 +91,26 @@ const Header: React.FC = () => {
                                 <div className={styles.thumb}/>
                             </div>
                         </div>
+                    </div>*/}
+
+                    <div className={styles.actionsNav}>
+                        <AuthButtons />
+
+                        <div className={styles.currencySwitch}>
+                            <button
+                                className={`${styles.toggle} ${currency === "EUR" ? styles.active : ""}`}
+                                onClick={() => setCurrency(currency === "GBP" ? "EUR" : "GBP")}
+                                aria-label="Switch currency"
+                            >
+                                <span className={styles.label}>GBP</span>
+                                <div className={styles.track}>
+                                    <div className={styles.thumb}></div>
+                                </div>
+                                <span className={styles.label}>EUR</span>
+                            </button>
+                        </div>
                     </div>
+
 
                     {/* Mobile menu */}
                     <div className={styles.menuButton}>

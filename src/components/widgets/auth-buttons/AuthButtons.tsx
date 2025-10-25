@@ -11,20 +11,11 @@ const AuthButtons: React.FC = () => {
 
     if (user) {
         return (
-            <div className={styles.userContainer}>
-
-                <Link href="/dashboard" className={styles.dashboardButton}>
-                    <ButtonUI
-                        text="Start Training"
-                        shape="default"
-                        hoverColor="linkHover"
-                        hoverEffect="scale"
-                        fullWidth
-                        textColor="text"
-                    />
+            <div className={styles.authedUserContainer}>
+                <Link href="/profile" className={styles.userLink}>
+                    <FaUser/>
                 </Link>
-
-                <Link href="/profile" className={styles.userCard}>
+                <div className={styles.userContainer}>
                     <div className={styles.userBalance}>
                         <GrMoney className={styles.tokenIcon}/>
                         <span className={styles.balanceText}>{user?.tokens ?? 0} Tokens</span>
@@ -32,10 +23,11 @@ const AuthButtons: React.FC = () => {
                     {/*<div className={styles.userIconWrapper}>
                         <FaUser className={styles.userIcon}/>
                     </div>*/}
-                </Link>
 
+                </div>
             </div>
-        );
+    )
+        ;
     }
 
     // 🔹 Якщо неавторизований
@@ -44,21 +36,22 @@ const AuthButtons: React.FC = () => {
             <Link href="/sign-in">
                 <ButtonUI
                     text="Sign In"
-                    color="tertiary"
+                    color="primaty"
                     shape="default"
                     hoverColor="link"
-                    hoverEffect="none"
+                    hoverEffect="scale"
                     fullWidth
-                    textColor="text"
+                    textColor="quaternary"
                 />
             </Link>
             <Link href="/sign-up">
                 <ButtonUI
                     text="Sign Up"
                     shape="default"
-                    color="backgroundDark"
-                    hoverColor="secondary"
-                    hoverEffect="none"
+                    color="quaternary"
+                    hoverColor="tertiary"
+                    hoverTextColor="border"
+                    hoverEffect="scale"
                     fullWidth
                     textColor="link"
                 />

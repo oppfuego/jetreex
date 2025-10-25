@@ -1,120 +1,116 @@
-.slider {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.2rem;
-  max-width: 1100px;
+.section {
+  width: 100%;
+  max-width: 1300px;
   margin: 0 auto;
-  padding: 2rem 1rem;
-  width: 100%;
-  box-sizing: border-box;
-}
-
-.slideWrapper {
-  flex: 1;
-  overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-}
-
-.cardsGrid {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
-  gap: 1.5rem;
-  width: 100%;
-  max-width: 900px;
-}
-
-/* === Картка відгуку === */
-.card {
-  background: #fff;
-  border-radius: 1.2rem;
-  padding: 1.8rem 1.5rem;
-  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  padding: 0 2rem;
   text-align: center;
-  border: 1px solid rgba(0, 0, 0, 0.05);
+}
+
+.title {
+  font-size: 2rem;
+  font-weight: 700;
+  color: var(--text-primary);
+  margin-bottom: 0.4rem;
+}
+
+.description {
+  color: var(--text-secondary);
+  font-size: 1.1rem;
+  line-height: 1.6;
+  margin-bottom: 3rem;
+  max-width: 700px;
+  margin-inline: auto;
+}
+
+.slider {
+  overflow: hidden;
+  cursor: grab;
+}
+
+.inner {
+  display: flex;
+  gap: 1.6rem;
+  padding-bottom: 1rem;
+}
+
+.card {
+  min-width: 320px;
+  max-width: 320px;
+  background: var(--surface-color, #fff);
+  border: 1px solid var(--border-color, #e5e7eb);
+  border-radius: 1rem;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.05);
+  padding: 1.8rem;
   display: flex;
   flex-direction: column;
-  align-items: center;
-  transition: all 0.3s ease;
+  justify-content: space-between;
+  text-align: left;
+  transition: border-color 0.3s ease, box-shadow 0.3s ease;
 
   &:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 12px 32px rgba(0, 0, 0, 0.1);
+    border-color: var(--primary-color, #2563eb);
+    box-shadow: 0 8px 24px rgba(37, 99, 235, 0.1);
   }
 }
 
 .avatar {
-  width: 80px;
-  height: 80px;
-  border-radius: 50%;
+  width: 60px;
+  height: 60px;
+  border-radius: 12px;
   object-fit: cover;
   margin-bottom: 1rem;
-  border: 3px solid var(--primary-color);
 }
 
 .text {
-  font-size: 1rem;
   color: var(--text-primary);
-  margin-bottom: 1rem;
-  font-style: italic;
+  font-size: 0.95rem;
   line-height: 1.6;
-  min-height: 70px;
+  font-style: italic;
+  margin-bottom: 1.2rem;
+  flex: 1;
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.info {
+  display: flex;
+  flex-direction: column;
+}
+
+.name {
+  font-weight: 600;
+  color: var(--text-primary);
+  font-size: 1rem;
+  margin-bottom: 0.2rem;
+}
+
+.role {
+  font-size: 0.9rem;
+  color: var(--text-muted);
 }
 
 .stars {
   display: flex;
-  justify-content: center;
-  margin-bottom: 0.8rem;
+  gap: 3px;
 
   .starFilled {
     color: #facc15;
-    font-size: 1.2rem;
-    margin: 0 2px;
+    font-size: 1.1rem;
   }
-
   .starEmpty {
     color: #d1d5db;
-    font-size: 1.2rem;
-    margin: 0 2px;
+    font-size: 1.1rem;
   }
 }
 
-.name {
-  font-weight: 700;
-  font-size: 1.05rem;
-  color: var(--secondary-color);
-  margin-bottom: 0.25rem;
-}
-
-.role {
-  font-size: 0.95rem;
-  color: var(--text-muted);
-}
-
-/* 📱 Адаптив */
 @media (max-width: 768px) {
-  .cardsGrid {
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  }
-
-  .text {
-    font-size: 0.95rem;
-  }
-
-  .avatar {
-    width: 70px;
-    height: 70px;
-  }
-}
-
-@media (max-width: 480px) {
-  .slider {
-    flex-direction: column;
-  }
-
-  .cardsGrid {
-    grid-template-columns: 1fr;
+  .card {
+    min-width: 260px;
+    max-width: 260px;
+    padding: 1.4rem;
   }
 }

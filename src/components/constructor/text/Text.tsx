@@ -1,6 +1,6 @@
-import React, {JSX} from 'react';
-import styles from './Text.module.scss';
-import clsx from 'clsx';
+import React, { JSX } from "react";
+import styles from "./Text.module.scss";
+import clsx from "clsx";
 
 interface TextProps {
     title?: string;
@@ -8,7 +8,6 @@ interface TextProps {
     description?: string;
     bullets?: string[];
     descriptionWithBullets?: string[];
-
     centerTitle?: boolean;
     centerDescription?: boolean;
     centerBullets?: boolean;
@@ -22,7 +21,7 @@ const Text: React.FC<TextProps> = ({
                                        descriptionWithBullets,
                                        centerTitle = false,
                                        centerDescription = false,
-                                       centerBullets = false
+                                       centerBullets = false,
                                    }) => {
     const headingTag = `h${titleLevel}` as keyof JSX.IntrinsicElements;
 
@@ -32,7 +31,7 @@ const Text: React.FC<TextProps> = ({
                 React.createElement(
                     headingTag,
                     {
-                        className: clsx(styles.title, centerTitle && styles.center)
+                        className: clsx(styles.title, centerTitle && styles.center),
                     },
                     title
                 )}
@@ -53,7 +52,9 @@ const Text: React.FC<TextProps> = ({
 
             {Array.isArray(descriptionWithBullets) && descriptionWithBullets.length > 0 && (
                 <div className={styles.descriptionWithBullets}>
-                    <p className={clsx(styles.description, centerDescription && styles.center)}>Опис:</p>
+                    <p className={clsx(styles.description, centerDescription && styles.center)}>
+                        Key points:
+                    </p>
                     <ul className={clsx(styles.bulletList, centerBullets && styles.center)}>
                         {descriptionWithBullets.map((item, idx) => (
                             <li key={idx}>{item}</li>

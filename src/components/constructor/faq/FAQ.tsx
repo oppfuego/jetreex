@@ -13,17 +13,13 @@ interface FAQItem {
 
 interface FAQProps {
     items: FAQItem[];
-    image?: string; // 🟢 фото праворуч
+    image?: string;
 }
 
 const FAQ: React.FC<FAQProps> = ({ items, image }) => {
     const [openIndex, setOpenIndex] = useState<number | null>(null);
+    const toggle = (idx: number) => setOpenIndex(openIndex === idx ? null : idx);
 
-    const toggle = (idx: number) => {
-        setOpenIndex(openIndex === idx ? null : idx);
-    };
-
-    // ✅ якщо фото немає — додаємо клас для центрування
     const wrapperClass = image
         ? styles.wrapper
         : `${styles.wrapper} ${styles.centered}`;
@@ -41,9 +37,9 @@ const FAQ: React.FC<FAQProps> = ({ items, image }) => {
                                 <motion.div
                                     key={idx}
                                     className={`${styles.item} ${isOpen ? styles.active : ""}`}
-                                    initial={{ opacity: 0, y: 30 }}
+                                    initial={{ opacity: 0, y: 15 }}
                                     whileInView={{ opacity: 1, y: 0 }}
-                                    transition={{ delay: idx * 0.1, duration: 0.4 }}
+                                    transition={{ delay: idx * 0.05, duration: 0.3 }}
                                     viewport={{ once: true }}
                                 >
                                     <button
@@ -54,8 +50,8 @@ const FAQ: React.FC<FAQProps> = ({ items, image }) => {
                                         <span>{item.question}</span>
                                         <motion.span
                                             animate={{ rotate: isOpen ? 180 : 0 }}
-                                            transition={{ duration: 0.3 }}
-                                            className={isOpen ? styles.arrowOpen : styles.arrow}
+                                            transition={{ duration: 0.25 }}
+                                            className={styles.arrow}
                                         >
                                             <IoIosArrowDown />
                                         </motion.span>
@@ -65,11 +61,11 @@ const FAQ: React.FC<FAQProps> = ({ items, image }) => {
                                         {isOpen && (
                                             <motion.div
                                                 key="answer"
-                                                className={styles.answer}
-                                                initial={{ height: 0, opacity: 0 }}
-                                                animate={{ height: "auto", opacity: 1 }}
-                                                exit={{ height: 0, opacity: 0 }}
-                                                transition={{ duration: 0.35, ease: "easeInOut" }}
+                                                className={styles.answerWrapper}
+                                                initial={{ opacity: 0 }}
+                                                animate={{ opacity: 1 }}
+                                                exit={{ opacity: 0 }}
+                                                transition={{ duration: 0.25 }}
                                             >
                                                 <div className={styles.answerContent}>
                                                     {item.answer}
@@ -83,7 +79,6 @@ const FAQ: React.FC<FAQProps> = ({ items, image }) => {
                     </div>
                 </div>
 
-                {/* 🖼️ показуємо праву частину лише якщо є зображення */}
                 {image && (
                     <div className={styles.right}>
                         <div className={styles.imageWrapper}>

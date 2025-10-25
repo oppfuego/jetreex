@@ -19,37 +19,37 @@ a {
 
 :root {
     /* Основні */
-    --primary-color: #32D69A;       /* м'ятно-зелений — головний акцент */
-    --secondary-color: #045D56;     /* глибокий бірюзовий для контрасту */
-    --tertiary-color: #5EEAD4;      /* світліший відтінок для м’яких акцентів */
-    --quaternary-color: #E6FFFA;    /* світлий фон з відтінком бірюзи */
+    --primary-color: #2563EB;       /* насичений синій — головний акцент */
+    --secondary-color: #1E3A8A;     /* темно-синій для контрасту */
+    --tertiary-color: #60A5FA;      /* світліший синій для м’яких акцентів */
+    --quaternary-color: #EFF6FF;    /* дуже світлий блакитний фон */
 
     /* Фон та поверхні */
-    --background-light: #F7F9FA;    /* чистий світлий фон */
-    --background-dark: #045D56;     /* темний бірюзовий для інверсій */
+    --background-light: #FFFFFF;    /* білий чистий фон */
+    --background-dark: #1E3A8A;     /* темно-синій фон для інверсій */
     --surface-color: #FFFFFF;       /* поверхні (карточки, блоки) */
-    --surface-muted: #EDF2F7;       /* приглушений фон секцій */
+    --surface-muted: #F3F4F6;       /* легкий сірий для секцій */
 
     /* Тексти */
-    --text-primary: #1F2937;        /* глибокий графіт */
-    --text-secondary: #4B5563;      /* темно-сірий */
-    --text-muted: #9CA3AF;          /* сірий для підписів */
+    --text-primary: #1E293B;        /* темно-синювато-сірий */
+    --text-secondary: #475569;      /* пом’якшений сірий */
+    --text-muted: #94A3B8;          /* світлий сірий для підписів */
     --text-inverse: #FFFFFF;        /* білий текст на темному фоні */
-    --text-accent: #32D69A;         /* зелений акцент у тексті */
+    --text-accent: #2563EB;         /* синій акцент у тексті */
 
     /* Статуси */
     --success-color: #22C55E;       /* яскраво-зелений */
-    --warning-color: #FACC15;       /* жовтий (енергія) */
+    --warning-color: #FACC15;       /* жовтий */
     --error-color: #EF4444;         /* червоний */
-    --info-color: #5EEAD4;          /* легкий бірюзовий акцент */
+    --info-color: #3B82F6;          /* чистий блакитний акцент */
 
     /* Інтерактивні */
-    --button-hover: #28B584;        /* темніший відтінок м’ятного */
-    --link-color: #32D69A;          /* зелений посилання */
-    --link-hover: #1FAE7A;          /* при наведенні стає глибшим */
+    --button-hover: #1D4ED8;        /* глибший синій при наведенні */
+    --link-color: #2563EB;          /* синє посилання */
+    --link-hover: #1E40AF;          /* темніше при наведенні */
 
     /* Система */
-    --border-color: #E5E7EB;        /* світло-сірі бордери */
+    --border-color: #E5E7EB;        /* світлі бордери */
     --shadow-color: rgba(0, 0, 0, 0.08);
 
     --font-family: 'Inter', 'Roboto', 'Helvetica Neue', Arial, sans-serif;

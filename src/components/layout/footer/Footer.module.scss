@@ -20,8 +20,8 @@
   --fs: var(--footer-fs, 16px);
   --fs-legal: var(--footer-legal-fs, 14px);
 
-  --logo-w: var(--footer-logo-w, 120px);
-  --logo-h: var(--footer-logo-h, 30px);
+  --logo-w: var(--footer-logo-w, 200px);
+  --logo-h: var(--footer-logo-h, 60px);
 
   --footer-cols-xl: var(--footer-cols-xl, 4);
   --footer-cols-lg: var(--footer-cols-lg, 3);
@@ -101,6 +101,7 @@
   margin-bottom: 8px;
   color: var(--footer-title-color);
   font-size: var(--footer-title-fs);
+  text-align: center;
 }
 
 .footer__link {
@@ -246,13 +247,16 @@
   flex-wrap: wrap;
   align-items: center;
   margin-top: 12px;
+  justify-content: center;
+
 }
 
 .paymentIcon {
   font-size: 42px;
   opacity: 0.9;
   transition: all 0.2s ease-in-out;
-  color: var(--text-primary);
+  color: var(--text-inverse);
+  cursor: pointer;
 
   &:hover {
     opacity: 1;
@@ -285,6 +289,9 @@
   flex-direction: column;
   gap: 8px;
   font-size: var(--footer-link-fs);
+  align-items: center;
+  justify-content: center;
+  text-align: center;
 }
 
 .footer__corporate-bottom {

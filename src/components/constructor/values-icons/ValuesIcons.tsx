@@ -11,7 +11,6 @@ interface ValueItem {
     text?: string;
 }
 
-
 interface Props {
     title?: string;
     description?: string;
@@ -23,34 +22,33 @@ const cardVariants = {
     visible: { opacity: 1, y: 0 },
 };
 
-
 const ValuesIcons: React.FC<Props> = ({ title, description, values }) => {
     return (
         <section className={styles.section}>
-            <div className={styles.head}>
-                {title && <h2 className={styles.sectionTitle}>{title}</h2>}
-                {description && <p className={styles.sectionDesc}>{description}</p>}
+            <div className={styles.container}>
+                <div className={styles.head}>
+                    {title && <h2 className={styles.sectionTitle}>{title}</h2>}
+                    {description && <p className={styles.sectionDesc}>{description}</p>}
+                </div>
+
+                <Grid columns={values.length > 3 ? 4 : values.length} gap="2rem">
+                    {values.map((v, i) => (
+                        <motion.div
+                            key={i}
+                            className={styles.valueCard}
+                            initial="hidden"
+                            whileInView="visible"
+                            viewport={{ once: true, amount: 0.2 }}
+                            variants={cardVariants}
+                            transition={{ delay: i * 0.15, duration: 0.5, ease: "easeOut" }}
+                        >
+                            <div className={styles.icon}>{v.icon}</div>
+                            <h3>{v.title}</h3>
+                            <p>{v.description ?? v.text}</p>
+                        </motion.div>
+                    ))}
+                </Grid>
             </div>
-
-
-            <Grid columns={values.length > 3 ? 4 : values.length} gap="2rem">
-                {values.map((v, i) => (
-                    <motion.div
-                        key={i}
-                        className={styles.valueCard}
-                        initial="hidden"
-                        whileInView="visible"
-                        viewport={{ once: true, amount: 0.2 }}
-                        variants={cardVariants}
-                        transition={{ delay: i * 0.2, duration: 0.6, ease: "easeOut" }}
-                    >
-                        <div className={styles.icon}>{v.icon}</div>
-                        <h3>{v.title}</h3>
-                        <p>{v.description ?? v.text}</p>
-                    </motion.div>
-
-                ))}
-            </Grid>
         </section>
     );
 };

@@ -148,7 +148,7 @@
   padding: 6px 16px;
   border-radius: 9999px;
 
-  background: var(--quaternary-color); /* світло-блакитний */
+  background: var(--text-accent); /* світло-блакитний */
   color: var(--text-primary);
   text-decoration: none;
   border: 1px solid var(--border-color);
@@ -182,7 +182,7 @@
   font-size: 0.9rem;
   color: var(--text-primary);
   span {
-    color: var(--primary-color);
+    color: var(--background-light);
   }
 }
 
@@ -195,7 +195,7 @@
 
 .iconUser {
   font-size: 22px;
-  color: var(--secondary-color);
+  color: var(--background-light);
   transition: color 0.25s ease;
 }
 
@@ -207,30 +207,6 @@
 
   @media (max-width: 768px) {
     flex-direction: column;
-  }
-}
-
-/* 🔹 Темна тема */
-@media (prefers-color-scheme: dark) {
-  .userButton {
-    background: rgba(37, 99, 235, 0.1);
-    border-color: rgba(255, 255, 255, 0.1);
-    color: #e0e7ff;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.25);
-
-    &:hover {
-      background: var(--secondary-color);
-      border-color: var(--primary-color);
-      box-shadow: 0 4px 12px rgba(37, 99, 235, 0.35);
-    }
-  }
-
-  .balance span {
-    color: var(--tertiary-color);
-  }
-
-  .iconUser {
-    color: var(--tertiary-color);
   }
 }
 

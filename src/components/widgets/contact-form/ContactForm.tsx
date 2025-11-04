@@ -46,25 +46,23 @@ const ContactForm: React.FC = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 transition={{ duration: 0.6 }}
             >
-                <h2>Contact Our Team</h2>
+                <h2>Let's Talk About Your Project</h2>
                 <p>
-                    Have a question about our plans or need tailored advice?
-                    Our experts typically respond within 24 hours.
+                    Have questions about pricing or need a custom solution?
+                    Our team will get back to you within 24 hours.
                 </p>
             </motion.div>
 
-            <div className={styles.grid}>
+            <div className={styles.container}>
                 {/* === LEFT SIDE === */}
                 <motion.div
-                    className={styles.infoBlock}
+                    className={styles.infoCard}
                     initial={{ opacity: 0, x: -40 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6 }}
                 >
-                    <h3>Get in touch</h3>
-                    <p className={styles.subtext}>
-                        We’re here to answer your questions and help you find the right solution for your needs.
-                    </p>
+                    <h3>Contact Information</h3>
+                    <p>We’d love to hear from you — reach out anytime.</p>
 
                     <div className={styles.infoItem}>
                         <FaMapMarkerAlt />
@@ -82,7 +80,7 @@ const ContactForm: React.FC = () => {
 
                 {/* === RIGHT SIDE === */}
                 <motion.div
-                    className={styles.formBlock}
+                    className={styles.formCard}
                     initial={{ opacity: 0, x: 40 }}
                     whileInView={{ opacity: 1, x: 0 }}
                     transition={{ duration: 0.6 }}
@@ -103,9 +101,7 @@ const ContactForm: React.FC = () => {
                                     </div>
 
                                     <Field as="input" name="email" type="email" placeholder="Email address" />
-
                                     <Field as="input" name="phone" type="tel" placeholder="Phone number" />
-
                                     <Field as="textarea" name="message" placeholder="Your message" rows={5} />
 
                                     <ButtonUI

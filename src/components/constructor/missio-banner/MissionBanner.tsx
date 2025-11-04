@@ -17,8 +17,8 @@ const MissionBanner: React.FC<MissionBannerProps> = ({ title, description, image
                 <Text
                     title={title}
                     description={description}
-                    centerTitle={false}
-                    centerDescription={false}
+                    centerTitle={true}
+                    centerDescription={true}
                 />
             }
             right={

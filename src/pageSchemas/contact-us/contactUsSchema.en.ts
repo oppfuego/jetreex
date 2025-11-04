@@ -20,35 +20,9 @@ const contactPage: PageSchema = {
         },
     },
     blocks: [
-        // 🔹 Hero Intro
-
-
-        // 🔹 Contact Form
         {
             type: "custom",
             component: "ContactForm",
-        },
-
-        // 🔹 FAQ для довіри
-        {
-            type: "faq",
-            items: [
-                {
-                    question: "How soon will I get a reply?",
-                    answer:
-                        "We usually respond within 24 hours on business days.",
-                },
-                {
-                    question: "Can I schedule a meeting?",
-                    answer:
-                        "Yes, send us your request via the form and we’ll arrange a call.",
-                },
-                {
-                    question: "Do you offer customer support on weekends?",
-                    answer:
-                        "Currently, our support is available Monday to Friday, but we’ll get back to you the next business day.",
-                },
-            ],
         },
     ],
 };

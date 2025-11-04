@@ -4,77 +4,94 @@ import { COMPANY_NAME, COMPANY_EMAIL } from "@/resources/constants";
 const faqSchema: PageSchema = {
     meta: {
         title: `FAQ — ${COMPANY_NAME}`,
-        description: `Frequently asked questions about ${COMPANY_NAME}: how expert business plans work, AI assistance, delivery time, and confidentiality.`,
+        description: `Common questions about ${COMPANY_NAME} SEO services — audits, optimisation, link building, local SEO, and reporting.`,
         keywords: [
-            `${COMPANY_NAME} FAQ`,
-            "business plan help",
-            "expert 24h service",
-            "AI business plan",
-            "investor pitch deck",
-            "custom business plan",
-            "how it works",
+            "SEO FAQ",
+            "SEO audit",
+            "link building",
+            "local SEO questions",
+            "SEO services explanation",
+            "how SEO works",
         ],
         canonical: "/faq",
         ogImage: {
-            title: `${COMPANY_NAME} FAQ`,
-            description: `Answers to the most common questions about creating and receiving your business plan with ${COMPANY_NAME}.`,
+            title: `${COMPANY_NAME} SEO FAQ`,
+            description: `Answers to the most common questions about SEO and how ${COMPANY_NAME} helps your business grow organically.`,
             bg: "#0a2540",
             color: "#ffffff",
         },
     },
 
     blocks: [
+
+        // 🌟 Highlight Strip — коротко про принципи
+        {
+            type: "custom",
+            component: "HighlightStrip",
+            items: [
+                { icon: "📈", text: "Real Measurable Growth", subtext: "Rankings, traffic & conversions" },
+                { icon: "🔍", text: "Transparent Process", subtext: "Clear reports every month" },
+                { icon: "🤝", text: "Human Expertise", subtext: "No automation — only specialists" },
+            ],
+        },
+
+        // ❓ FAQ section
         {
             type: "faq",
             items: [
                 {
                     question: `What is ${COMPANY_NAME}?`,
-                    answer: `${COMPANY_NAME} is a business planning platform where experts create professional, investor-ready business plans within 24 hours — supported by AI tools for faster research and data accuracy.`,
+                    answer: `${COMPANY_NAME} is a full-service SEO agency helping businesses improve their visibility on Google through audits, optimisation, and link building.`,
                 },
                 {
-                    question: "Who writes my business plan?",
+                    question: "How long does it take to see SEO results?",
                     answer:
-                        "Every plan is written by a certified business analyst with real-world consulting experience. Our team combines strategic insight, market research, and financial modeling to deliver credible business documents.",
+                        "SEO is a long-term process. You can expect visible improvements in 4–8 weeks, with consistent growth after 3–6 months depending on your niche.",
                 },
                 {
-                    question: "How long does it take to receive my plan?",
+                    question: "What’s included in your SEO packages?",
                     answer:
-                        "Most expert plans are delivered within 24 hours after you submit your project brief. Larger or custom requests (for example, multi-market analysis or pitch decks) may take up to 48 hours.",
+                        "Each package includes technical SEO, on-page optimisation, link building, keyword analysis, and reporting — tailored to your goals and website size.",
                 },
                 {
-                    question: "What’s the difference between the AI Plan and Expert Plan?",
+                    question: "Do you guarantee top rankings on Google?",
                     answer:
-                        "The AI Plan generates an instant draft — great for quick ideas or testing. The Expert Plan includes full human writing, market validation, and financial forecasting — ideal for investors or grants.",
+                        "No one can guarantee exact rankings. But we guarantee steady growth, transparent work, and measurable KPIs every month.",
                 },
                 {
-                    question: "Can I edit my business plan after delivery?",
+                    question: "What is a technical SEO audit?",
                     answer:
-                        "Yes. All plans come in editable PDF and DOCX formats. You can easily update text, figures, or add new sections at any time.",
+                        "A deep analysis of your site’s structure, speed, indexing, and errors that impact search visibility. We provide a full report with clear fixes.",
                 },
                 {
-                    question: "Is my information kept confidential?",
-                    answer: `${COMPANY_NAME} follows strict data protection policies (GDPR compliant). All submitted ideas and documents remain private and are never shared with third parties.`,
-                },
-                {
-                    question: "Can you create a plan in my language or local market?",
+                    question: "Do you offer link building services?",
                     answer:
-                        "Absolutely. We support multiple languages and tailor your plan for your specific country’s market structure, legal norms, and investor expectations.",
+                        "Yes, we build high-quality backlinks from trusted, relevant sources — all manually researched and tracked in monthly reports.",
                 },
                 {
-                    question: "Do you provide investor pitch decks?",
+                    question: "Will I get reports on progress?",
                     answer:
-                        "Yes. The Investor Pack includes a full PowerPoint or PDF presentation designed to summarize your business plan visually — perfect for meetings or fundraising.",
+                        "Yes, detailed monthly reports include keyword rankings, traffic stats, backlinks, and completed optimisation tasks.",
                 },
                 {
-                    question: "Can I request changes or revisions?",
+                    question: "How do I start working with you?",
                     answer:
-                        "Yes. We provide one free revision with every order, and additional adjustments are available through our continuous support service.",
+                        "Just fill out the contact form or email us at " + COMPANY_EMAIL + ". We’ll analyse your site and prepare a free strategy outline.",
                 },
                 {
-                    question: "How can I contact support?",
-                    answer: `You can reach our support team any time at ${COMPANY_EMAIL} or through the contact form on our website. We reply within 12 hours on business days.`,
+                    question: "Is my website access secure?",
+                    answer:
+                        `Absolutely. ${COMPANY_NAME} follows strict security and confidentiality standards — your credentials are safe with us.`,
                 },
             ],
+        },
+
+        {
+            type: "custom",
+            component: "TextWithButton",
+            title: "Still Have Questions?",
+            buttonText: "Write to Us",
+            buttonLink: "/contact-us",
         },
     ],
 };

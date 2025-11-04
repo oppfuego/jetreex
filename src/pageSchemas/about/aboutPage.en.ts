@@ -3,23 +3,18 @@ import { COMPANY_NAME } from "@/resources/constants";
 
 const schema: PageSchema = {
     meta: {
-        title: `About ${COMPANY_NAME} — Our Mission, Vision & Team`,
-        description: `${COMPANY_NAME} combines human expertise with artificial intelligence to make business planning faster, smarter, and more accessible. Discover our mission, our story, and the people behind the platform.`,
+        title: `About ${COMPANY_NAME} — Who We Are & How We Grow Brands`,
+        description: `${COMPANY_NAME} is an AI-powered SEO agency helping businesses grow through data, strategy, and creativity. Discover our story, milestones, and the results we bring.`,
         keywords: [
-            "about business planning platform",
-            "AI business generator team",
-            "our story",
-            "business plan experts",
-            "startup innovation",
-            "artificial intelligence planning",
+            "about seo agency",
+            "seo experts",
+            "digital marketing team",
+            "seo portfolio",
+            "seo case studies",
+            "ai seo automation",
+            "our mission",
         ],
-        canonical: "/about-us",
-        ogImage: {
-            title: `${COMPANY_NAME}`,
-            description: "Where expert knowledge meets AI innovation.",
-            bg: "#0a2540",
-            color: "#ffffff",
-        },
+        canonical: "/about",
     },
 
     blocks: [
@@ -27,109 +22,114 @@ const schema: PageSchema = {
         {
             type: "custom",
             component: "HeroSection",
-            title: `Building the Future of Business Planning`,
+            title: "From Small Agency to Global SEO Partner",
             highlight: `${COMPANY_NAME}`,
-            description: `${COMPANY_NAME} was founded with a single vision — to make professional business planning accessible to everyone.  
-We blend human intelligence with cutting-edge AI to help founders, students, and professionals turn ideas into structured, investor-ready business plans — in hours, not weeks.`,
-            image: "image7",
-            align: "right",
+            description:
+                `${COMPANY_NAME} started as a small consultancy focused on transparent SEO.  
+Today, we help businesses in 20+ countries increase visibility and sales through AI-enhanced strategies, proven processes, and creative human insight.`,
+            image: "image9",
+            align: "left",
             showTrustBadge: true,
         },
 
-        // 🧭 OUR STORY
-        {
-            type: "section",
-            title: "Our Story — From Consulting Desks to AI Innovation",
-            description: `Our journey began with a group of business consultants and developers who realized how time-consuming and expensive traditional planning could be.  
-We wanted to change that — to build a tool that saves time, cuts costs, and empowers entrepreneurs to focus on what matters most: execution.`,
-            left: {
-                type: "custom",
-                component: "InfoBlock",
-                title: `The Idea Behind ${COMPANY_NAME}`,
-                description: `${COMPANY_NAME} started as a collaborative project between strategy consultants, startup founders, and software engineers.  
-We saw how many early-stage entrepreneurs were stuck — either paying thousands for expert help or struggling alone with templates.  
-That’s why we created a platform that merges both worlds: expert knowledge + AI automation.`,
-                bullets: [
-                    "Founded by business strategists and AI engineers",
-                    "Created to make planning faster and more transparent",
-                    "Built on data-driven insights and global startup experience",
-                ],
-            },
-            right: {
-                type: "media",
-                mediaType: "image",
-                src: "image2",
-                alt: "Business founders working together",
-            },
-        },
-
-        // 🎯 MISSION
+        // 🧭 TIMELINE — шлях компанії
         {
             type: "custom",
-            component: "MissionBanner",
-            title: "Our Mission",
-            description: `${COMPANY_NAME} helps anyone with an idea — from students to startups — create a professional business plan with confidence.  
-We merge automation and personalization, ensuring that every plan reflects both market data and your unique vision.`,
-            image: "image10",
+            component: "StoryTimeline",
+            steps: [
+                {
+                    year: "2019",
+                    title: "Our Beginning",
+                    description:
+                        "A team of SEO specialists and data analysts joined forces to fix what agencies ignored — transparency and measurable ROI.",
+                },
+                {
+                    year: "2020",
+                    title: "Automation Era",
+                    description:
+                        "We built internal AI tools for keyword clustering, backlink quality analysis, and rank tracking — saving 60% of manual work.",
+                },
+                {
+                    year: "2021",
+                    title: "Global Growth",
+                    description:
+                        "Our results attracted e-commerce, SaaS, and startups from 10+ countries. We began scaling operations and team expertise.",
+                },
+                {
+                    year: "2023",
+                    title: "Launch of ${COMPANY_NAME} Platform",
+                    description:
+                        "We introduced token-based pricing and full transparency dashboards — no hidden retainers, just data and growth.",
+                },
+                {
+                    year: "2025",
+                    title: "AI-Driven Future",
+                    description:
+                        "Now, our focus is predictive SEO — using machine learning to forecast traffic and detect ranking trends before competitors.",
+                },
+            ],
         },
 
-        // 🧠 EXPERTISE & AI
+        // 🌍 Highlight strip — короткі факти
         {
-            type: "section",
-            title: "Where Human Expertise Meets Artificial Intelligence",
-            description: `We believe AI is not a replacement for human intelligence — it’s an extension of it.  
-Our system was built to assist professional analysts, not replace them.`,
-            left: {
-                type: "custom",
-                component: "InfoBlock",
-                image: "image9",
-                title: "Human Insight",
-                description: `Our business experts bring years of experience in finance, strategy, and market analysis.  
-They review every framework and ensure that each AI-generated plan follows real-world logic and investor standards.`,
-                bullets: [
-                    "Verified business analysts & consultants",
-                    "Experience across 15+ industries",
-                    "Specialists in market and competitor research",
-                ],
-            },
-            right: {
-                type: "custom",
-                component: "InfoBlock",
-                image: "image4",
-                title: "AI Precision",
-                description: `Our AI engine automates structure, forecasting, and presentation — saving up to 90% of time usually spent writing and formatting.  
-It adapts tone, language, and metrics to your audience — whether you pitch investors or prepare academic work.`,
-                bullets: [
-                    "Instant generation powered by GPT-based models",
-                    "Dynamic financial projections and visuals",
-                    "Localized content for global markets",
-                ],
-            },
+            type: "custom",
+            component: "HighlightStrip",
+            items: [
+                { icon: "🚀", text: "Founded in 2019", subtext: "Growing faster every year" },
+                { icon: "🌐", text: "20+ Countries", subtext: "Global client base" },
+                { icon: "📈", text: "300+ Projects", subtext: "Proven SEO results" },
+                { icon: "🤖", text: "AI-Powered Tools", subtext: "Custom analytics & automation" },
+            ],
         },
 
-        // ⚙️ OUR APPROACH
+        // 💼 OUR PROJECTS / CASES
         {
             type: "section",
-            title: "Our Approach to AI & Strategy",
-            description: `Every feature inside ${COMPANY_NAME} is built around one simple philosophy:  
-Technology should enhance decision-making, not replace it.  
-Our hybrid model ensures that AI takes care of repetitive tasks, while human professionals set direction and strategy.`,
+            title: "Case Studies — Real Results, Real Growth",
+            description:
+                "Every project we take tells a success story. Explore how our strategies boosted visibility, traffic, and sales across industries.",
             left: {
-                type: "custom",
-                component: "InfoBlock",
-                title: "Balanced Intelligence",
-                description: `We integrate AI-driven analytics with human judgment — producing plans that are both data-backed and contextually sound.`,
-                bullets: [
-                    "AI-driven forecasting with manual validation",
-                    "Scenario planning based on real business cases",
-                    "Continuous feedback from domain experts",
+                type: "grid",
+                columns: 3,
+                gap: "1.2rem",
+                items: [
+                    {
+                        key: "1",
+                        block: {
+                            type: "media",
+                            mediaType: "image",
+                            src: "portfolio1",
+                            hoverEnabled: true,
+                            hoverText:
+                                "E-commerce Brand — +300% organic traffic & +180% sales in 6 months.",
+                            hoverButton: { text: "View Case", link: "/cases/ecommerce" },
+                        },
+                    },
+                    {
+                        key: "2",
+                        block: {
+                            type: "media",
+                            mediaType: "image",
+                            src: "portfolio2",
+                            hoverEnabled: true,
+                            hoverText:
+                                "Tech Startup — From 0 to 25k monthly visits using AI-driven keyword mapping.",
+                            hoverButton: { text: "View Case", link: "/cases/saas" },
+                        },
+                    },
+                    {
+                        key: "3",
+                        block: {
+                            type: "media",
+                            mediaType: "image",
+                            src: "portfolio3",
+                            hoverEnabled: true,
+                            hoverText:
+                                "Local Business — +220% leads after local SEO optimisation and Google Maps push.",
+                            hoverButton: { text: "View Case", link: "/cases/local" },
+                        },
+                    },
                 ],
-            },
-            right: {
-                type: "media",
-                mediaType: "image",
-                src: "image11",
-                alt: "Balanced AI and human strategy",
             },
         },
 
@@ -138,196 +138,155 @@ Our hybrid model ensures that AI takes care of repetitive tasks, while human pro
             type: "custom",
             component: "ValuesIcons",
             title: "Our Core Values",
-            description: `Everything we create is driven by transparency, innovation, and respect for the people who trust us with their ideas.`,
+            description:
+                "These principles guide every project — from keyword research to final results.",
             values: [
-                {
-                    icon: "🤝",
-                    title: "Openness & Integrity",
-                    text: "We value honesty and clarity — both in how we work and what we deliver.",
-                },
-                {
-                    icon: "💡",
-                    title: "Innovation with Purpose",
-                    text: "Technology should empower creativity, not complicate it.",
-                },
-                {
-                    icon: "📊",
-                    title: "Data-Driven Precision",
-                    text: "Our forecasts and strategies are based on real market insights.",
-                },
-                {
-                    icon: "🌍",
-                    title: "Global Accessibility",
-                    text: "We make professional planning available to anyone — anywhere.",
-                },
+                { icon: "🤝", title: "Honesty", text: "No fake reports. Every metric is real and verifiable." },
+                { icon: "⚙️", title: "Innovation", text: "We integrate AI tools that improve accuracy and speed." },
+                { icon: "📊", title: "Clarity", text: "You always know what’s being done and why it matters." },
+                { icon: "💡", title: "Creativity", text: "We blend logic and storytelling for authentic SEO." },
             ],
         },
 
-        // 🌎 IMPACT
-        {
-            type: "section",
-            title: "Global Impact & Community",
-            description: `${COMPANY_NAME} supports entrepreneurs in over 40 countries.  
-We collaborate with universities, incubators, and innovation hubs to make professional planning part of every entrepreneurial journey.`,
-            left: {
-                type: "custom",
-                component: "InfoBlock",
-                title: "Educational Partnerships",
-                description: `Our academic integrations help students learn how to transform ideas into validated business models.`,
-                bullets: [
-                    "Used in 30+ university entrepreneurship courses",
-                    "Partnered with startup accelerators across Europe and Asia",
-                    "Empowering next-generation founders",
-                ],
-            },
-            right: {
-                type: "media",
-                mediaType: "image",
-                src: "image8",
-                alt: "Global community of entrepreneurs",
-            },
-        },
 
-        // 📰 PRESS & RECOGNITION
+
+        // 🧭 PHILOSOPHY BLOCK
         {
             type: "custom",
-            component: "ValuesIcons",
-            title: "Press & Recognition",
-            description: `Our platform and team have been recognized by top publications and tech events for our innovative approach to combining AI with human creativity.`,
-            values: [
-                {
-                    icon: "🏆",
-                    title: "Best AI Startup 2024",
-                    text: "Awarded at the European Innovation Summit for our hybrid AI approach.",
-                },
-                {
-                    icon: "📰",
-                    title: "Featured in TechRadar & Business Insider",
-                    text: "Praised as one of the most accessible tools for startups and SMEs.",
-                },
-                {
-                    icon: "🎤",
-                    title: "Global Tech Speaker",
-                    text: "Invited to discuss AI ethics and automation at global conferences.",
-                },
-            ],
+            component: "InfoBlock",
+            title: "Our Philosophy",
+            description:
+                "We don’t chase algorithms — we understand them. Our mission is to turn SEO into a science of predictable growth powered by human expertise and machine intelligence.",
+            align: "center",
         },
 
-        // 🤝 PARTNERSHIPS
-        {
-            type: "section",
-            title: "Partnerships & Integrations",
-            description: `We believe collaboration drives progress. ${COMPANY_NAME} integrates with the tools that businesses already use, ensuring seamless workflows and unified data.`,
-            left: {
-                type: "custom",
-                component: "InfoBlock",
-                title: "Connected Ecosystem",
-                description: `From financial platforms to productivity suites — we ensure your planning data moves where it’s needed most.`,
-                bullets: [
-                    "Integrations with Zoho, Notion, and Google Workspace",
-                    "Export-ready business summaries for investors",
-                    "API access for enterprise teams",
-                ],
-            },
-            right: {
-                type: "media",
-                mediaType: "image",
-                src: "image12",
-                alt: "API and business integrations illustration",
-            },
-        },
-
-        // 🧑‍💼 TEAM
+        // 👥 TEAM
         {
             type: "custom",
             component: "TeamGrid",
-            title: "The Team Behind the Platform",
-            description: `We’re a multidisciplinary team of business analysts, designers, and developers united by one purpose — to simplify the path from idea to execution.`,
+            title: "Meet the Team Behind the Rankings",
+            description:
+                "A multidisciplinary team of SEO specialists, analysts, copywriters, and digital strategists — united by one goal: your growth.",
             members: [
                 {
-                    name: "Anna Müller",
-                    role: "Head of Strategy",
-                    bio: "Former startup consultant who led over 200 business plan projects before co-founding the AI-planning system.",
-                    image: "team1",
+                    name: "Olena V.",
+                    role: "Head of SEO",
+                    bio: "11 years of experience, ex-agency director, passionate about technical SEO and team growth.",
+                    image: "team7",
                 },
                 {
-                    name: "David Chen",
-                    role: "Lead AI Engineer",
-                    bio: "Machine learning specialist focusing on natural language automation and contextual data generation.",
-                    image: "team2",
+                    name: "Max D.",
+                    role: "SEO Engineer",
+                    bio: "Focuses on Core Web Vitals, indexing, and site performance optimisation.",
+                    image: "team5",
                 },
                 {
-                    name: "Maria Rossi",
-                    role: "Design Director",
-                    bio: `Leads the UI/UX design system for ${COMPANY_NAME}, ensuring clarity and focus for all users.`,
+                    name: "Daria L.",
+                    role: "Content Strategist",
+                    bio: "Transforms analytics into content plans that engage and convert readers into clients.",
+                    image: "team6",
+                },
+                {
+                    name: "Ihor P.",
+                    role: "Link Building Manager",
+                    bio: "Builds high-quality backlinks through authentic outreach and strategic partnerships.",
+                    image: "team4",
+                },
+                {
+                    name: "Svitlana K.",
+                    role: "SEO Analyst",
+                    bio: "Masters keyword research, competitor insights, and data-driven SEO reporting.",
                     image: "team3",
+                },
+                {
+                    name: "Andrii M.",
+                    role: "UX & Conversion Specialist",
+                    bio: "Optimises user experience and landing flows to boost conversions and dwell time.",
+                    image: "team2",
                 },
             ],
         },
 
-        // 🚀 FUTURE VISION
-        {
-            type: "section",
-            title: "Looking Ahead",
-            description: `${COMPANY_NAME} continues to evolve.  
-Our roadmap includes deeper financial analytics, team collaboration tools, and multilingual business plan generation — making strategic planning easier for a global audience.`,
-            left: {
-                type: "custom",
-                component: "InfoBlock",
-                title: "Next Milestones",
-                description: `We’re working on integrations with CRM, market data APIs, and real-time AI advisors — so your business plan becomes a living, adaptive tool.`,
-                bullets: [
-                    "Automated investor pitch decks",
-                    "Live performance dashboards",
-                    "Real-time collaboration & editing",
-                    "Integration with Zoho, Notion, and Google Workspace",
-                ],
-            },
-            right: {
-                type: "media",
-                mediaType: "image",
-                src: "image14",
-                alt: "Future roadmap illustration",
-            },
-        },
-
-        // 🔚 FINAL CTA
+        // 💬 TESTIMONIALS
         {
             type: "custom",
-            component: "MissionBanner",
-            title: "Join the Future of Business Planning",
-            description: `At ${COMPANY_NAME}, we believe that every idea deserves a chance.  
-Whether you’re an entrepreneur, student, or consultant — our mission is to help you plan smarter, faster, and with confidence.`,
-            image: "image17",
+            component: "TestimonialsSlider",
+            title: "What Our Clients Say",
+            description: "Real feedback from companies we’ve helped grow organically.",
+            testimonials: [
+                {
+                    name: "Anastasia Romanova",
+                    role: "CMO, Local Clinic",
+                    image: "review6",
+                    text: "The local SEO campaign doubled our calls in just two months. The analytics dashboard is pure gold — everything is transparent and easy to track.",
+                    rating: 5,
+                },
+                {
+                    name: "Viktor Kovalenko",
+                    role: "Founder, Tech Startup",
+                    image: "review5",
+                    text: "I love the token-based model — simple, flexible, and cost-effective. We scaled traffic by 3x without unpredictable retainers.",
+                    rating: 5,
+                },
+                {
+                    name: "Oleksandr Hryn",
+                    role: "Marketing Director, Retail Brand",
+                    image: "review4",
+                    text: "Professional, responsive, and strategic. Their off-page SEO helped us dominate Google rankings in our niche within 6 months.",
+                    rating: 5,
+                },
+                {
+                    name: "Maria Koval",
+                    role: "E-commerce Manager",
+                    image: "review3",
+                    text: "After their audit and on-page optimisation, our organic sales skyrocketed. They also improved UX — now our bounce rate is down 35%.",
+                    rating: 5,
+                },
+                {
+                    name: "Andrii Poltavets",
+                    role: "CEO, Logistics Company",
+                    image: "review2",
+                    text: "Their team understood our complex B2B structure and delivered results fast. Real professionals who think like business partners.",
+                    rating: 5,
+                },
+            ],
         },
 
-        // ❓ FAQ — Added section
+        // ❓ FAQ
         {
             type: "faq",
             items: [
                 {
-                    question: "How does the AI planning process actually work?",
-                    answer: `${COMPANY_NAME} uses advanced GPT-based models trained on thousands of verified business frameworks.  
-You simply describe your idea, choose a goal (pitch, study, or investor plan), and our system generates a professional structure — ready for review or download.`,
+                    question: "What makes your SEO approach unique?",
+                    answer:
+                        "We merge automation and human strategy — combining AI precision with expert intuition for long-term growth.",
                 },
                 {
-                    question: "Can I combine human expert review with AI generation?",
-                    answer: "Yes. You can generate your plan instantly and then request a professional analyst to review and enhance it within 24 hours for investor-ready quality.",
+                    question: "Do you work globally?",
+                    answer:
+                        "Yes. We run multilingual and multi-market SEO campaigns for brands in Europe, the US, and Asia.",
                 },
                 {
-                    question: "Is my business idea and data secure?",
-                    answer: "Absolutely. All project data is encrypted and stored on secure servers. ${COMPANY_NAME} never shares your documents or business concepts with third parties.",
+                    question: "Can you showcase real results?",
+                    answer:
+                        "Absolutely — our portfolio features measurable growth metrics, case studies, and dashboards visible to each client.",
                 },
                 {
-                    question: "Who are the experts behind the platform?",
-                    answer: "Our team includes business consultants, economists, and AI engineers with backgrounds in global startups, finance, and data analytics. Each plan template is validated by real experts before use.",
-                },
-                {
-                    question: "How can I collaborate or partner with your team?",
-                    answer: `We’re open to partnerships with universities, accelerators, and tech ecosystems.  
-You can contact us directly via the contact page or email our partnership department at support@${(COMPANY_NAME ?? "company").toLowerCase()}.com.`,
+                    question: "Is your process transparent?",
+                    answer:
+                        "Always. Every report, keyword cluster, and backlink is traceable and shared with the client in real time.",
                 },
             ],
+        },
+
+        // 🎯 FINAL CTA
+        {
+            type: "custom",
+            component: "MissionBanner",
+            title: "Let’s Grow Together",
+            description:
+                "Join hundreds of brands that trust our team to make their websites visible, competitive, and profitable through data-driven SEO.",
+            image: "image10",
         },
     ],
 };

@@ -1,5 +1,5 @@
 import type { Metadata } from "next";
-import enMarketAnalysis from "@/pageSchemas/extra/extraMarketAnalysisPage.en";
+import enMarketAnalysis from "@/pageSchemas/extra/offPage";
 import PageCreator from "@/components/features/page-creator/PageCreator";
 import { metadataFromSchema } from "@/utils/fromSchema";
 

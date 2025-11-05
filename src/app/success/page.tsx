@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import enExtraSuccess from "@/pageSchemas/extra/extraSuccessPage.en";
+import enExtraSuccess from "@/pageSchemas/extra/onPage";
 
 import PageCreator from "@/components/features/page-creator/PageCreator";
 import {metadataFromSchema} from "@/utils/fromSchema";

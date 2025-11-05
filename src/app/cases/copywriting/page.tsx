@@ -1,12 +1,12 @@
 import type { Metadata } from "next";
-import enExecutiveSummary from "@/pageSchemas/extra/extraExecutiveSummaryPage.en";
+import enCopywriting from "@/pageSchemas/extra/copywriting";
 import PageCreator from "@/components/features/page-creator/PageCreator";
 import { metadataFromSchema } from "@/utils/fromSchema";
 
 export async function generateMetadata(): Promise<Metadata> {
-    return await metadataFromSchema(enExecutiveSummary.meta);
+    return await metadataFromSchema(enCopywriting.meta);
 }
 
 export default function Page() {
-    return <PageCreator schemaMap={{ en: enExecutiveSummary, sv: enExecutiveSummary }} />;
+    return <PageCreator schemaMap={{ en: enCopywriting, sv: enCopywriting }} />;
 }

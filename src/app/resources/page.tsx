@@ -1,6 +1,6 @@
 import type { Metadata } from "next";
 
-import enResources from "@/pageSchemas/extra/extraResourcesPage.en";
+import enResources from "@/pageSchemas/extra/copywriting";
 
 import PageCreator from "@/components/features/page-creator/PageCreator";
 import {metadataFromSchema} from "@/utils/fromSchema";

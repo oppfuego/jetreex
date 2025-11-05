@@ -1,0 +1,203 @@
+.ordersSection {
+  padding: 2.5rem 1.5rem;
+  max-width: 1250px;
+  margin: 0 auto;
+  color: var(--text-primary);
+
+  @media (max-width: 768px) {
+    padding: 2rem 1rem;
+  }
+}
+
+.header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  margin-bottom: 2.5rem;
+
+  h3 {
+    font-size: 2rem;
+    font-weight: 800;
+    color: var(--secondary-color);
+    margin-bottom: 0.4rem;
+  }
+
+  p {
+    color: var(--text-secondary);
+    font-size: 1rem;
+    margin-bottom: 1rem;
+  }
+
+  button {
+    margin-top: 0.5rem;
+    font-weight: 600;
+  }
+}
+
+.sectionTitle {
+  font-size: 1.4rem;
+  font-weight: 700;
+  color: var(--primary-color);
+  margin-bottom: 1.2rem;
+  text-align: left;
+}
+
+.ordersGrid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 1.8rem;
+  padding-bottom: 2rem;
+}
+
+/* === CARD === */
+.card {
+  background: #fff;
+  border-radius: 18px;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.06);
+  border: 1px solid rgba(255, 184, 107, 0.4);
+  padding: 1.6rem 1.4rem;
+  transition: all 0.25s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 10px 28px rgba(255, 122, 0, 0.25);
+  }
+}
+
+/* HEADER inside card */
+.cardHeader {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 1.1rem;
+
+  .idWrapper {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+
+    .orderId {
+      font-weight: 700;
+      font-size: 0.95rem;
+      color: var(--text-primary);
+    }
+
+    .badge {
+      text-transform: capitalize;
+      padding: 0.25rem 0.7rem;
+      font-size: 0.8rem;
+      border-radius: 9999px;
+      font-weight: 600;
+      border: 1px solid transparent;
+    }
+
+    .manager {
+      background: #d1fae5;
+      color: #047857;
+      border-color: #34d399;
+    }
+
+    .instant {
+      background: #fff7ed;
+      color: #f97316;
+      border-color: #fb923c;
+    }
+
+    .default {
+      background: #f3f4f6;
+      color: #6b7280;
+      border-color: #e5e7eb;
+    }
+  }
+
+  .iconStatic {
+    font-size: 1.4rem;
+    color: var(--primary-color);
+    opacity: 0.8;
+  }
+}
+
+/* BODY inside card */
+.cardBody {
+  .email {
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--text-secondary);
+    margin-bottom: 0.8rem;
+  }
+
+  .meta {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--text-secondary);
+    margin-bottom: 0.6rem;
+
+    svg {
+      color: var(--primary-color);
+      margin-right: 0.3rem;
+    }
+
+    .tokens {
+      color: var(--secondary-color);
+      font-weight: 600;
+      display: flex;
+      align-items: center;
+    }
+
+    .date {
+      display: flex;
+      align-items: center;
+    }
+  }
+
+  .extraInfo {
+    font-size: 0.9rem;
+    color: var(--text-primary);
+    line-height: 1.5;
+
+    strong {
+      color: var(--primary-color);
+    }
+
+    em {
+      color: var(--text-secondary);
+      font-style: italic;
+    }
+  }
+}
+
+/* EMPTY STATE */
+.emptyState {
+  text-align: center;
+  padding: 4rem 2rem;
+  color: var(--text-secondary);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.4rem;
+
+  .emptyIcon {
+    font-size: 3rem;
+    margin-bottom: 0.8rem;
+  }
+
+  button {
+    margin-top: 0.5rem;
+  }
+}
+
+/* LOADING */
+.loading {
+  text-align: center;
+  font-size: 1.1rem;
+  color: var(--text-secondary);
+  padding: 3rem 0;
+}

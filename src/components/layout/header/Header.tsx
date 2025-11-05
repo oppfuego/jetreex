@@ -79,12 +79,12 @@ const Header: React.FC = () => {
                                 <span className={styles.arrow}><IoMdArrowDropright/></span>
                             </button>
                             <div className={styles.dropdownMenu}>
-                                <a href="/seo" className={styles.dropdownLink}>Technical Website Audit</a>
-                                <a href="/smm" className={styles.dropdownLink}>On-Page SEO</a>
-                                <a href="/audit" className={styles.dropdownLink}>Off-Page SEO</a>
-                                <a href="/audit" className={styles.dropdownLink}>Local SEO</a>
-                                <a href="/audit" className={styles.dropdownLink}>SEO Copywriting</a>
-                                <a href="/audit" className={styles.dropdownLink}>Competitor Analysis</a>
+                                <a href="/cases/audit" className={styles.dropdownLink}>Technical Website Audit</a>
+                                <a href="/cases/on-page" className={styles.dropdownLink}>On-Page SEO</a>
+                                <a href="/cases/off-page" className={styles.dropdownLink}>Off-Page SEO</a>
+                                <a href="/cases/local" className={styles.dropdownLink}>Local SEO</a>
+                                <a href="/cases/copywriting" className={styles.dropdownLink}>SEO Copywriting</a>
+                                <a href="/cases/analysis" className={styles.dropdownLink}>Competitor Analysis</a>
                             </div>
                         </div>
 
@@ -99,7 +99,7 @@ const Header: React.FC = () => {
                             <div className={styles.dropdownMenu}>
                                 <a href="/pricing" className={styles.dropdownLink}>Pricing</a>
                                 <a href="/faq" className={styles.dropdownLink}>FAQ</a>
-                                <a href="/contact" className={styles.dropdownLink}>Contact Us</a>
+                                <a href="/contact-us" className={styles.dropdownLink}>Contact Us</a>
                             </div>
                         </div>
                     </nav>

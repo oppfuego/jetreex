@@ -4,6 +4,7 @@ import React, { useState } from "react";
 import AllOrders from "@/components/widgets/all-orders/AllOrders";
 import TransactionHistory from "@/components/widgets/all-transactions/AllTransactions";
 import styles from "./Dashboard.module.scss";
+import AllSeoRequests from "@/components/widgets/all-orders/AllSeo";
 
 export default function Dashboard() {
     const [activeTab, setActiveTab] = useState<"orders" | "transactions">("orders");
@@ -34,7 +35,7 @@ export default function Dashboard() {
             <div className={styles.content}>
                 {activeTab === "orders" ? (
                     <div key="orders" className={styles.fadeIn}>
-                        <AllOrders />
+                        <AllSeoRequests  />
                     </div>
                 ) : (
                     <div key="transactions" className={styles.fadeIn}>

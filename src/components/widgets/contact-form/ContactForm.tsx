@@ -6,9 +6,10 @@ import { motion } from "framer-motion";
 import ButtonUI from "@/components/ui/button/ButtonUI";
 import { validationSchema, initialValues, sendContactRequest } from "./schema";
 import { useAlert } from "@/context/AlertContext";
-import { FaMapMarkerAlt, FaEnvelope, FaPhoneAlt } from "react-icons/fa";
-import { COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_PHONE } from "@/resources/constants";
+import {FaMapMarkerAlt, FaEnvelope, FaPhoneAlt, FaBuilding} from "react-icons/fa";
+import {COMPANY_ADDRESS, COMPANY_EMAIL, COMPANY_LEGAL_NAME, COMPANY_NAME, COMPANY_PHONE} from "@/resources/constants";
 import styles from "./ContactForm.module.scss";
+import {TbSeo} from "react-icons/tb";
 
 interface ContactFormValues {
     name: string;
@@ -64,6 +65,14 @@ const ContactForm: React.FC = () => {
                     <h3>Contact Information</h3>
                     <p>We’d love to hear from you — reach out anytime.</p>
 
+                    <div className={styles.infoItem}>
+                        <TbSeo />
+                        <span>{COMPANY_NAME}</span>
+                    </div>
+                    <div className={styles.infoItem}>
+                        <FaBuilding />
+                        <span>{COMPANY_LEGAL_NAME}</span>
+                    </div>
                     <div className={styles.infoItem}>
                         <FaMapMarkerAlt />
                         <span>{COMPANY_ADDRESS}</span>

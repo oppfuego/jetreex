@@ -184,9 +184,15 @@
 .footer__rights {
   width: 100%;
   text-align: center;
-  padding: 18px 0 8px 0;
+  padding: 20px 130px;
   color: var(--muted);
-  margin-top: 28px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+
+  @media(max-width: 768px){
+    padding: 10px 30px;
+  }
 }
 
 /* ====== Center type ====== */

@@ -35,6 +35,8 @@ import review3 from "@/assets/images/review3.png";
 import review4 from "@/assets/images/review4.jpg";
 import review5 from "@/assets/images/review5.jpg";
 import review6 from "@/assets/images/review6.jpg";
+import review7 from "@/assets/images/review7.jpg";
+import review8 from "@/assets/images/review8.jpg";
 
 import team1 from "@/assets/images/team1.jpg";
 import team2 from "@/assets/images/team2.jpg";
@@ -95,6 +97,8 @@ export const media = {
     review4: review4,
     review5: review5,
     review6: review6,
+    review7: review7,
+    review8: review8,
 
     team1: team1,
     team2: team2,
@@ -103,6 +107,8 @@ export const media = {
     team5: team5,
     team6: team6,
     team7: team7,
+
+    demo: '/videos/demo.mp4',
 
 }
 

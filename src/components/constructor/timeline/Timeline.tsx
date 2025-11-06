@@ -2,10 +2,12 @@
 import React from "react";
 import { motion } from "framer-motion";
 import styles from "./Timeline.module.scss";
+import Link from "next/link";
 
 interface Step {
     title: string;
     description: string;
+    link?: string;
 }
 
 interface TimelineProps {
@@ -13,7 +15,7 @@ interface TimelineProps {
     steps: Step[];
 }
 
-const Timeline: React.FC<TimelineProps> = ({ title, steps }) => {
+const Timeline: React.FC<TimelineProps> = ({ title, steps}) => {
     return (
         <section className={styles.timelineSection}>
             <div className={styles.inner}>
@@ -49,10 +51,18 @@ const Timeline: React.FC<TimelineProps> = ({ title, steps }) => {
                                 <div className={styles.circle}>
                                     <span>{index + 1}</span>
                                 </div>
-                                <div className={styles.content}>
-                                    <h4>{step.title}</h4>
-                                    <p>{step.description}</p>
-                                </div>
+                                {step.link ? (
+                                    <Link href={step.link} className={styles.content}>
+                                        <h4>{step.title}</h4>
+                                        <p>{step.description}</p>
+                                    </Link>
+
+                                ):(
+                                    <div className={styles.content}>
+                                        <h4>{step.title}</h4>
+                                        <p>{step.description}</p>
+                                    </div>
+                                )}
                             </motion.div>
                         ))}
                     </div>

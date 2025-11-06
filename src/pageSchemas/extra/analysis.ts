@@ -95,6 +95,86 @@ Our analysis gives you clarity — showing what works in your niche and how to o
             ],
         },
 
+        {
+            type: "grid",
+            columns: 2,
+            gap: "2rem",
+            cards: [
+                {
+                    type: "pricing",
+                    variant: "starter",
+                    title: "Starter SEO Audit",
+                    price: "€15",
+                    tokens: 1500,
+                    badgeTop: "Entry Plan",
+                    description:
+                        "Get a full site scan, ranking report, and 10-page audit with actionable fixes.",
+                    features: [
+                        "Technical check",
+                        "Mobile performance",
+                        "Speed recommendations",
+                        "Basic keyword analysis",
+                    ],
+                    buttonText: "Buy Tokens",
+                    buttonLink: "/pricing",
+                },
+                {
+                    type: "pricing",
+                    variant: "pro",
+                    title: "Full SEO Package",
+                    price: "€45",
+                    tokens: 4500,
+                    badgeTop: "Popular",
+                    description:
+                        "Everything you need for growth: audit, link strategy, and content plan.",
+                    features: [
+                        "Complete audit report",
+                        "10 backlinks / mo",
+                        "Content strategy",
+                        "Monthly tracking",
+                    ],
+                    buttonText: "Start SEO Campaign",
+                    buttonLink: "/pricing",
+                },
+                {
+                    type: "pricing",
+                    variant: "premium",
+                    title: "Enterprise SEO",
+                    price: "€90",
+                    tokens: 9000,
+                    badgeTop: "All-In Plan",
+                    description:
+                        "For large businesses and e-commerce. Dedicated team, analytics & continuous growth.",
+                    features: [
+                        "Dedicated SEO manager",
+                        "20+ backlinks / mo",
+                        "Custom dashboards",
+                        "Priority support",
+                    ],
+                    buttonText: "Contact for Setup",
+                    buttonLink: "/contact",
+                },
+                {
+                    type: "pricing",
+                    variant: "custom",
+                    title: "Custom SEO Solutions",
+                    price: "dynamic",
+                    tokens: 0,
+                    badgeTop: "Tailored Plan",
+                    description:
+                        "Need something specific? We create bespoke SEO strategies for unique needs.",
+                    features: [
+                        "Personalised strategy",
+                        "Flexible services",
+                        "Scalable solutions",
+                        "Dedicated support",
+                    ],
+                    buttonText: "Get a Quote",
+                    buttonLink: "/contact",
+                }
+            ],
+        },
+
         // 💬 TESTIMONIALS
         {
             type: "custom",

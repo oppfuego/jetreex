@@ -215,7 +215,7 @@ export type TimelineBlock = {
     type: "custom";
     component: "Timeline";
     title?: string;
-    steps: { title: string; description: string }[];
+    steps: { title: string; description: string, link?: string }[];
 };
 
 

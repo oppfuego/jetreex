@@ -50,7 +50,7 @@ const schema: PageSchema = {
             component: "TextWithButton",
             title: "SEO That Works — Not Just Promises",
             buttonText: "Get a Free Consultation",
-            buttonLink: "/contact",
+            buttonLink: "/contact-us",
         },
 
         // 🧩 Services overview
@@ -116,11 +116,12 @@ const schema: PageSchema = {
             component: "Timeline",
             title: "Step-by-Step SEO Growth Plan",
             steps: [
-                {title: "1. Technical Audit", description: "We check structure, indexing, and performance."},
-                {title: "2. Keyword Mapping", description: "We select relevant, profitable search terms."},
-                {title: "3. On-Page Fixes", description: "Optimisation of content, speed, and metadata."},
-                {title: "4. Link Building", description: "We grow authority through safe backlinks."},
-                {title: "5. Reporting", description: "Track rankings, traffic, and ROI transparently."},
+                {title: "1. Technical Website Audit", description: "Jetreex provides a full technical SEO audit to identify performance.", link: "/cases/audit"},
+                {title: "2. On-Page SEO", description: "We performs deep on-page optimisation to make every page of your website.", link: "/cases/on-page"},
+                {title: "3. Off-Page SEO", description: "We helps your website grow beyond its borders.", link: "/cases/off-page"},
+                {title: "4. Local SEO", description: "We optimise your Google Business Profile, build local citations, and boost reputation to attract customers near you.", link: "/cases/local"},
+                {title: "5. SEO Copywriting", description: "Our SEO copywriters craft landing pages, blog posts, and product descriptions optimised for both users and search engines.", link: "/cases/copywriting"},
+                {title: "6. Competitor Analysis", description: "Jetreex helps you understand exactly why your competitors rank higher.", link: "/cases/analysis"},
             ],
         },
 
@@ -260,6 +261,15 @@ const schema: PageSchema = {
             ],
         },
 
+        {
+            type: "custom",
+            component: "VideoDemo",
+            title: "See Our SEO Process in Action",
+            description:
+                "Watch how we audit, optimise, and promote websites using a blend of AI tools and human expertise.",
+            video: "demo",
+        },
+
 
         // 💬 Testimonials
         {
@@ -292,14 +302,14 @@ const schema: PageSchema = {
                 {
                     name: "Maria Koval",
                     role: "E-commerce Manager",
-                    image: "review3",
+                    image: "review7",
                     text: "After their audit and on-page optimisation, our organic sales skyrocketed. They also improved UX — now our bounce rate is down 35%.",
                     rating: 5,
                 },
                 {
                     name: "Andrii Poltavets",
                     role: "CEO, Logistics Company",
-                    image: "review2",
+                    image: "review8",
                     text: "Their team understood our complex B2B structure and delivered results fast. Real professionals who think like business partners.",
                     rating: 5,
                 },

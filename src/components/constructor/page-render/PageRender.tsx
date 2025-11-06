@@ -73,14 +73,18 @@ function RenderCustom(b: CustomBlock) {
             return <Marquee items={b.items ?? []} />;
 
         case "Timeline":
-            return <Timeline title={b.title} steps={b.steps ?? []} />;
+            return <Timeline title={b.title} steps={b.steps ?? []}
+            />;
 
 
         case "ContactForm":
             return <ContactUsForm />;
 
         case "LogoBlock":
-            return <LogoBlock width={b.width} height={b.height} />;
+            return <LogoBlock
+                width={b.width}
+                height={b.height}
+            />;
 
         case "ValuesIcons":
             return (

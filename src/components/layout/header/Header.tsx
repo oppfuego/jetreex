@@ -97,7 +97,6 @@ const Header: React.FC = () => {
                                 </span>
                             </button>
                             <div className={styles.dropdownMenu}>
-                                <a href="/pricing" className={styles.dropdownLink}>Pricing</a>
                                 <a href="/faq" className={styles.dropdownLink}>FAQ</a>
                                 <a href="/contact-us" className={styles.dropdownLink}>Contact Us</a>
                             </div>

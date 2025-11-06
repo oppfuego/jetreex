@@ -16,6 +16,7 @@ export const headerContent = {
     links: [
         {label: "Home", href: "/"},
         {label: "About Us", href: "/about-us"},
+        {label: "Plans", href: "/pricing"},
     ]
 };
 
@@ -26,12 +27,20 @@ export const footerContent = {
             title: "Navigate",
             links: [
                 {label: "About Us", href: "/about-us"},
-                {label: "Get Started", href: "/get-started"},
-                {label: "Success Stories", href: "/success"},
-                {label: "Resources", href: "/resources"},
                 {label: "Plans", href: "/pricing"},
                 {label: "Contact Us", href: "/contact-us"},
                 {label: "Faq", href: "/faq"},
+            ]
+        },
+        {
+            title: "Services",
+            links: [
+                {label: "Technical Website Audit", href: "/cases/audit"},
+                {label: "On-Page SEO", href: "/cases/on-page"},
+                {label: "Off-Page SEO", href: "/cases/off-page"},
+                {label: "Local SEO", href: "/cases/local"},
+                {label: "SEO Copywriting", href: "/cases/copywriting"},
+                {label: "Competitor Analysis", href: "/cases/analysis"},
             ]
         },
         {

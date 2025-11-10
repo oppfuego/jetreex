@@ -8,6 +8,8 @@ import { useAlert } from "@/context/AlertContext";
 import { useUser } from "@/context/UserContext";
 import Input from "@mui/joy/Input";
 import { useCurrency } from "@/context/CurrencyContext";
+import { useRouter } from "next/navigation";
+import { useCheckoutStore } from "@/utils/store";
 
 const TOKENS_PER_GBP = 100;
 
@@ -19,7 +21,6 @@ interface PricingCardProps {
     description: string;
     features: string[];
     buttonText: string;
-    buttonLink?: string;
     badgeTop?: string;
     badgeBottom?: string;
     index?: number;
@@ -40,6 +41,8 @@ const PricingCard: React.FC<PricingCardProps> = ({
     const { showAlert } = useAlert();
     const user = useUser();
     const { currency, sign, convertFromGBP, convertToGBP } = useCurrency();
+    const router = useRouter();
+    const { setPlan } = useCheckoutStore();
 
     const [customAmount, setCustomAmount] = useState<number>(0.01);
     const isCustom = price === "dynamic";
@@ -57,56 +60,36 @@ const PricingCard: React.FC<PricingCardProps> = ({
         return convertFromGBP(basePriceGBP);
     }, [basePriceGBP, convertFromGBP, isCustom]);
 
-    const handleBuy = async () => {
+    const handleBuy = () => {
         if (!user) {
             showAlert("Please sign up", "You need to be signed in to purchase", "info");
             setTimeout(() => (window.location.href = "/sign-up"), 1200);
             return;
         }
 
-        try {
-            let body: any;
+        // 💡 Якщо custom — використовуємо введену суму
+        let priceToSave = basePriceGBP;
+        let tokensToSave = tokens;
 
-            if (isCustom) {
-                const gbpEquivalent = convertToGBP(customAmount);
-                if (gbpEquivalent < 0.01) {
-                    showAlert("Minimum is 0.01", "Enter at least 0.01 GBP equivalent", "warning");
-                    return;
-                }
-                body = { currency, amount: customAmount };
-            } else {
-                body = { amount: tokens, currency };
-            }
-
-            const res = await fetch("/api/user/buy-tokens", {
-                method: "POST",
-                headers: { "Content-Type": "application/json" },
-                credentials: "include",
-                body: JSON.stringify(body),
-            });
-
-            if (!res.ok) throw new Error(await res.text());
-            const data = await res.json();
-
-            const tokenCount = isCustom
-                ? Math.floor(convertToGBP(customAmount) * TOKENS_PER_GBP)
-                : tokens;
-
-            showAlert(
-                "Success!",
-                isCustom
-                    ? `You paid ${sign}${customAmount.toFixed(2)} ${currency} (≈ ${tokenCount} tokens)`
-                    : `You purchased ${tokenCount} tokens.`,
-                "success"
-            );
-
-            console.log("Updated user:", data.user);
-        } catch (err: any) {
-            showAlert("Error", err.message || "Something went wrong", "error");
+        if (isCustom) {
+            priceToSave = convertToGBP(customAmount); // з поточної валюти → GBP
+            tokensToSave = Math.floor(priceToSave * TOKENS_PER_GBP);
         }
+
+        const plan = {
+            title,
+            price: priceToSave,
+            tokens: tokensToSave,
+            currency,
+            variant,
+        };
+
+        setPlan(plan);
+        localStorage.setItem("selectedPlan", JSON.stringify(plan));
+        router.push("/checkout");
     };
 
-    // 🔢 Реальний розрахунок токенів
+    // 🔢 Розрахунок токенів для dynamic input
     const tokensCalculated = useMemo(() => {
         const gbpEquivalent = convertToGBP(customAmount);
         return Math.floor(gbpEquivalent * TOKENS_PER_GBP);
@@ -129,8 +112,6 @@ const PricingCard: React.FC<PricingCardProps> = ({
                         <Input
                             type="number"
                             value={customAmount}
-                            min={0.01}
-                            step={0.01}
                             onChange={(e) =>
                                 setCustomAmount(
                                     e.target.value === "" ? 0.01 : Math.max(0.01, Number(e.target.value))
@@ -139,6 +120,12 @@ const PricingCard: React.FC<PricingCardProps> = ({
                             placeholder="Enter amount"
                             size="md"
                             startDecorator={sign}
+                            slotProps={{
+                                input: {
+                                    min: 0.01,
+                                    step: 0.01,
+                                },
+                            }}
                         />
                     </div>
                     <p className={styles.dynamicPrice}>

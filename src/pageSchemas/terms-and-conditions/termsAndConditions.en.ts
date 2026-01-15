@@ -2,163 +2,245 @@ import { PageSchema } from "@/components/constructor/page-render/types";
 
 const termsSchema: PageSchema = {
     meta: {
-        title: "Terms and Conditions – Averis",
+        title: "Terms and Conditions – Jetreex",
         description:
-            "Official Terms and Conditions for using Averis.co.uk – rules, payments, tokens, refunds, liability, and user rights.",
+            "Official Terms and Conditions for using jetreex.co.uk – SEO services, tokens, payments, refunds, liability, and user rights.",
         keywords: [
             "terms and conditions",
-            "averis",
+            "jetreex",
+            "seo services",
             "tokens",
             "refunds",
-            "workout plan",
-            "AI fitness",
-            "digital content",
+            "technical seo",
+            "digital marketing",
         ],
         canonical: "/terms-and-conditions",
         ogImage: {
-            title: "Averis – Terms and Conditions",
-            description: "Full Terms and Conditions for Averis AI Workout Platform.",
+            title: "Jetreex – Terms and Conditions",
+            description: "Full Terms and Conditions for the Jetreex SEO Platform.",
             bg: "#ffffff",
             color: "#000000",
         },
     },
+
     blocks: [
         {
             type: "text",
             title: "Terms and Conditions",
-            description:
-                "Effective date: 18 October 2025\n\nThese Terms and Conditions govern your access to and use of averis.co.uk and related services provided by SHIREDON LIMITED.",
+            bullets: [
+                "Effective date: 05 November 2025",
+                "These Terms and Conditions govern your access to and use of jetreex.co.uk and related services operated by GROVELEY LIMITED.",
+            ],
         },
+
         {
             type: "text",
             title: "1. Introduction",
-            description:
-                "1.1. These Terms and Conditions (“Terms”) govern your access to and use of averis.co.uk, our related web pages, applications, and downloadable documents (the “Service”), operated by SHIREDON LIMITED (company number 15799662, registered office: Academy House, 11 Dunraven Place, Bridgend, Mid Glamorgan, United Kingdom, CF31 1JF) (“Averis”, “we”, “us”, “our”). These Terms constitute a legally binding agreement between Averis and each person who uses the Service (“you”, “User”, “Customer”).\n\n1.2. By creating an account, purchasing Tokens, or generating any workout plan or PDF through the Service, you agree to these Terms. If you do not agree, do not use the Service.",
+            bullets: [
+                "1.1. These Terms govern your access to and use of jetreex.co.uk and related pages, applications, and downloadable content (the “Service”), operated by GROVELEY LIMITED (Company No. 16021027, registered office: Academy House, 11 Dunraven Place, Bridgend, Mid Glamorgan, United Kingdom, CF31 1JF) (“Jetreex”, “we”, “us”, “our”).",
+                "1.2. By creating an account, purchasing tokens, or using any SEO services, you agree to be bound by these Terms.",
+                "1.3. If you do not agree with these Terms, you must not use the Service.",
+                "1.4. Jetreex provides SEO planning tools and deliverables using a token-based model and does not guarantee rankings, traffic, or revenue outcomes.",
+            ],
         },
+
         {
             type: "text",
             title: "2. Definitions",
             bullets: [
-                "Account – your user profile on the Service.",
-                "Tokens – our internal, prepaid digital credits that enable you to use specific features of the Service (e.g., plan generation, PDF export). Tokens are not cash, e-money, or financial instruments.",
-                "Workout Plan / Plan – any personalised or template workout program, exercise schedule, recommendations, trackers, and any related digital content generated or supplied via the Service, including PDFs.",
-                "Add-ons / Extras – optional paid features or modules (e.g., extended program duration, multiple goal variants, enriched analytics, nutrition companion module where available).",
-                "Order – a confirmed transaction to purchase Tokens and/or to redeem Tokens for Services.",
-                "Services – the Averis platform and its features including the fitness intake forms, AI-assisted plan generation, optional human-coach review (if available in your region/plan), PDF creation, and delivery of digital content.",
-                "Checkout Currency – GBP (£) or EUR (€), as selected at checkout.",
+                "2.1. Account – your registered user profile on the Service.",
+                "2.2. Tokens / Wallet – prepaid digital credits used to access Services; not cash, e-money, or a financial instrument.",
+                "2.3. Services – SEO features including Technical SEO Audits, On-Page SEO, Off-Page SEO, Local SEO, SEO Copywriting, and Competitor Analysis.",
+                "2.4. Deliverables – reports, recommendations, drafts, analyses, and other outputs generated through the Service.",
+                "2.5. Client Materials – content, data, credentials, and assets you provide, including website URLs and tool access.",
+                "2.6. Third-Party Tools – platforms operated by third parties (e.g. Google Search Console, Google Analytics, hosting providers).",
             ],
         },
+
         {
             type: "text",
-            title: "3. Eligibility & Account Registration",
-            description:
-                "3.1. You must be 18 years or older to use the Service. If you use the Service on behalf of a company or organisation, you confirm that you have authority to bind that entity.\n\n3.2. You must provide accurate, current information and keep your credentials secure. You are responsible for all activity under your Account.\n\n3.3. Notify us immediately of any suspected unauthorised access or security incident at info@averis.co.uk.",
-        },
-        {
-            type: "text",
-            title: "4. Tokens",
-            description:
-                "4.1. Tokens prepay access to features of the Service. Tokens have no cash value, are non-transferable, and may not be exchanged, traded, or resold.\n\n4.2. Tokens are issued after successful card payment. The current rate is displayed at the time of purchase (e.g., £1.00 ≈ 100 Tokens, €1.17 ≈ 100 Tokens).\n\n4.3. Features and Plans are priced in Tokens, with conversion shown for reference.\n\n4.4. If a generation fails for technical reasons attributable to us, Tokens are restored automatically or via support.\n\n4.5. Tokens do not expire unless otherwise stated; inactive accounts (24 months) may be archived.\n\n4.6. Promotional or bonus Tokens may be subject to additional rules shown at the time of offer.\n\n4.7. Standard generation price and extras are shown before confirmation; prices may change from time to time.",
-        },
-        {
-            type: "text",
-            title: "5. Ordering, Payment & Checkout",
-            description:
-                "Accepted payment methods: Visa, Mastercard · Accepted currencies: GBP (£), EUR (€)\n\n5.1. Orders are subject to acceptance; we may refuse to prevent fraud or technical errors.\n\n5.2. By paying, you confirm you are authorised to use the selected card.\n\n5.3. Prices are shown in GBP or EUR; VAT may apply depending on billing country.\n\n5.4. Plans and PDFs are delivered electronically; generation time varies by system load.",
-        },
-        {
-            type: "text",
-            title: "6. Cancellations, Refunds & Consumer Rights",
-            description:
-                "6.1. By starting a generation, you request immediate performance and acknowledge loss of the statutory right to cancel.\n\n6.2. Unused Token top-ups may be cancelled within 14 days of purchase if unused.\n\n6.3. Used Tokens are non-refundable unless required by law.\n\n6.4. If a PDF is defective, contact info@averis.co.uk within 14 days citing your Order ID.\n\n6.5. Unwarranted chargebacks may result in suspension or removal of equivalent Tokens.",
-        },
-        {
-            type: "text",
-            title: "7. Health, Fitness & Safety Disclaimer",
-            description:
-                "7.1. Averis provides AI-generated workout plans for informational purposes only and does not provide medical advice.\n\n7.2. Consult a healthcare professional before starting any exercise program.\n\n7.3. You are responsible for ensuring proper form, safe environment, and appropriate equipment.\n\n7.4. Exercise carries risks; you accept these by using the Service.",
-        },
-        {
-            type: "text",
-            title: "8. Your Inputs & Acceptable Use",
-            description:
-                "8.1. You must provide lawful, truthful inputs and avoid uploading illegal or harmful content.\n\n8.2. You must not misuse the Service (e.g., reverse engineering, scraping, disrupting, or circumventing limits).",
-        },
-        {
-            type: "text",
-            title: "9. Intellectual Property & Licences",
-            description:
-                "9.1. The Service and its content are owned by Averis or its licensors.\n\n9.2. Upon valid redemption, you receive a personal, non-transferable licence to use your generated Plans and PDFs.\n\n9.3. You retain rights to your inputs and grant Averis a limited licence to use anonymised data for service improvement.",
-        },
-        {
-            type: "text",
-            title: "10. Warranties & Disclaimers",
-            description:
-                "10.1. We warrant that we are entitled to provide the Service.\n\n10.2. Except as stated, the Service is provided “as is” and “as available.”\n\n10.3. No specific health or fitness outcome is guaranteed.",
-        },
-        {
-            type: "text",
-            title: "11. Limitation of Liability",
-            description:
-                "11.1. Nothing limits liability for death or injury caused by negligence or fraud.\n\n11.2. Our total liability in any 12-month period shall not exceed the total amount paid for Tokens/Services.\n\n11.3. We are not liable for indirect or consequential losses.",
-        },
-        {
-            type: "text",
-            title: "12. Indemnity",
-            description:
-                "You agree to indemnify Averis and its staff against claims or damages arising from unlawful use of the Service or violation of these Terms.",
-        },
-        {
-            type: "text",
-            title: "13. Data Protection & Privacy",
-            description:
-                "13.1. We process personal data in accordance with UK GDPR and the Data Protection Act 2018.\n\n13.2. By using the Service, you accept our Privacy Policy and acknowledge your data rights.",
-        },
-        {
-            type: "text",
-            title: "14. Third-Party Services & Links",
-            description:
-                "The Service may include links or integrations with third-party services (e.g., payment processors). We are not responsible for their practices or content.",
-        },
-        {
-            type: "text",
-            title: "15. Suspension & Termination",
-            description:
-                "15.1. We may suspend or terminate access if you breach these Terms or create security/fraud risks.\n\n15.2. Upon termination, your licence to use the Service ceases, and minimal records may be retained as required by law.",
-        },
-        {
-            type: "text",
-            title: "16. Changes to the Service or Terms",
-            description:
-                "16.1. We may update these Terms for legal, technical, or business reasons.\n\n16.2. Material updates will be communicated by email or in-product notice. Continued use constitutes acceptance.",
-        },
-        {
-            type: "text",
-            title: "17. Notices",
-            description:
-                "Formal notices: info@averis.co.uk or post to our registered office. We may contact you via email or in-app messages.",
-        },
-        {
-            type: "text",
-            title: "18. Governing Law & Jurisdiction",
-            description:
-                "These Terms are governed by the laws of England and Wales. Courts of England and Wales have exclusive jurisdiction, except that EU or UK consumers may bring claims locally.",
-        },
-        {
-            type: "text",
-            title: "19. Miscellaneous",
-            description:
-                "19.1. Invalid provisions do not affect validity of others.\n\n19.2. No delay or omission constitutes a waiver.\n\n19.3. You may not transfer your rights without written consent.\n\n19.4. These Terms are the full agreement between you and Averis.",
-        },
-        {
-            type: "text",
-            title: "20. Contact Details",
+            title: "3. Eligibility and Account Registration",
             bullets: [
-                "SHIREDON LIMITED",
+                "3.1. You must be at least 18 years old or have valid corporate authority to use the Service.",
+                "3.2. You must provide accurate, current information and keep your credentials secure.",
+                "3.3. You are responsible for all activities carried out under your Account.",
+                "3.4. Any suspected unauthorised access must be reported to info@jetreex.co.uk without delay.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "4. Nature of Services and Contract Structure",
+            bullets: [
+                "4.1. Jetreex provides workflows and tools to assist with SEO analysis, planning, and content creation.",
+                "4.2. Search engine algorithms and behaviour are outside our control.",
+                "4.3. Services may depend on timely provision of Client Materials and access to Third-Party Tools.",
+                "4.4. Unless expressly agreed in writing, Jetreex does not act as your agent with search engines or third parties.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "5. Scope of Services and Deliverables",
+            bullets: [
+                "5.1. Services may include technical diagnostics, on-page recommendations, backlink insights, local SEO guidance, SEO copy drafts, and competitor research.",
+                "5.2. Deliverables are generated based on your inputs; inaccuracies may require re-generation and additional tokens.",
+                "5.3. Implementation of recommendations is your responsibility unless otherwise agreed in writing.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "6. Client Materials and Access",
+            bullets: [
+                "6.1. You warrant that all Client Materials are lawful, accurate, and non-infringing.",
+                "6.2. You authorise Jetreex to use provided access solely to perform the Services.",
+                "6.3. You remain responsible for website hosting, security, backups, and third-party configurations.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "7. Acceptable Use",
+            bullets: [
+                "7.1. You must not misuse the Service, including scraping, reverse engineering, automated abuse, or token manipulation.",
+                "7.2. You must not use the Service for unlawful, deceptive, or policy-violating activities.",
+                "7.3. We may rate-limit, suspend, or terminate access where abuse or legal risk is suspected.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "8. Tokens, Pricing and Payment",
+            bullets: [
+                "8.1. Accepted payment methods include Visa and Mastercard.",
+                "8.2. Reference rate: 100 tokens ≈ £1.00 / €1.17 / $1.29 (approximate).",
+                "8.3. Wallet top-ups are advance payments; the Wallet is not a bank or e-money account.",
+                "8.4. Tokens are deducted upon use and are non-refundable once consumed.",
+                "8.5. Electronic invoices or receipts are provided where applicable.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "9. Cancellations, Refunds and Chargebacks",
+            bullets: [
+                "9.1. Digital content may be delivered immediately; statutory cancellation rights may not apply once performance begins.",
+                "9.2. Unused Wallet balances are generally non-refundable except in exceptional circumstances.",
+                "9.3. Unwarranted chargebacks may result in account suspension and recovery action.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "10. Intellectual Property",
+            bullets: [
+                "10.1. The Service, software, and content are owned by Jetreex or its licensors.",
+                "10.2. You receive a non-exclusive, non-transferable licence to use Deliverables internally for your business.",
+                "10.3. Deliverables may not be resold or redistributed as a competing SEO product.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "11. Confidentiality",
+            bullets: [
+                "11.1. Each party must keep confidential any non-public information received in connection with the Service.",
+                "11.2. Confidentiality obligations do not apply where disclosure is required by law.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "12. Third-Party Tools and Links",
+            bullets: [
+                "12.1. Third-Party Tools are governed by their own terms and policies.",
+                "12.2. Jetreex is not responsible for their availability, functionality, or practices.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "13. Warranties and Disclaimers",
+            bullets: [
+                "13.1. The Service and Deliverables are provided “as is” and “as available”.",
+                "13.2. No ranking, traffic, or business outcome is guaranteed.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "14. Limitation of Liability",
+            bullets: [
+                "14.1. Total liability in any 12-month period is limited to the fees paid by you during that period.",
+                "14.2. We are not liable for indirect or consequential losses, including loss of profit or data.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "15. Indemnity",
+            bullets: [
+                "15.1. Your unlawful use of the Service.",
+                "15.2. Your breach of these Terms.",
+                "15.3. Infringement arising from Client Materials you provide.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "16. Data Protection and Privacy",
+            bullets: [
+                "16.1. Personal data is processed in accordance with UK GDPR and the Data Protection Act 2018.",
+                "16.2. Further details are set out in our Privacy Policy.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "17. Suspension and Termination",
+            bullets: [
+                "17.1. We may suspend or terminate access for breach, fraud, non-payment, or legal compliance.",
+                "17.2. Minimal records may be retained as required by law.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "18. Changes to the Service or Terms",
+            bullets: [
+                "18.1. We may update the Service or these Terms from time to time.",
+                "18.2. Continued use after the effective date constitutes acceptance.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "19. Governing Law and Jurisdiction",
+            bullets: [
+                "19.1. These Terms are governed by the laws of England and Wales.",
+                "19.2. Courts of England and Wales have jurisdiction, subject to consumer rights.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "20. Miscellaneous",
+            bullets: [
+                "20.1. Invalid provisions do not affect the validity of remaining Terms.",
+                "20.2. These Terms constitute the entire agreement regarding the Service.",
+            ],
+        },
+
+        {
+            type: "text",
+            title: "21. Contact Details",
+            bullets: [
+                "Company: GROVELEY LIMITED",
                 "Registered office: Academy House, 11 Dunraven Place, Bridgend, Mid Glamorgan, United Kingdom, CF31 1JF",
-                "Company number: 15799662",
-                "Email: info@averis.co.uk",
-                "Tel: +44 7441 393249",
+                "Company number: 16021027",
+                "Email: info@jetreex.co.uk",
+                "Tel: +44 7537 102710",
             ],
         },
     ],

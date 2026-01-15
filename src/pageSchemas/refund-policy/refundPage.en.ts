@@ -2,144 +2,130 @@ import { PageSchema } from "@/components/constructor/page-render/types";
 
 const refundPolicySchema: PageSchema = {
     meta: {
-        title: "Refund / Return Policy – Averis",
+        title: "Refund & Return Policy – Jetreex",
         description:
-            "Official Refund / Return Policy for Averis: refunds for tokens, workout plans, digital services, and consumer rights.",
+            "Jetreex Refund & Return Policy: refunds for tokens, SEO deliverables, wallet top-ups, and consumer rights.",
         keywords: [
             "refund policy",
             "return policy",
-            "averis",
+            "jetreex",
             "tokens",
-            "AI fitness",
-            "digital content",
+            "seo services",
+            "wallet",
             "consumer rights",
         ],
         canonical: "/refund-policy",
         ogImage: {
-            title: "Jetreex – Refund / Return Policy",
+            title: "Jetreex – Refund & Return Policy",
             description:
-                "Transparent refund and return policy for Jetreex AI workout plans and token system.",
+                "Transparent refund and return policy for Jetreex token-based SEO services.",
             bg: "#ffffff",
             color: "#000000",
         },
     },
+
     blocks: [
         {
             type: "text",
-            title: "Refund / Return Policy",
-            description: "Effective date: 18 October 2025",
+            title: "Refund & Return Policy",
+            description: "Effective date: 05 November 2025",
         },
+
         {
             type: "text",
             title: "1. Summary (customer-facing)",
             bullets: [
-                "Refunds are assessed under this Policy and applicable consumer law.",
-                "Typical processing time: 5–10 business days after approval (payment-provider timelines may vary).",
-                "A refund will not exceed the amount originally paid for the relevant Token top-up or transaction.",
-                "Spent Tokens (i.e., redeemed for Workout Plans/Services) are non-refundable, except as set out in §4.2.",
-                "Tokens are account-bound, non-transferable, and cannot be exchanged for real currency.",
-                "Promotional/bonus Tokens are non-refundable in all circumstances.",
-                "Submit requests to info@averis.co.uk with your order reference and details.",
-                "This Policy may be updated; material changes will be notified as described in §8.",
-                "If you consented to immediate supply and opened/downloaded the digital content, your statutory right to cancel may be lost (see §4.7).",
-                "Accepted currencies: GBP (£), EUR (€). Payment methods: Visa, Mastercard.",
+                "Refunds are assessed under this Policy and applicable UK consumer law.",
+                "Typical processing time: 5–10 business days after approval.",
+                "Refunds will not exceed the original amount paid for the relevant Order.",
+                "Consumed tokens are non-refundable.",
+                "Wallet Credit is account-bound, non-transferable, and not exchangeable for cash.",
+                "Promotional or bonus credits are non-refundable.",
+                "Submit requests to info@jetreex.co.uk with your account email and order reference.",
+                "Accepted currencies: GBP (£), EUR (€), USD ($). Payment methods: Visa, Mastercard.",
+                "Reference exchange rate: 100 tokens = £1.00 / €1.17 / $1.29.",
             ],
         },
+
         {
             type: "text",
-            title: "2. Scope and Legal Note",
+            title: "2. Scope and Legal Notice",
             description:
-                "This Policy governs refunds for Tokens (internal credits) and digital Workout Plans/Services supplied by SHIREDON LIMITED via averis.co.uk. Nothing in this Policy overrides statutory consumer rights under UK law, including the Consumer Contracts Regulations 2013 and the Consumer Rights Act 2015.",
+                "This Policy governs refunds and cancellations related to purchases made via jetreex.co.uk, including Wallet top-ups and paid SEO features provided by GROVELEY LIMITED (“Jetreex”, “we”, “us”, “our”). Nothing in this Policy overrides your statutory rights under UK law, including the Consumer Contracts Regulations 2013 and the Consumer Rights Act 2015.",
         },
+
         {
             type: "text",
-            title: "3. Definitions",
+            title: "3. Key Definitions",
             bullets: [
-                "Tokens / Credits — internal prepaid credits used on the Service. The current purchase rate (e.g., £1.00 ≈ 100 Tokens or €1.17 ≈ 100 Tokens) is displayed at the time of purchase and may change from time to time.",
-                "Unused Tokens — Tokens credited to your Account but not yet redeemed.",
-                "Redeemed / Spent Tokens — Tokens already used to access or generate a Workout Plan/Service.",
-                "Promotional / Bonus Tokens — Tokens issued as part of a promotion, bonus, or incentive and marked as such.",
+                "Wallet / Wallet Credit — pre-paid balance (tokens) used to access Jetreex features; not cash or e-money.",
+                "Tokens — units consumed to generate or re-generate Deliverables or access paid features.",
+                "Deliverables — SEO outputs such as reports, recommendations, drafts, and analyses.",
+                "Order / Transaction — a confirmed Wallet top-up or paid feature purchase.",
+                "Abuse/Fraud — activity breaching our Terms (e.g., token farming, automated scraping, unauthorised payments).",
             ],
         },
+
         {
             type: "text",
-            title: "4. Refund Principles (binding rules)",
+            title: "4. General Refund Principles",
             description:
-                "4.1. Refund amount cap. Any refund will not exceed the original amount paid for the relevant Token top-up or transaction, net of any non-refundable processor fees (where permitted by law and the provider’s rules).\n\n" +
-                "4.2. No refund for spent Tokens (exceptions). Redeemed Tokens are non-refundable, except where:\n(a) the Workout Plan or Service is defective or not as described; or\n(b) Averis fails to supply the Service as contracted; or\n(c) a refund is otherwise required by law.\n\n" +
-                "4.3. Unused Tokens. Unused Tokens are generally refundable at the original purchase price if requested before any redemption from that top-up. Non-recoverable payment-processing fees may be deducted.\n\n" +
-                "4.4. Account-bound. Tokens are tied to your Account and cannot be transferred between accounts.\n\n" +
-                "4.5. No cash-out. Tokens cannot be exchanged for cash or other currencies, unless required by law.\n\n" +
-                "4.6. Promotional Tokens. Bonus/promotional Tokens are non-refundable under all circumstances.\n\n" +
-                "4.7. Immediate supply of digital content. If you consent to immediate delivery and open/download the content (e.g., generated PDF), you acknowledge your statutory right to cancel may not apply. Refunds are only available under §4.2 or where required by law.\n\n" +
-                "4.8. Bespoke/custom work. Custom Workout Plans are non-refundable once preparation has substantially begun, unless otherwise agreed in writing.\n\n" +
-                "4.9. Standard plan & add-ons (pricing clarity). Standard generation and add-ons have clear token prices shown before confirmation; once redeemed, non-refundable except under §4.2.",
+                "4.1. Refund cap. Refunds will not exceed the original amount paid for the relevant Order, net of any non-recoverable payment processor fees where permitted by law.\n\n" +
+                "4.2. Digital content performance. If you request immediate performance, you acknowledge losing the statutory right to cancel once performance begins.\n\n" +
+                "4.3. Consumed tokens. Tokens used for completed actions are non-returnable.\n\n" +
+                "4.4. Accuracy of inputs. Re-running tasks due to changed or inaccurate inputs consumes new tokens and is non-refundable.\n\n" +
+                "4.5. Currency. Refunds are issued, where possible, to the original payment method and currency.\n\n" +
+                "4.6. Promotions. Promotional or bonus credits are non-refundable.\n\n" +
+                "4.7. Abuse/Fraud. We may refuse refunds and suspend accounts where abuse or fraud is reasonably suspected.",
         },
+
         {
             type: "text",
-            title: "5. How to Request a Refund (Procedure)",
+            title: "5. Wallet Top-Ups (Tokens)",
+            description:
+                "5.1. Wallet top-ups are advance payments for access to the Service and do not accrue interest.\n\n" +
+                "5.2. Unused balances are generally non-withdrawable, but in exceptional good-faith cases, a refund of unused tokens may be approved at our discretion.\n\n" +
+                "5.3. If a top-up is partially used, only the unused portion may be considered for a discretionary refund.\n\n" +
+                "5.4. Wallet Credit cannot be transferred between users or accounts.",
+        },
+
+        {
+            type: "text",
+            title: "6. Quality Issues & Re-runs",
+            description:
+                "Where a Deliverable is materially defective due to a technical error, our primary remedy is a re-run at no additional token cost. SEO outcomes are not guaranteed and do not constitute a defect.",
+        },
+
+        {
+            type: "text",
+            title: "7. Chargebacks & Disputes",
+            description:
+                "Chargebacks are treated as disputes. We may submit usage logs and suspend accounts during investigation. Submitting a support request first often leads to faster resolution.",
+        },
+
+        {
+            type: "text",
+            title: "8. Record Keeping",
+            description:
+                "We retain records related to refunds and disputes for at least 24 months and up to 6 years where required by law, in line with our Privacy Policy.",
+        },
+
+        {
+            type: "text",
+            title: "9. Changes to this Policy",
+            description:
+                "We may update this Policy periodically. Material changes will be notified and apply prospectively.",
+        },
+
+        {
+            type: "text",
+            title: "10. Contact Details",
             bullets: [
-                "Order reference number.",
-                "Account email used for purchase.",
-                "Whether the request concerns Unused Tokens or a Redeemed item.",
-                "For redeemed items: a description of the issue and supporting evidence (screenshots, file details).",
-                "Preferred refund method (original payment method is standard).",
-                "Upon receipt we will: acknowledge within 5 business days, investigate and, if needed, request more details, provide a decision, and if approved, process the refund within 5–10 business days (subject to provider timelines).",
-            ],
-        },
-        {
-            type: "text",
-            title: "6. Investigation, Evidence and Decisions",
-            description:
-                "6.1. For claims involving redeemed content, we may review token transaction logs, checkout confirmations, delivery/access logs, and customer evidence.\n\n" +
-                "6.2. Refunds are normally processed to the original payment method; if not possible, an alternative (e.g., bank transfer) may be offered after verification.\n\n" +
-                "6.3. If a claim is rejected, we will provide reasons and inform you of options to escalate or pursue legal remedies.",
-        },
-        {
-            type: "text",
-            title: "7. Chargebacks, Fraud and Abuse",
-            description:
-                "If a chargeback is initiated while a refund request is pending, we treat it as a dispute and submit full transaction evidence to the payment provider. We may refuse refunds and suspend Accounts in cases of suspected fraud, abuse, or repeated chargebacks. Where funds are reversed, equivalent Tokens and access to related content may be removed.",
-        },
-        {
-            type: "text",
-            title: "8. Changes to this Policy",
-            description:
-                "We may update this Policy at any time. Material changes will be notified by email or in-product notice. Changes apply prospectively and do not affect previously completed transactions unless required by law.",
-        },
-        {
-            type: "text",
-            title: "9. Record Keeping and Retention",
-            description:
-                "We retain records relevant to refund requests and disputes — including order IDs, token purchase/redemption history, checkout acceptance, timestamps, IP, and device information — for at least 24 months, and up to 6 years for enterprise or disputed transactions, in line with our Privacy Policy and applicable data-protection law.",
-        },
-        {
-            type: "text",
-            title: "10. Escalation and Disputes",
-            description:
-                "If you disagree with a decision, you may escalate by emailing info@averis.co.uk with full reasons and your order reference. We will review within 10 business days. This Policy does not affect your statutory rights; you may pursue ADR or court proceedings as applicable.",
-        },
-        {
-            type: "text",
-            title: "11. Examples (Practical, Illustrative)",
-            bullets: [
-                "Unused Tokens (GBP): Purchase 2,000 Tokens; spend 300; unused 1,700 → refund equals the pro-rata amount based on the original GBP purchase price (minus fees).",
-                "Unused Tokens (EUR): Same as above, but refund is in EUR at the original amount paid.",
-                "Opened Workout Plan: If you consented to immediate supply and downloaded the PDF, refunds apply only if defective or not as described (§4.2).",
-                "Promotional Tokens: 100 bonus Tokens awarded in a promotion → non-refundable.",
-                "Add-ons: Base 60 Tokens + add-on Token prices displayed before confirmation; once redeemed, non-refundable except under §4.2.",
-            ],
-        },
-        {
-            type: "text",
-            title: "12. Contact Details",
-            bullets: [
-                "SHIREDON LIMITED",
+                "GROVELEY LIMITED",
                 "Registered office: Academy House, 11 Dunraven Place, Bridgend, Mid Glamorgan, United Kingdom, CF31 1JF",
-                "Email: info@averis.co.uk",
-                "Tel: +44 7441 393249",
-                "Accepted currencies: GBP (£), EUR (€)",
-                "Payment methods: Visa, Mastercard",
+                "Company number: 16021027",
+                "Email: info@jetreex.co.uk",
+                "Tel: +44 7537 102710",
             ],
         },
     ],

@@ -10,6 +10,8 @@ import Input from "@mui/joy/Input";
 import { useCurrency } from "@/context/CurrencyContext";
 import { useRouter } from "next/navigation";
 import { useCheckoutStore } from "@/utils/store";
+import {startSmartcorePayment} from "@/utils/startSmartcorePayment";
+import {nanoid} from "nanoid";
 
 const TOKENS_PER_GBP = 100;
 
@@ -60,34 +62,60 @@ const PricingCard: React.FC<PricingCardProps> = ({
         return convertFromGBP(basePriceGBP);
     }, [basePriceGBP, convertFromGBP, isCustom]);
 
-    const handleBuy = () => {
+    const handleBuy = async () => {
         if (!user) {
             showAlert("Please sign up", "You need to be signed in to purchase", "info");
             setTimeout(() => (window.location.href = "/sign-up"), 1200);
             return;
         }
 
-        // 💡 Якщо custom — використовуємо введену суму
-        let priceToSave = basePriceGBP;
+        let priceGBP = basePriceGBP * 100;
         let tokensToSave = tokens;
 
         if (isCustom) {
-            priceToSave = convertToGBP(customAmount); // з поточної валюти → GBP
-            tokensToSave = Math.floor(priceToSave * TOKENS_PER_GBP);
+            priceGBP = convertToGBP(customAmount * 100);
+            tokensToSave = Math.floor(priceGBP * TOKENS_PER_GBP);
         }
 
-        const plan = {
-            title,
-            price: priceToSave,
+        const orderId = `order_${nanoid(10)}`;
+
+        // 🧠 КОСТИЛЬ: зберігаємо checkout ДО редіректа
+        const checkoutData = {
+            orderId,
             tokens: tokensToSave,
-            currency,
-            variant,
+            amount: Number(priceGBP.toFixed(2)),
+            currency: "EUR",
+            status: "initiated",
+            createdAt: Date.now(),
         };
 
-        setPlan(plan);
-        localStorage.setItem("selectedPlan", JSON.stringify(plan));
-        router.push("/checkout");
+        localStorage.setItem(
+            "smartcore_checkout",
+            JSON.stringify(checkoutData)
+        );
+
+        try {
+            await startSmartcorePayment({
+                amount: checkoutData.amount,
+                currency: checkoutData.currency,
+                orderId,
+                customer: {
+                    firstName: "Customer",
+                    lastName: "Jetreex",
+                    email: user.email,
+                },
+            });
+        } catch (e) {
+            // ❌ якщо навіть не стартануло
+            localStorage.setItem(
+                "smartcore_checkout",
+                JSON.stringify({ ...checkoutData, status: "failed" })
+            );
+
+            showAlert("Payment error", "Unable to start payment", "error");
+        }
     };
+
 
     // 🔢 Розрахунок токенів для dynamic input
     const tokensCalculated = useMemo(() => {

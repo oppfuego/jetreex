@@ -200,6 +200,9 @@ const Footer: React.FC = () => {
                     </div>
                 </div>
             )}
+{/*
+            check deploy
+*/}
 
             {footerStyles.type === "center" && (
                 <div className={clsx(styles["footer__inner"], styles["footer__inner--center"])}>

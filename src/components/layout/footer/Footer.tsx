@@ -201,7 +201,7 @@ const Footer: React.FC = () => {
                 </div>
             )}
 {/*
-            check deploy
+            check deploy 2
 */}
 
             {footerStyles.type === "center" && (

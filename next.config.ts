@@ -19,6 +19,21 @@ const nextConfig: NextConfig = {
         ];
     },
 
+    async rewrites() {
+        const basePath = process.env.NEXT_PUBLIC_BASE_PATH || "";
+
+        return [
+            {
+                source: "/smweb1/:slug",
+                destination: `${basePath}/smweb1/:slug.htm`,
+            },
+            {
+                source: "/smweb1",
+                destination: `${basePath}/smweb1/index.htm`,
+            },
+        ];
+    },
+
     trailingSlash: false,
 
     images: {
@@ -42,6 +57,7 @@ const nextConfig: NextConfig = {
     eslint: {
         ignoreDuringBuilds: true,
     },
+
     typescript: {
         ignoreBuildErrors: true,
     },

@@ -25,6 +25,10 @@
   }
 }
 
+.wideContainer {
+  max-width: 760px;
+}
+
 .title {
   font-size: 1.8rem;
   font-weight: 700;
@@ -63,6 +67,29 @@
   }
 }
 
+.twoColumnLayout {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+
+  button,
+  .termsBlock {
+    grid-column: 1 / -1;
+  }
+}
+
+.fieldGroup {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.fieldLabel {
+  font-size: 0.95rem;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
 @media (max-width: 480px) {
   .formContainer {
     padding: 24px;
@@ -71,6 +98,10 @@
 
   .title {
     font-size: 1.5rem;
+  }
+
+  .twoColumnLayout {
+    grid-template-columns: 1fr;
   }
 }
 

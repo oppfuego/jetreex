@@ -5,6 +5,7 @@ import { transactionService } from "../services/transaction.service";
 import OpenAI from "openai";
 import { ENV } from "../config/env";
 import mongoose from "mongoose";
+import { sendOrderConfirmationEmail } from "@/backend/utils/orderConfirmationEmail";
 
 const openai = new OpenAI({ apiKey: ENV.OPENAI_API_KEY });
 
@@ -245,7 +246,31 @@ export const universalService = {
         };
 
         const order = await UniversalOrder.create(orderDoc);
-        return order.toObject({ flattenMaps: true });
+        const plainOrder = order.toObject({ flattenMaps: true });
+
+        await sendOrderConfirmationEmail({
+            to: user.email,
+            firstName: user.firstName,
+            subjectLabel: "Order",
+            orderId: plainOrder._id?.toString?.() || String(plainOrder._id),
+            tokensUsed: plainOrder.totalTokens,
+            summary: `Your ${plainOrder.category} ${plainOrder.planType === "reviewed" ? "reviewed" : "instant"} order has been received successfully.`,
+            details: [
+                { label: "Service", value: plainOrder.category },
+                { label: "Plan", value: plainOrder.planType },
+                { label: "Language", value: plainOrder.language || "English" },
+                {
+                    label: "Extras",
+                    value: Array.isArray(plainOrder.extras) && plainOrder.extras.length > 0
+                        ? plainOrder.extras.join(", ")
+                        : "None",
+                },
+                { label: "Status", value: plainOrder.status },
+            ],
+            transactionDate: plainOrder.createdAt ? new Date(plainOrder.createdAt) : new Date(),
+        });
+
+        return plainOrder;
     },
 
     async getOrders(userId: string) {

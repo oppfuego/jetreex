@@ -6,6 +6,16 @@ import { signAccessToken, signRefreshToken } from "../utils/jwt";
 import { ENV } from "../config/env";
 import { Types } from "mongoose";
 import {sendEmail} from "@/backend/utils/sendEmail";
+import {
+    isAllowedRegistrationCountry,
+    isValidDateOfBirth,
+    RegistrationPayload,
+    sanitizeRegistrationPayload,
+} from "@/shared/registration";
+
+type RegisterInput = RegistrationPayload & {
+    confirmPassword?: string;
+};
 
 function parseDurationToSec(input: string): number {
     const m = input.match(/^(\d+)([smhd])?$/i);
@@ -19,17 +29,48 @@ function parseDurationToSec(input: string): number {
 const REFRESH_TTL_SEC = parseDurationToSec(ENV.REFRESH_TOKEN_EXPIRES);
 
 export const authService = {
-    async register(data: { name: string; email: string; password: string }) {
-        const existing = await User.findOne({ email: data.email.toLowerCase() });
+    async register(data: RegisterInput) {
+        const normalized = sanitizeRegistrationPayload(data);
+
+        if (!normalized.firstName) throw new Error("First name is required");
+        if (!normalized.lastName) throw new Error("Last name is required");
+        if (!normalized.email) throw new Error("Email is required");
+        if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(normalized.email)) throw new Error("Email is invalid");
+        if (!normalized.phoneNumber) throw new Error("Phone number is required");
+        if (!normalized.dateOfBirth) throw new Error("Date of birth is required");
+        if (!isValidDateOfBirth(normalized.dateOfBirth)) throw new Error("Date of birth is invalid");
+        if (!normalized.street) throw new Error("Street is required");
+        if (!normalized.city) throw new Error("City is required");
+        if (!normalized.country) throw new Error("Country is required");
+        if (!isAllowedRegistrationCountry(normalized.country)) throw new Error("Country is not supported");
+        if (!normalized.postCode) throw new Error("Post code is required");
+        if (!normalized.password) throw new Error("Password is required");
+        if (data.confirmPassword !== undefined && data.confirmPassword !== normalized.password) {
+            throw new Error("Passwords do not match");
+        }
+
+        const existing = await User.findOne({ email: normalized.email });
         if (existing) throw new Error("Email already registered");
 
-        const hashed = await bcrypt.hash(data.password, 12);
-        const user = await User.create({ ...data, email: data.email.toLowerCase(), password: hashed });
+        const hashed = await bcrypt.hash(normalized.password, 12);
+        const user = await User.create({
+            name: `${normalized.firstName} ${normalized.lastName}`.trim(),
+            firstName: normalized.firstName,
+            lastName: normalized.lastName,
+            email: normalized.email,
+            password: hashed,
+            phoneNumber: normalized.phoneNumber,
+            dateOfBirth: new Date(`${normalized.dateOfBirth}T00:00:00.000Z`),
+            street: normalized.street,
+            city: normalized.city,
+            country: normalized.country,
+            postCode: normalized.postCode,
+        });
         const result = await this.issueTokensAndSession(user._id, user.email, user.role, undefined, undefined);
         await sendEmail(
             user.email,
             "Welcome to Jetreex 🎉",
-            `Hi ${user.name}, thanks for registering at Jetreex.`
+            `Hi ${user.firstName || user.name}, thanks for registering at Jetreex.`
         );
 
         return { user, ...result };

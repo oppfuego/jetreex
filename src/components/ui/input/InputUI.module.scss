@@ -1,0 +1,47 @@
+.fieldWrapper {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.errorText {
+  color: #dc2626;
+  font-size: 12px;
+}
+
+.select {
+  width: 100%;
+  min-height: 48px;
+  padding: 0 14px;
+  border: 1px solid var(--border-color);
+  border-radius: 12px;
+  background: #fff;
+  color: var(--text-primary, #1f2937);
+  font-size: 16px;
+  line-height: 1.5;
+  outline: none;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  appearance: none;
+  background-image:
+    linear-gradient(45deg, transparent 50%, var(--text-secondary, #6b7280) 50%),
+    linear-gradient(135deg, var(--text-secondary, #6b7280) 50%, transparent 50%);
+  background-position:
+    calc(100% - 18px) calc(50% - 3px),
+    calc(100% - 12px) calc(50% - 3px);
+  background-size: 6px 6px, 6px 6px;
+  background-repeat: no-repeat;
+
+  &:focus {
+    border-color: var(--primary-color);
+    box-shadow: 0 0 0 3px rgba(196, 129, 74, 0.18);
+  }
+}
+
+.placeholder {
+  color: var(--text-secondary, #6b7280);
+}
+
+.hasError {
+  border-color: #dc2626;
+  box-shadow: 0 0 0 3px rgba(220, 38, 38, 0.12);
+}

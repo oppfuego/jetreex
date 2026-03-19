@@ -4,6 +4,7 @@ import { User } from "../models/user.model";
 import { transactionService } from "../services/transaction.service";
 import { sendEmail } from "../utils/sendEmail";
 import { COMPANY_EMAIL } from "@/resources/constants";
+import { sendOrderConfirmationEmail } from "@/backend/utils/orderConfirmationEmail";
 
 export const seoRequestService = {
     /** Create new SEO request */
@@ -50,6 +51,24 @@ Message: ${message || "(none)"}
             `📈 New SEO Request — ${service}`,
             text
         );
+
+        await sendOrderConfirmationEmail({
+            to: user.email,
+            firstName: user.firstName,
+            subjectLabel: "SEO request",
+            orderId: request._id?.toString(),
+            tokensUsed,
+            summary: "Your SEO request was submitted successfully.",
+            details: [
+                { label: "Service", value: service },
+                {
+                    label: "Extras",
+                    value: Array.isArray(extras) && extras.length > 0 ? extras.join(", ") : "None",
+                },
+                { label: "Status", value: request.status },
+            ],
+            transactionDate: request.createdAt ? new Date(request.createdAt) : new Date(),
+        });
 
         return request.toObject({ flattenMaps: true });
     },

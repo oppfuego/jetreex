@@ -8,18 +8,13 @@ import styles from "./Footer.module.scss";
 import {footerContent} from "@/resources/content";
 import {footerStyles} from "@/resources/styles-config";
 import {SmartLinkProps} from "@/types/smart-link";
-import {media} from "@/resources/media";
 import {
-    FaApplePay,
-    FaCcAmex,
-    FaCcMastercard,
-    FaCcVisa,
-    FaFacebookF,
-    FaGooglePay,
     FaInstagram,
-    FaLinkedinIn,
-    FaTwitter
+    FaLinkedinIn
 } from "react-icons/fa";
+import visaLogo from "@/assets/cards/visa.png";
+import mastercardLogo from "@/assets/cards/mastercard.png";
+import pciDssLogo from "@/assets/cards/pci-dss-compliant-logo-vector.svg";
 
 const SmartLink: React.FC<SmartLinkProps> = ({
                                                  href,
@@ -66,8 +61,30 @@ const Footer: React.FC = () => {
 
     const PaymentMethods = () => (
         <div className={styles.paymentsContent}>
-            <FaCcVisa className={styles.paymentIcon}/>
-            <FaCcMastercard className={styles.paymentIcon}/>
+            <div className={styles.paymentLogoWrap}>
+                <Image
+                    src={visaLogo}
+                    alt="Visa"
+                    className={styles.paymentLogo}
+                    sizes="64px"
+                />
+            </div>
+            <div className={styles.paymentLogoWrap}>
+                <Image
+                    src={mastercardLogo}
+                    alt="Mastercard"
+                    className={styles.paymentLogo}
+                    sizes="72px"
+                />
+            </div>
+            <div className={styles.paymentLogoWrap}>
+                <Image
+                    src={pciDssLogo}
+                    alt="PCI DSS compliant"
+                    className={styles.paymentLogo}
+                    sizes="96px"
+                />
+            </div>
         </div>
     );
 

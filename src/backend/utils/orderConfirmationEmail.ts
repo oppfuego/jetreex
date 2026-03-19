@@ -1,19 +1,28 @@
 import { sendEmail } from "@/backend/utils/sendEmail";
 
-type OrderConfirmationEmailInput = {
-    to: string;
-    firstName?: string | null;
-    subjectLabel: string;
-    orderId?: string;
-    tokensUsed?: number;
-    amountLabel?: string;
-    summary: string;
-    details: Array<{ label: string; value: string }>;
-    transactionDate?: Date;
+export type OrderDetail = {
+    label: string;
+    value: string;
 };
 
-function escapeHtml(value: string): string {
-    return value
+type OrderConfirmationEmailInput = {
+    to?: string | null;
+    firstName?: string | null;
+    subjectLabel?: string | null;
+    orderId?: string | null;
+    tokensUsed?: number | null;
+    amountLabel?: string | null;
+    summary?: string | null;
+    details?: OrderDetail[] | null;
+    transactionDate?: Date | string | null;
+};
+
+function normalizeText(value: unknown, fallback = ""): string {
+    return typeof value === "string" ? value.trim() || fallback : fallback;
+}
+
+function escapeHtml(value: unknown): string {
+    return normalizeText(value)
         .replace(/&/g, "&amp;")
         .replace(/</g, "&lt;")
         .replace(/>/g, "&gt;")
@@ -21,12 +30,32 @@ function escapeHtml(value: string): string {
         .replace(/'/g, "&#39;");
 }
 
-function formatDate(value: Date): string {
+function normalizeDate(value: Date | string | null | undefined): Date {
+    if (value instanceof Date && !Number.isNaN(value.getTime())) return value;
+    if (typeof value === "string") {
+        const parsed = new Date(value);
+        if (!Number.isNaN(parsed.getTime())) return parsed;
+    }
+    return new Date();
+}
+
+function formatDate(value: Date | string | null | undefined): string {
     return new Intl.DateTimeFormat("en-GB", {
         dateStyle: "medium",
         timeStyle: "short",
         timeZone: "UTC",
-    }).format(value);
+    }).format(normalizeDate(value));
+}
+
+function normalizeDetails(details?: OrderDetail[] | null): OrderDetail[] {
+    if (!Array.isArray(details)) return [];
+
+    return details
+        .map((detail): OrderDetail => ({
+            label: normalizeText(detail?.label, "Detail"),
+            value: normalizeText(detail?.value, "N/A"),
+        }))
+        .filter((detail) => Boolean(detail.label && detail.value));
 }
 
 export async function sendOrderConfirmationEmail({
@@ -37,26 +66,48 @@ export async function sendOrderConfirmationEmail({
     tokensUsed,
     amountLabel,
     summary,
-    details,
+    details = [],
     transactionDate = new Date(),
 }: OrderConfirmationEmailInput) {
-    const safeDetails = [
-        ...(orderId ? [{ label: "Order ID", value: orderId }] : []),
-        ...details,
-        ...(typeof tokensUsed === "number"
-            ? [{ label: "Tokens used", value: `${tokensUsed}` }]
+    const safeTo = normalizeText(to);
+    const safeFirstName = normalizeText(firstName, "there");
+    const safeSubjectLabel = normalizeText(subjectLabel, "Order");
+    const safeSummary = normalizeText(
+        summary,
+        "Your request was completed successfully."
+    );
+    const safeOrderId = normalizeText(orderId);
+    const safeAmountLabel = normalizeText(amountLabel);
+    const safeDetails: OrderDetail[] = [
+        ...(safeOrderId ? [{ label: "Order ID", value: safeOrderId }] : []),
+        ...normalizeDetails(details),
+        ...(typeof tokensUsed === "number" && Number.isFinite(tokensUsed)
+            ? [{ label: "Tokens used", value: String(tokensUsed) }]
             : []),
-        ...(amountLabel ? [{ label: "Amount", value: amountLabel }] : []),
+        ...(safeAmountLabel ? [{ label: "Amount", value: safeAmountLabel }] : []),
         [{ label: "Transaction date", value: formatDate(transactionDate) }],
     ];
 
-    const introName = firstName?.trim() || "there";
+    console.log("📨 [sendOrderConfirmationEmail] Payload", {
+        to: safeTo,
+        firstName: safeFirstName,
+        subjectLabel: safeSubjectLabel,
+        orderId: safeOrderId,
+        summary: safeSummary,
+        detailsCount: safeDetails.length,
+    });
+
+    if (!safeTo) {
+        console.warn("⚠️ [sendOrderConfirmationEmail] Skipping: missing recipient");
+        return null;
+    }
+
     const textLines = [
-        `Hi ${introName},`,
+        `Hi ${safeFirstName},`,
         "",
-        `Your ${subjectLabel.toLowerCase()} was completed successfully.`,
+        `Your ${safeSubjectLabel.toLowerCase()} was completed successfully.`,
         "",
-        summary,
+        safeSummary,
         "",
         ...safeDetails.map(({ label, value }) => `${label}: ${value}`),
     ];
@@ -64,9 +115,9 @@ export async function sendOrderConfirmationEmail({
     const html = `
       <div style="font-family: Arial, sans-serif; background:#f8f7f3; padding:24px; color:#2a241f;">
         <div style="max-width:640px; margin:0 auto; background:#ffffff; border:1px solid #f1e0d0; border-radius:16px; padding:32px;">
-          <h2 style="margin:0 0 16px; color:#b46d2b;">${escapeHtml(subjectLabel)} Confirmation</h2>
-          <p style="margin:0 0 12px; font-size:16px; line-height:1.6;">Hi ${escapeHtml(introName)},</p>
-          <p style="margin:0 0 20px; font-size:16px; line-height:1.6;">${escapeHtml(summary)}</p>
+          <h2 style="margin:0 0 16px; color:#b46d2b;">${escapeHtml(safeSubjectLabel)} Confirmation</h2>
+          <p style="margin:0 0 12px; font-size:16px; line-height:1.6;">Hi ${escapeHtml(safeFirstName)},</p>
+          <p style="margin:0 0 20px; font-size:16px; line-height:1.6;">${escapeHtml(safeSummary)}</p>
           <div style="border:1px solid #f1e0d0; border-radius:12px; overflow:hidden;">
             ${safeDetails
                 .map(
@@ -84,13 +135,14 @@ export async function sendOrderConfirmationEmail({
     `;
 
     try {
-        await sendEmail(
-            to,
-            `${subjectLabel} Confirmation`,
+        return await sendEmail(
+            safeTo,
+            `${safeSubjectLabel} Confirmation`,
             textLines.join("\n"),
             html
         );
     } catch (error) {
-        console.error("❌ Failed to send order confirmation email:", error);
+        console.error("❌ [sendOrderConfirmationEmail] Failed", error);
+        throw error;
     }
 }

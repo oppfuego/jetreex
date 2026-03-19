@@ -9,10 +9,27 @@ export async function sendEmail(
     text: string,
     html?: string
 ) {
+    const normalizedTo = typeof to === "string" ? to.trim() : "";
+    const normalizedFrom =
+        typeof ENV.EMAIL_FROM === "string" ? ENV.EMAIL_FROM.trim() : "";
+
+    if (!normalizedTo) {
+        console.warn("⚠️ [sendEmail] Skipping: missing recipient", { subject });
+        return null;
+    }
+
+    if (!normalizedFrom) {
+        console.warn("⚠️ [sendEmail] Skipping: missing EMAIL_FROM", {
+            subject,
+            to: normalizedTo,
+        });
+        return null;
+    }
+
     try {
         const response = await resend.emails.send({
-            from: ENV.EMAIL_FROM,
-            to,
+            from: normalizedFrom,
+            to: normalizedTo,
             subject,
             text: text || "",
             html: html || defaultTemplate(subject, text),

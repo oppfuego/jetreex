@@ -3,6 +3,7 @@ import {seoRequestController} from "@/backend/controllers/seoRequesr.controller"
 
 export async function POST(req: Request) {
     try {
+        console.log("📥 [seo-request.route] Start");
         let body: any = {};
         const contentType = req.headers.get("content-type") || "";
 
@@ -15,11 +16,11 @@ export async function POST(req: Request) {
             const formData = await req.formData();
 
             body = {
-                userId: formData.get("userId"),
-                userEmail: formData.get("userEmail"),
-                service: formData.get("service"),
-                message: formData.get("message"),
-                tokens: Number(formData.get("tokens")),
+                userId: formData.get("userId")?.toString().trim() || "",
+                userEmail: formData.get("userEmail")?.toString().trim().toLowerCase() || "",
+                service: formData.get("service")?.toString().trim() || "",
+                message: formData.get("message")?.toString().trim() || "",
+                tokens: Number(formData.get("tokens") || 0),
                 extras: [],
                 extraValues: {},
             };
@@ -46,7 +47,15 @@ export async function POST(req: Request) {
             );
         }
 
-        const { userId, userEmail, service, message, tokens, extras } = body;
+        const userId = typeof body.userId === "string" ? body.userId.trim() : "";
+        const userEmail =
+            typeof body.userEmail === "string" ? body.userEmail.trim().toLowerCase() : "";
+        const service = typeof body.service === "string" ? body.service.trim() : "";
+        const message = typeof body.message === "string" ? body.message.trim() : "";
+        const tokens = Number(body.tokens || 0);
+        const extras = Array.isArray(body.extras) ? body.extras : [];
+        const extraValues =
+            body.extraValues && typeof body.extraValues === "object" ? body.extraValues : {};
 
         if (!userId || !userEmail || !service) {
             return NextResponse.json(
@@ -55,11 +64,21 @@ export async function POST(req: Request) {
             );
         }
 
+        console.log("📦 [seo-request.route] Normalized payload", {
+            userId,
+            userEmail,
+            service,
+            tokens,
+            extrasCount: extras.length,
+            extraValueKeys: Object.keys(extraValues),
+        });
+
         const data = await seoRequestController.createRequest(userId, userEmail, {
             service,
             message,
             tokens,
             extras,
+            extraValues,
         });
 
         return NextResponse.json(data, { status: 200 });
